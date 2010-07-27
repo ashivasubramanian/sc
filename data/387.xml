@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stoppages>
+ <stoppage name="Calicut" arrival-time="13:20" departure-time="13:25"/>
+ <stoppage name="Ferok" departure-time="12:40"/>
+ <stoppage name="Kadalundi" departure-time="12:30"/>
+ <stoppage name="Parpanangadi" departure-time="12:15"/>
+ <stoppage name="Tanur" departure-time="12:05"/>
+ <stoppage name="Tirur" arrival-time="11:53" departure-time="11:55"/>
+ <stoppage name="Tirunnavaya" departure-time="11:45"/>
+ <stoppage name="Kuttipuram" departure-time="11:35"/>
+ <stoppage name="Pallipuram" departure-time="11:20"/>
+ <stoppage name="Pattambi" departure-time="11:10"/>
+ <stoppage name="Shoranur-Junction" arrival-time="10:45" departure-time="10:55"/>
+</stoppages>
