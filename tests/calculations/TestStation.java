@@ -35,6 +35,33 @@ public class TestStation {
 	}
 	
 	@Test
+	public void stationShouldBeInitializedWithTwoPoints() {
+		Element data = mock(Element.class);
+		when(data.getAttribute("name")).thenReturn("Calicut");
+		when(data.getAttribute("nooftracks")).thenReturn("3");
+		when(data.getAttribute("distancefromhome")).thenReturn("47");
+		
+		Station station = new Station(data);
+		assertEquals(2, station.points.size());
+		assertEquals(station.MAIN_TRACK, station.points.get(0));
+		assertEquals(station.MAIN_TRACK, station.points.get(1));
+	}
+	
+	@Test
+	public void stationShouldBeInitializedWithThreeTracks() {
+		Element data = mock(Element.class);
+		when(data.getAttribute("name")).thenReturn("Calicut");
+		when(data.getAttribute("nooftracks")).thenReturn("3");
+		when(data.getAttribute("distancefromhome")).thenReturn("47");
+		
+		Station station = new Station(data);
+		assertEquals(3, station.tracks.size());
+		assertEquals(station.MAIN_TRACK, station.tracks.get(0));
+		assertEquals(station.LOOP1_TRACK, station.tracks.get(1));
+		assertEquals(station.LOOP2_TRACK, station.tracks.get(2));
+	}
+	
+	@Test
 	public void changingAspectForASignalShouldPass() {
 		Element data = mock(Element.class);
 		when(data.getAttribute("name")).thenReturn("Calicut");

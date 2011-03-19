@@ -147,18 +147,9 @@ public class Train extends Thread
 				departureTimes.put( stop.getAttribute("name"), 
 					stop.getAttribute("departure-time"));
 				
-				//Reversing the distances if travelling towards home
-				/*Integer distance;
-				if (direction == HOME) {
-					distance = 86 - new Integer(
-						stop.getAttribute("distancefromhome"));
-				} else {
-					distance = new Integer(
-						stop.getAttribute("distancefromhome"));
-				}
-				distances.put(stop.getAttribute("name"), distance);*/
 			}
 		}
+		//Reversing the distances if travelling towards home
 		if (direction == HOME)	java.util.Collections.reverse(stations);
 	}
 

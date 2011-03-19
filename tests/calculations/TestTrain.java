@@ -1,20 +1,24 @@
 package calculations;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.xml.sax.SAXException;
 
 public class TestTrain {
 	
 	@Test
 	public void initializingTrainWithLegalValuesShouldPass() {
+		Train train = null;
 		try {
-			new Train("2618", "Mangala Lakshadweep Express", "TowardsHome");
+			train = new Train("2618", "Mangala Lakshadweep Express", "TowardsHome");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
@@ -22,6 +26,7 @@ public class TestTrain {
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
 		}
+		assertNotNull(train);
 	}
 	
 	@Test
@@ -73,6 +78,21 @@ public class TestTrain {
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void initializingTheTrainShouldStartTheTrainThread() {
+		Train train = null;
+		try {
+			train = new Train("2618", "Mangala Lakshadweep Express", "TowardsHome");
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (SAXException saxe) {
+			saxe.printStackTrace();
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		}
+		assertEquals(Thread.State.RUNNABLE, train.getState());
 	}
 		
 }
