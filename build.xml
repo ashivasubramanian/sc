@@ -24,11 +24,11 @@
 			<arg value="cd .."/>
 		</exec>
 	</target>
-	<target name="jar" description="Creates a redistributable JAR file of the game.">
-		<copy todir="Classes\Calculations\Data">
-			<fileset dir="Calculations\Data"/>
-		</copy>
-		<jar destfile="SectionController.jar" basedir="Classes"/>
+	<target name="war" description="Creates a redistributable WAR file of the game.">
+		<war destfile="SectionController.war" webxml="WEB-INF\web.xml">
+			<lib dir="WEB-INF\lib" />
+			<classes dir="WEB-INF\classes" excludes="**\*Test.class"/>
+		</war>
 	</target>
 	<target name="doc" description="Generates Javadoc for all files.">
 		<mkdir dir="Docs"/>
@@ -38,7 +38,7 @@
 		<mkdir dir="Docs"/>
 		<javadoc packagenames="calculations.*,calculations.data_access.*,calculations.data.*,presentation.panes.*,presentation.windows.*,rendering.*" sourcepath="." destdir="Docs" public="yes"/>
 	</target>
-        <target name="backup" description="Backups of source and class files." depends="build,jar,doc">
+        <target name="backup" description="Backups of source and class files." depends="build,war,doc">
 		<delete file="Section Controller.zip"/>
 		<zip destfile="Section Controller.zip" basedir="."/>
 	</target>
