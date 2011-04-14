@@ -9,10 +9,9 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.xml.sax.SAXException;
 
-public class TestTrain {
+public class TrainTest {
 	
 	@Test
 	public void initializingTrainWithLegalValuesShouldPass() {

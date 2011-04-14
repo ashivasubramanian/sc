@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stations>
+		<station code="CAL" name="Calicut" distancefromhome="0" nooftracks="3" noofplatforms="3"/>
+		<station code="KAL" name="Kallayi" distancefromhome="1" nooftracks="2" noofplatforms="1"/>
+		<station code="FER" name="Ferok" distancefromhome="9" nooftracks="2" noofplatforms="1"/>
+		<station code="KAD" name="Kadalundi" distancefromhome="14" nooftracks="2" noofplatforms="1"/>
+		<station code="VAL" name="Vallikunnu" distancefromhome="19" nooftracks="2" noofplatforms="1"/>
+		<station code="PAR" name="Parpanangadi" distancefromhome="25" nooftracks="2" noofplatforms="1"/>
+		<station code="TAN" name="Tanur" distancefromhome="33" nooftracks="2" noofplatforms="1"/>
+		<station code="TIR" name="Tirur" distancefromhome="41" nooftracks="2" noofplatforms="1"/>
+		<station code="TNVA" name="Tirunnavaya" distancefromhome="49" nooftracks="2" noofplatforms="1"/>
+		<station code="KUT" name="Kuttipuram" distancefromhome="56" nooftracks="2" noofplatforms="1"/>
+		<station code="PER" name="Perashannur Halt" distancefromhome="62" nooftracks="2" noofplatforms="1"/>
+		<station code="PAL" name="Pallipuram" distancefromhome="65" nooftracks="2" noofplatforms="1"/>
+		<station code="KOD" name="Kodumunda Halt" distancefromhome="69" nooftracks="2" noofplatforms="1"/>
+		<station code="PAT" name="Pattambi" distancefromhome="74" nooftracks="2" noofplatforms="1"/>
+		<station code="KAR" name="Karakad" distancefromhome="80" nooftracks="2" noofplatforms="1"/>
+		<station code="SRR" name="Shoranur Junction" distancefromhome="86" nooftracks="3" noofplatforms="3"/>
+</stations>

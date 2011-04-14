@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="SectionController" basedir=".">
+	<property name="build.dir" value="WEB-INF\classes"/>
+	<property name="datafiles.dir" value="WEB-INF\data"/>
+	<path id="libraries">
+		<fileset dir="WEB-INF\lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
 	<target name="build" description="Compiles all the java files">
-		<mkdir dir="Classes"/>
-		<javac destdir="Classes" srcdir="." listfiles="true"/>
-		<copy todir="Classes\Data">
+		<mkdir dir="${build.dir}"/>
+		<javac destdir="${build.dir}" srcdir="." listfiles="true" classpathref="libraries"/>
+		<copy todir="${datafiles.dir}">
 			<fileset dir="Data"/>
 		</copy>
 	</target>
