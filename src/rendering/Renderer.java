@@ -150,7 +150,8 @@ public final class Renderer extends Thread
 		objGamePane.setStationPositions(objStationDistances);
 	}
 
-	/* We need all those trains that run today. Therefore, first we have to get today's day, then get all trains that run today as well as Daily, and create the train objects.*/
+	/* We need all those trains that run today. Therefore, first we have to get today's day, then get all trains that run today as well as Daily,
+	 * and create the train objects.*/
 	private void populateTrains()
 			throws IOException, SAXException, ParserConfigurationException {
 		//Let's get the daily trains first

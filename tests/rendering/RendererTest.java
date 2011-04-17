@@ -1,9 +1,13 @@
 package rendering;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Method;
 import java.util.Vector;
 
 import org.junit.Test;
@@ -11,9 +15,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.w3c.dom.Element;
 
 import calculations.Station;
+import calculations.Train;
 
+//TODO: Test methods shouldLoadStations() and shouldLoadTrains() only test that some data was loaded, not whether the correct data was loaded.
+//This is a consequence of the DataAccess class being final - Mockito does not mock final classes. Once these data are being read from a
+//db, this will have to be fixed.
 public class RendererTest {
-	
+
 	@Test
 	public void shouldSetStationAspects() {
 		Vector<String> stationNames = new Vector<String>();
@@ -36,5 +44,42 @@ public class RendererTest {
 		
 		assertArrayEquals(new Integer[] {3, 3}, station.getAspects());
 	}
+	
+	@Test
+	public void shouldReturnTheSameInstanceEverytime() {
+		Renderer renderer = Renderer.getInstance();
+		Renderer renderer2 = Renderer.getInstance();
+		assertEquals(renderer, renderer2);
+	}
+	
+	@Test
+	public void shouldLoadStations() throws Exception {
+		Renderer renderer = Renderer.getInstance();
+		ReflectionTestUtils.setField(renderer, "objStations", new Vector<Station>()); //to clear the singleton data from the previous tests.
+		
+		Vector<Station> objStations = (Vector<Station>) ReflectionTestUtils.getField(renderer, "objStations");
+		assertTrue(objStations.isEmpty());
+		Method populateStationsMethod = renderer.getClass().getDeclaredMethod("populateStations");
+		populateStationsMethod.setAccessible(true);
+		populateStationsMethod.invoke(renderer);
+		objStations = (Vector<Station>) ReflectionTestUtils.getField(renderer, "objStations");
+		assertFalse(objStations.isEmpty());
+	}
 
+	//TODO: Separate Renderer.populateTrains() into three methods - one to load daily trains, another to load day-specific trains,
+	//and another to filter out those trains that do not run in the next one hour. Write tests for each method.
+	
+	@Test
+	public void shouldLoadTrains() throws Exception {
+		Renderer renderer = Renderer.getInstance();
+		ReflectionTestUtils.setField(renderer, "objTrains", new Vector<Station>()); //to clear the singleton data from the previous tests.
+		
+		Vector<Train> objTrains = (Vector<Train>) ReflectionTestUtils.getField(renderer, "objTrains");
+		assertTrue(objTrains.isEmpty());
+		Method populateTrainsMethod = renderer.getClass().getDeclaredMethod("populateTrains");
+		populateTrainsMethod.setAccessible(true);
+		populateTrainsMethod.invoke(renderer);
+		objTrains = (Vector<Train>) ReflectionTestUtils.getField(renderer, "objTrains");
+		assertFalse(objTrains.isEmpty());
+	}
 }
