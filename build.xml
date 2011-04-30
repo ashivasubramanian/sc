@@ -2,6 +2,7 @@
 <project name="SectionController" basedir=".">
 	<property name="build.dir" value="WEB-INF\classes"/>
 	<property name="datafiles.dir" value="WEB-INF\data"/>
+	<property name="tomcat.dir" value="E:\apache-tomcat-7.0.12"/>
 	<path id="libraries">
 		<fileset dir="WEB-INF\lib">
 			<include name="*.jar"/>
@@ -24,11 +25,15 @@
 			<arg value="cd .."/>
 		</exec>
 	</target>
-	<target name="war" description="Creates a redistributable WAR file of the game.">
-		<war destfile="SectionController.war" webxml="WEB-INF\web.xml">
+	<target name="war" description="Creates a redistributable WAR file of the game." depends="build">
+		<war destfile="SC.war" webxml="WEB-INF\web.xml">
 			<lib dir="WEB-INF\lib" />
 			<classes dir="WEB-INF\classes" excludes="**\*Test.class"/>
+			<webinf dir="WEB-INF"/>
 		</war>
+	</target>
+	<target name="deploy" description="Copies the WAR file to Tomcat directory." depends="war">
+		<copy file="SC.war" todir="${tomcat.dir}\webapps"></copy>
 	</target>
 	<target name="doc" description="Generates Javadoc for all files.">
 		<mkdir dir="Docs"/>
