@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" arrival-time="08:15" departure-time="08:20"/>
- <stoppage name="Tirur" departure-time="06:45"/>
- <stoppage name="Shoranur-Junction" arrival-time="05:50" departure-time="05:55"/>
-</stoppages>

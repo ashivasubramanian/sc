@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" arrival-time="23:35" departure-time="23:40" monsoon-arrival-time="01:15" monsoon-departure-time="01:20"/>
- <stoppage name="Shoranur-Junction" arrival-time="02:05" departure-time="02:10" monsoon-arrival-time="03:50" monsoon-departure-time="03:55"/>
-</stoppages>
