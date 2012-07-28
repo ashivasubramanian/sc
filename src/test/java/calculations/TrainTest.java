@@ -11,7 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-public class TrainTest {
+public class traintest {
 	
 	@Test
 	public void initializingTrainWithLegalValuesShouldPass() {
