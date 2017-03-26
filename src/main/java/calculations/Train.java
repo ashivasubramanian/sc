@@ -29,7 +29,7 @@ public class Train extends Thread
 	 * A static and final <code>String</code> variable that contains
 	 * the path of the XML file that contains train info.
 	 */
-	private static final String TRAIN_FILE_PATH = "src/main/webapp/WEB-INF/data" + File.separator;
+	private static final String TRAIN_FILE_PATH = "src/main/resources/data" + File.separator;
 	
 	/**
 	 * Final variable that stores which direction a train is travelling on the section.

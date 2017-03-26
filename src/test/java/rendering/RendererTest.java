@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import java.util.Vector;
 
 import org.junit.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.w3c.dom.Element;
 
 import calculations.Station;
@@ -23,7 +22,7 @@ import calculations.Train;
 public class RendererTest {
 
 	@Test
-	public void shouldSetStationAspects() {
+	public void shouldSetStationAspects() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		Vector<String> stationNames = new Vector<String>();
 		String stationName = "station1";
 		stationNames.add(stationName);
@@ -36,8 +35,8 @@ public class RendererTest {
 		stations.add(station);
 		
 		Renderer renderer = Renderer.getInstance();
-		ReflectionTestUtils.setField(renderer, "objStationNames", stationNames);
-		ReflectionTestUtils.setField(renderer, "objStations", stations);
+		renderer.getClass().getDeclaredField("objStationNames").set(renderer, stationNames);
+		renderer.getClass().getDeclaredField("objStations").set(renderer, stations);
 		
 		String[] aspect = new String[] {"Green", "Green"};
 		renderer.setAspect(stationName, aspect);
@@ -55,31 +54,30 @@ public class RendererTest {
 	@Test
 	public void shouldLoadStations() throws Exception {
 		Renderer renderer = Renderer.getInstance();
-		ReflectionTestUtils.setField(renderer, "objStations", new Vector<Station>()); //to clear the singleton data from the previous tests.
+		renderer.getClass().getDeclaredField("objStations").set(renderer, new Vector<Station>()); //to clear the singleton data from the previous tests.
 		
-		Vector<Station> objStations = (Vector<Station>) ReflectionTestUtils.getField(renderer, "objStations");
+		Vector<Station> objStations = (Vector<Station>) renderer.getClass().getDeclaredField("objStations").get(renderer);
 		assertTrue(objStations.isEmpty());
 		Method populateStationsMethod = renderer.getClass().getDeclaredMethod("populateStations");
 		populateStationsMethod.setAccessible(true);
 		populateStationsMethod.invoke(renderer);
-		objStations = (Vector<Station>) ReflectionTestUtils.getField(renderer, "objStations");
+		objStations = (Vector<Station>) renderer.getClass().getDeclaredField("objStations").get(renderer);
 		assertFalse(objStations.isEmpty());
 	}
 
 	//TODO: Separate Renderer.populateTrains() into three methods - one to load daily trains, another to load day-specific trains,
 	//and another to filter out those trains that do not run in the next one hour. Write tests for each method.
-	
 	@Test
 	public void shouldLoadTrains() throws Exception {
 		Renderer renderer = Renderer.getInstance();
-		ReflectionTestUtils.setField(renderer, "objTrains", new Vector<Station>()); //to clear the singleton data from the previous tests.
+		renderer.getClass().getDeclaredField("objTrains").set(renderer, new Vector<Station>()); //to clear the singleton data from the previous tests.
 		
-		Vector<Train> objTrains = (Vector<Train>) ReflectionTestUtils.getField(renderer, "objTrains");
+		Vector<Train> objTrains = (Vector<Train>) renderer.getClass().getDeclaredField("objTrains").get(renderer);
 		assertTrue(objTrains.isEmpty());
 		Method populateTrainsMethod = renderer.getClass().getDeclaredMethod("populateTrains");
 		populateTrainsMethod.setAccessible(true);
 		populateTrainsMethod.invoke(renderer);
-		objTrains = (Vector<Train>) ReflectionTestUtils.getField(renderer, "objTrains");
+		objTrains = (Vector<Train>) renderer.getClass().getDeclaredField("objTrains").get(renderer);
 		assertFalse(objTrains.isEmpty());
 	}
 }

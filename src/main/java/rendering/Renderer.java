@@ -77,14 +77,14 @@ public final class Renderer extends Thread
 	 * A static and final <code>String</code> variable that contains
 	 * the path of the XML file that contains station info.
 	 */
-	private static final String STATIONS_FILE_PATH = "src/main/webapp/WEB-INF/data" +
+	private static final String STATIONS_FILE_PATH = "src/main/resources/data" +
             File.separator + "Stations.xml";
 	
 	/**
 	 * A static and final <code>String</code> variable that contains
 	 * the path of the XML file that contains train info.
 	 */
-	private static final String TRAINS_FILE_PATH = "src/main/webapp/WEB-INF/data" +
+	private static final String TRAINS_FILE_PATH = "src/main/resources/data" +
             File.separator + "Trains.xml";
 
 	/**

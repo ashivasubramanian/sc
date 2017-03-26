@@ -90,7 +90,7 @@ public class LoginInterface
 	 */
 	Vector<Element> objUsers;
 	
-	private String USERS_FILE = "Data" + java.io.File.separator + "Users.xml";
+	private String USERS_FILE = "src/main/resources/data" + java.io.File.separator + "Users.xml";
 
 	/**
 	 * Initializes the components of the login interface and displays them to the user.
