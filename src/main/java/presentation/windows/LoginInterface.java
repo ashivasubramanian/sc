@@ -241,7 +241,7 @@ public class LoginInterface
 					String[] objValues = {objNewLogin.getText(),"100"};
 					//If the insert operation to add a new user is successful, proceed to the game screen,
 					//otherwise throw an error message and return.
-					if( !DataAccess.getInstance().insertData("Calculations\\Data\\Users.xml","user",objAttributes, objValues))
+					if( !DataAccess.getInstance().insertData(USERS_FILE,"user",objAttributes, objValues))
 					{
 						javax.swing.JOptionPane.showMessageDialog(objFrame,"Unable to add user.","Error!!",javax.swing.JOptionPane.ERROR_MESSAGE);
 						return;
