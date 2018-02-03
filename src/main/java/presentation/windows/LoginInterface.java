@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -90,8 +91,6 @@ public class LoginInterface
 	 */
 	Vector<Element> objUsers;
 	
-	private String USERS_FILE = "src/main/resources/data" + java.io.File.separator + "Users.xml";
-
 	/**
 	 * Initializes the components of the login interface and displays them to the user.
 	 */
@@ -167,6 +166,8 @@ public class LoginInterface
 	 */
 	class LoginEvents extends WindowAdapter implements ActionListener
 	{
+		private String USERS_FILE = String.join(java.io.File.separator, System.getProperty("user.home"), ".section_controller", "Users.xml");
+
 		/**
 		 * Handles the load event of this form.
 		 * This method extracts the list of users from the Users.xml file and sets it to
@@ -190,9 +191,9 @@ public class LoginInterface
 					objUserNames.add( singleUser.getAttribute("name"));
 				}
 				objList.setListData(objUserNames);
-			}
-			catch(Exception objException)
-			{
+			} catch (FileNotFoundException fnfe) {
+				DataAccess.getInstance().createMissingFile(USERS_FILE);
+			} catch (Exception objException) {
 				javax.swing.JOptionPane.showMessageDialog(objFrame, objException.getMessage());
 				objException.printStackTrace();
 			}

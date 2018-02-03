@@ -220,4 +220,16 @@ public final class DataAccess
 		}
 		return false;
 	}
+
+	public void createMissingFile(String fullyQualifiedFileName) {
+		File file = new File(fullyQualifiedFileName);
+		if (!file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+		}
+		try {
+			file.createNewFile();
+		} catch (IOException ioe) {
+			System.out.println("IOException " + ioe.getMessage());
+		}
+	}
 }
