@@ -15,6 +15,7 @@ import org.w3c.dom.Element;
 
 import calculations.Station;
 import calculations.Train;
+import presentation.panes.GamePane;
 
 //TODO: Test methods shouldLoadStations() and shouldLoadTrains() only test that some data was loaded, not whether the correct data was loaded.
 //This is a consequence of the DataAccess class being final - Mockito does not mock final classes. Once these data are being read from a
@@ -71,6 +72,7 @@ public class RendererTest {
 	public void shouldLoadTrains() throws Exception {
 		Renderer renderer = Renderer.getInstance();
 		renderer.getClass().getDeclaredField("objTrains").set(renderer, new Vector<Station>()); //to clear the singleton data from the previous tests.
+		renderer.getClass().getDeclaredField("objGamePane").set(renderer, GamePane.getInstance());
 		
 		Vector<Train> objTrains = (Vector<Train>) renderer.getClass().getDeclaredField("objTrains").get(renderer);
 		assertTrue(objTrains.isEmpty());
