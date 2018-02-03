@@ -21,9 +21,9 @@ import javax.swing.JTextField;
 
 import org.w3c.dom.Element;
 
+import calculations.data_access.DataAccess;
 import presentation.panes.InfoPane;
 import rendering.Renderer;
-import calculations.data_access.DataAccess;
 
 /**
  * The <code>LoginInterface</code> class displays the login interface to the user.
@@ -175,20 +175,17 @@ public class LoginInterface
 		 *
 		 * @param e The <code>WindowEvent</code> object.
 		 */
-		public void windowOpened(WindowEvent e)
-		{
-			try
-			{
-				//The values for the JList are in objUsers. But they are in the form of
-				//<code>Element</code> objects. Therefore, the usernames have to be extracted and
-				//populated into the list.
-				objUsers = DataAccess.getInstance().extractData( USERS_FILE, "user");
+		public void windowOpened(WindowEvent e) {
+			try {
+				// The values for the JList are in objUsers. But they are in the form of
+				// <code>Element</code> objects. Therefore, the usernames have to be extracted and
+				// populated into the list.
+				objUsers = DataAccess.getInstance().extractData(USERS_FILE, "user");
 				Enumeration<Element> objEnumeration = objUsers.elements();
 				Vector<String> objUserNames = new Vector<String>();
-				while(objEnumeration.hasMoreElements())
-				{
+				while (objEnumeration.hasMoreElements()) {
 					Element singleUser = objEnumeration.nextElement();
-					objUserNames.add( singleUser.getAttribute("name"));
+					objUserNames.add(singleUser.getAttribute("name"));
 				}
 				objList.setListData(objUserNames);
 			} catch (FileNotFoundException fnfe) {
