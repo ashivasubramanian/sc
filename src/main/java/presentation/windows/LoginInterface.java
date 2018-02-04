@@ -223,20 +223,22 @@ public class LoginInterface
 			try
 			{
 				//No need to check for the source, as is usually done. Only one component(button) exists!!
-				if(objNewLogin.getText().length() > 0)
+				String newUserName = objNewLogin.getText();
+				if(newUserName.length() > 0)
 				{
-					if(objNewLogin.getText().length() > 10)
+					if(newUserName.length() > 10)
 					{
 						javax.swing.JOptionPane.showMessageDialog(objFrame,"User name cannot exceed 10 characters.");
 						return;
 					}
-					if(objUsers.contains(objNewLogin.getText()))
+					Vector<Element> existingUsersWithSameName = DataAccess.getInstance().extractData(USERS_FILE, "user[@name=" + newUserName + "]");
+					if(existingUsersWithSameName.contains(newUserName))
 					{
 						javax.swing.JOptionPane.showMessageDialog(objFrame,"User name specified already exists.");
 						return;
 					}
 					String[] objAttributes = {"name","score"};
-					String[] objValues = {objNewLogin.getText(),"100"};
+					String[] objValues = {newUserName,"100"};
 					//If the insert operation to add a new user is successful, proceed to the game screen,
 					//otherwise throw an error message and return.
 					if( !DataAccess.getInstance().insertData(USERS_FILE,"user",objAttributes, objValues))
@@ -245,7 +247,7 @@ public class LoginInterface
 						return;
 					}
 					objInfoPane = new InfoPane();
-					objInfoPane.setUserName(objNewLogin.getText());
+					objInfoPane.setUserName(newUserName);
 					objInfoPane.setScore(100);
 				}
 				else
