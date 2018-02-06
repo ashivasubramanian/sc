@@ -189,7 +189,7 @@ public class LoginInterface
 				}
 				objList.setListData(objUserNames);
 			} catch (FileNotFoundException fnfe) {
-				DataAccess.getInstance().createMissingFile(USERS_FILE);
+				DataAccess.getInstance().createMissingUsersFile(USERS_FILE);
 			} catch (Exception objException) {
 				javax.swing.JOptionPane.showMessageDialog(objFrame, objException.getMessage());
 				objException.printStackTrace();

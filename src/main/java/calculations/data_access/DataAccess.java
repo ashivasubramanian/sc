@@ -19,6 +19,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
 /**
  * The only class of the DataAccess package, the DataAccess class provides methods to
@@ -221,7 +223,7 @@ public final class DataAccess
 		return false;
 	}
 
-	public void createMissingFile(String fullyQualifiedFileName) {
+	public void createMissingUsersFile(String fullyQualifiedFileName) {
 		File file = new File(fullyQualifiedFileName);
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
@@ -229,7 +231,20 @@ public final class DataAccess
 		try {
 			file.createNewFile();
 		} catch (IOException ioe) {
-			System.out.println("IOException " + ioe.getMessage());
+			System.out.println("Problem with creating the Users XML " + ioe.getMessage());
+		}
+
+		try {
+		    Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		    Element usersRootElement = document.createElement("users");
+		    document.appendChild(usersRootElement);
+
+		    Transformer xmlToFileTransformer = TransformerFactory.newInstance().newTransformer();
+		    xmlToFileTransformer.transform(new DOMSource(document), new StreamResult(file));
+		} catch (ParserConfigurationException parserEx) {
+			System.out.println("Exception in creating XML " + parserEx.getMessage());
+		} catch (TransformerFactoryConfigurationError | TransformerException transEx) {
+			System.out.println("Exception in transforming XML " + transEx.getMessage());
 		}
 	}
 }
