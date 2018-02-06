@@ -32,6 +32,25 @@ public class DataAccessTest {
 	}
 
 	@Test
+	public void shouldEnsureThatStandardFolderIsCreatedIfNotExisting() {
+		String standardDirectoryPath = String.join(java.io.File.separator, "src", "test", "resources");
+		String usersXMLPath = String.join(java.io.File.separator, "src", "test", "resources", "Users.xml");
+		File standardDirectoryFile = new File(standardDirectoryPath);
+		File usersXMLFile = new File(usersXMLPath);
+
+		if (standardDirectoryFile.exists()) {
+		    if (usersXMLFile.exists()) {
+			usersXMLFile.delete();			
+		    }
+		    standardDirectoryFile.delete();
+		}
+
+		DataAccess dataAccess = DataAccess.getInstance();
+		dataAccess.createMissingUsersFile(usersXMLPath);
+		assertTrue(standardDirectoryFile.exists());
+	}
+
+	@Test
 	public void shouldEnsureThatNewlyCreatedUsersXMLHasEmptyContent() {
 		String filePath = String.join(java.io.File.separator, "src", "test", "resources", "Users.xml");
 		File file = new File(filePath);
