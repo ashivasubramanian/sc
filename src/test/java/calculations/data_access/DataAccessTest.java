@@ -11,21 +11,23 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class DataAccessTest {
 
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
     @Test
     public void shouldCreateMissingUsersFile() {
-	String filePath = String.join(java.io.File.separator, "src", "test", "resources", "Users.xml");
+	String filePath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), "Users.xml");
 	File file = new File(filePath);
-	if (file.exists()) {
-	    file.delete();
-	}
-	assertFalse(file.exists());
 
+	assertFalse(file.exists());
 	DataAccess dataAccess = DataAccess.getInstance();
 	dataAccess.createMissingUsersFile(filePath);
 	assertTrue(file.exists());
@@ -33,18 +35,11 @@ public class DataAccessTest {
 
     @Test
     public void shouldEnsureThatStandardFolderIsCreatedIfNotExisting() {
-	String standardDirectoryPath = String.join(java.io.File.separator, "src", "test", "resources");
-	String usersXMLPath = String.join(java.io.File.separator, "src", "test", "resources", "Users.xml");
+	String standardDirectoryPath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), ".section_controller");
+	String usersXMLPath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), ".section_controller", "Users.xml");
 	File standardDirectoryFile = new File(standardDirectoryPath);
-	File usersXMLFile = new File(usersXMLPath);
 
-	if (standardDirectoryFile.exists()) {
-	    if (usersXMLFile.exists()) {
-		usersXMLFile.delete();
-	    }
-	    standardDirectoryFile.delete();
-	}
-
+	assertFalse(standardDirectoryFile.exists());
 	DataAccess dataAccess = DataAccess.getInstance();
 	dataAccess.createMissingUsersFile(usersXMLPath);
 	assertTrue(standardDirectoryFile.exists());
@@ -52,11 +47,8 @@ public class DataAccessTest {
 
     @Test
     public void shouldEnsureThatNewlyCreatedUsersXMLHasEmptyContent() {
-	String filePath = String.join(java.io.File.separator, "src", "test", "resources", "Users.xml");
+	String filePath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), "Users.xml");
 	File file = new File(filePath);
-	if (file.exists()) {
-	    file.delete();
-	}
 
 	DataAccess dataAccess = DataAccess.getInstance();
 	dataAccess.createMissingUsersFile(filePath);
@@ -70,5 +62,4 @@ public class DataAccessTest {
 	    fail();
 	}
     }
-
 }
