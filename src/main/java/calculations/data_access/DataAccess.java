@@ -223,6 +223,15 @@ public final class DataAccess
 		return false;
 	}
 
+	/**
+	 * Creates the specified file in the specified path. Currently, this is only used to create
+	 * the missing <code>Users.xml</code> file in the user's home folder.
+	 * It is expected that <code>fullyQualifiedFileName</code> will be the fully
+	 * qualified path for the file. If there are any components of the path that are missing,
+	 * such as folders not yet created, then this method will create those too.
+	 * 
+	 * @param fullyQualifiedFileName the full path of the file to be created
+	 */
 	public void createMissingUsersFile(String fullyQualifiedFileName) {
 		File file = new File(fullyQualifiedFileName);
 		if (!file.getParentFile().exists()) {
