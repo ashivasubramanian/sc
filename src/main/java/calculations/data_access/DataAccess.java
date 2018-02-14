@@ -4,23 +4,25 @@
  */
 package calculations.data_access;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import java.util.Vector;
 import java.io.File;
 import java.io.FileOutputStream;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Vector;
+
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  * The only class of the DataAccess package, the DataAccess class provides methods to
@@ -120,40 +122,6 @@ public final class DataAccess
 			return objData;
 		}
 		return objVector;
-	}
-
-	/**
-	 * Extracts the required data from the specified XML file.
-	 *
-	 * @param sRelativePathToXMLFile The XML file from which data has to be extracted.
-	 * @param sElement The element of the XML from which data has to be extracted
-	 * @param sAttribute An attribute in <code>sElement</code>. The method returns
-	 * a collection of the attribute values.
-	 *
-	 * @return A <code>Vector</code> that contains all the values of <code>sAttribute</code>.
-	 */
-	public Vector<String> extractData( String sRelativePathToXMLFile, String sElement, String sAttribute)
-	{
-		try {
-			Vector<String> objVector;
-			Document objDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(sRelativePathToXMLFile);
-			int iCounter = 0;
-			objVector = new Vector<String>();
-			while( iCounter < objDocument.getElementsByTagName(sElement).getLength())
-			{
-				if(sAttribute.length() > 0)
-					objVector.add( ((Element)objDocument.getElementsByTagName(sElement).item(iCounter)).getAttribute(sAttribute));
-				iCounter++;
-			}
-			return objVector;
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	/**
