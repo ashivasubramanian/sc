@@ -14,7 +14,7 @@
 package rendering;
 
 import java.io.IOException;
-import java.io.File;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
@@ -25,12 +25,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import presentation.panes.GamePane;
-import presentation.panes.InfoPane;
-import presentation.windows.GameScreen;
 import calculations.Station;
 import calculations.Train;
 import calculations.data_access.DataAccess;
+import presentation.panes.GamePane;
+import presentation.panes.InfoPane;
+import presentation.windows.GameScreen;
 
 /**
  * The Renderer class is the only class in the Renderer layer. It holds instances of the
@@ -73,20 +73,6 @@ public final class Renderer extends Thread
 
 	Vector<Integer[]> aspects;
 	
-	/**
-	 * A static and final <code>String</code> variable that contains
-	 * the path of the XML file that contains station info.
-	 */
-	private static final String STATIONS_FILE_PATH = "src/main/resources/data" +
-            File.separator + "Stations.xml";
-	
-	/**
-	 * A static and final <code>String</code> variable that contains
-	 * the path of the XML file that contains train info.
-	 */
-	private static final String TRAINS_FILE_PATH = "src/main/resources/data" +
-            File.separator + "Trains.xml";
-
 	/**
 	 * Constructor made private to disable default constructor provided by Java.
 	 */
@@ -134,7 +120,8 @@ public final class Renderer extends Thread
 	private void populateStations() throws IOException, SAXException, ParserConfigurationException
 	{
 		this.objStations = new Vector<Station>();
-		Vector<Element> objStations = DataAccess.getInstance().extractData(STATIONS_FILE_PATH,"station");
+		InputStream stationsXMLStream = getClass().getResourceAsStream("/data/Stations.xml");
+		Vector<Element> objStations = DataAccess.getInstance().extractData(stationsXMLStream,"station");
 		objStationNames = new Vector<String>();
 		Vector<Integer> objStationDistances = new Vector<Integer>();
 		Enumeration<Element> objEnumeration = objStations.elements();
@@ -155,7 +142,8 @@ public final class Renderer extends Thread
 	private void populateTrains()
 			throws IOException, SAXException, ParserConfigurationException {
 		//Let's get the daily trains first
-		Vector<Element> temp1 = DataAccess.getInstance().extractData(TRAINS_FILE_PATH,"train[@day-of-arrival=Daily]");
+		InputStream trainsXMLStream = getClass().getResourceAsStream("/data/Trains.xml");
+		Vector<Element> temp1 = DataAccess.getInstance().extractData(trainsXMLStream,"train[@day-of-arrival=Daily]");
 		
 		for (Element singleElement : temp1) {
 			System.out.print(singleElement.getAttribute("number"));
@@ -182,7 +170,8 @@ public final class Renderer extends Thread
 			case Calendar.SATURDAY:
 				day = "Sa";
 		}
-		Vector<Element> temp2 = DataAccess.getInstance().extractData(TRAINS_FILE_PATH,"train.contains(@day-of-arrival," + day + ")");
+		trainsXMLStream = getClass().getResourceAsStream("/data/Trains.xml");
+		Vector<Element> temp2 = DataAccess.getInstance().extractData(trainsXMLStream,"train.contains(@day-of-arrival," + day + ")");
 		
 		System.out.println("Day: " + day);
 		for (Element singleElement : temp2) {

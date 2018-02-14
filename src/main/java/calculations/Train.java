@@ -1,7 +1,8 @@
 package calculations;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
@@ -25,12 +26,6 @@ import calculations.data_access.DataAccess;
  */
 public class Train extends Thread
 {
-	/**
-	 * A static and final <code>String</code> variable that contains
-	 * the path of the XML file that contains train info.
-	 */
-	private static final String TRAIN_FILE_PATH = "src/main/resources/data" + File.separator;
-	
 	/**
 	 * Final variable that stores which direction a train is travelling on the section.
 	 * A train with direction HOME is travelling towards Calicut. <br>The direction is
@@ -138,7 +133,8 @@ public class Train extends Thread
 	private void populateTrainData()
 			throws IOException, SAXException, ParserConfigurationException {
 		System.out.println( "Loading data for " + no);
-		Vector<Element> stops = DataAccess.getInstance().extractData(TRAIN_FILE_PATH + no + ".xml","stoppage");
+		InputStream trainXMLStream = getClass().getResourceAsStream("/data/" + no + ".xml");
+		Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stoppage");
 		if(stops.size() > 0) {
 			for (Element stop : stops) {
 				stations.add( stop.getAttribute("name"));

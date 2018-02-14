@@ -5,6 +5,8 @@
 package calculations.data_access;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,16 +69,16 @@ public final class DataAccess
 	 *  of all those <code>Element</code>s that contain <code>value</code>.</li>
 	 * </ul>
 	 *
-	 * @param sRelativePathToXMLFile The XML file from which data has to be extracted.
+	 * @param streamToXMLFile The XML file from which data has to be extracted.
 	 * @param sElement The element of the XML from which data has to be extracted
 	 *
 	 * @return A <code>Vector</code> that contains the required data.
 	 */
-	public Vector<Element> extractData( String sRelativePathToXMLFile,
+	public Vector<Element> extractData(InputStream streamToXMLFile,
 			String sElement) throws IOException, 
 			ParserConfigurationException, SAXException	{
 		Vector<Element> objVector;
-		Document objDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(sRelativePathToXMLFile);
+		Document objDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(streamToXMLFile);
 		int iCounter = 0;
 		objVector = new Vector<Element>();
 		String element;
@@ -123,6 +125,12 @@ public final class DataAccess
 		}
 		return objVector;
 	}
+	
+    public Vector<Element> extractData(String srelativePathToFileName, String element)
+	    throws IOException, ParserConfigurationException, SAXException {
+	FileInputStream file = new FileInputStream(srelativePathToFileName);
+	return extractData(file, element);
+    }
 
 	/**
 	 * Inserts the specified data into the specified XML file.
