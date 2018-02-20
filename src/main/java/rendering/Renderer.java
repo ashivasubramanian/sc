@@ -119,11 +119,11 @@ public final class Renderer extends Thread
 
 	private void populateStations() throws IOException, SAXException, ParserConfigurationException
 	{
-		this.objStations = new Vector<Station>();
+		this.objStations = new Vector<>();
 		InputStream stationsXMLStream = getClass().getResourceAsStream("/data/Stations.xml");
 		Vector<Element> objStations = DataAccess.getInstance().extractData(stationsXMLStream,"station");
-		objStationNames = new Vector<String>();
-		Vector<Integer> objStationDistances = new Vector<Integer>();
+		objStationNames = new Vector<>();
+		Vector<Integer> objStationDistances = new Vector<>();
 		Enumeration<Element> objEnumeration = objStations.elements();
 		while( objEnumeration.hasMoreElements())
 		{
@@ -183,8 +183,8 @@ public final class Renderer extends Thread
 		temp1.addAll(temp1.size(),temp2);
 		//temp1 is for Renderer; whereas the processing below is for GameScreen
 		Enumeration<Element> objEnumeration = temp1.elements();
-		Vector<String> objTrainNames = new Vector<String>();
-		objTrains = new Vector<Train>();
+		Vector<String> objTrainNames = new Vector<>();
+		objTrains = new Vector<>();
 		int i = 0;
 		while( objEnumeration.hasMoreElements())
 		{
@@ -241,7 +241,7 @@ public final class Renderer extends Thread
 	 */
 	public void run()
 	{
-		objTrainPositions = new Vector<Float>();
+		objTrainPositions = new Vector<>();
 		while(true)
 		{
 			objGameScreen.setUserName(objInfoPane.getUserName());
@@ -249,7 +249,7 @@ public final class Renderer extends Thread
 			objGameScreen.setTime(objInfoPane.getCurrentTime());
 			objGameScreen.setStationPositions(objGamePane.getStationPositions());
 			objGameScreen.setStationNames(objGamePane.getStationNames());
-			aspects = new Vector<Integer[]>();
+			aspects = new Vector<>();
 			Enumeration<Station> enumStations = objStations.elements();
 			while(enumStations.hasMoreElements())
 			{

@@ -6,7 +6,6 @@ package calculations.data_access;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,7 +79,7 @@ public final class DataAccess
 		Vector<Element> objVector;
 		Document objDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(streamToXMLFile);
 		int iCounter = 0;
-		objVector = new Vector<Element>();
+		objVector = new Vector<>();
 		String element;
 		if(sElement.indexOf("[") > 0)
 			element = sElement.substring(0, sElement.indexOf("["));
@@ -98,7 +97,7 @@ public final class DataAccess
 			String attribute = sElement.substring(sElement.indexOf("@") + 1, sElement.indexOf("="));
 			String value = sElement.substring(sElement.indexOf("=") + 1, sElement.indexOf("]"));
 			iCounter = 1;
-			Vector<Element> objData = new Vector<Element>();
+			Vector<Element> objData = new Vector<>();
 			while(iCounter <= objVector.size())
 			{
 				Element objElement = objVector.get(iCounter-1);
@@ -113,7 +112,7 @@ public final class DataAccess
 			String attribute = sElement.substring(sElement.indexOf("@") + 1, sElement.indexOf(","));
 			String value = sElement.substring(sElement.indexOf(",") + 1, sElement.indexOf(")"));
 			iCounter = 1;
-			Vector<Element> objData = new Vector<Element>();
+			Vector<Element> objData = new Vector<>();
 			while(iCounter < objVector.size())
 			{
 				Element objElement = objVector.get(iCounter-1);

@@ -81,8 +81,8 @@ public final class GamePane
 	 */
 	private GamePane()
 	{
-		objStationPositions = new Vector<Point>();
-		objStationNames = new Vector<String>();
+		objStationPositions = new Vector<>();
+		objStationNames = new Vector<>();
 	}
 
 	/**

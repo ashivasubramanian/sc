@@ -182,7 +182,7 @@ public class LoginInterface
 				// populated into the list.
 				objUsers = DataAccess.getInstance().extractData(USERS_FILE, "user");
 				Enumeration<Element> objEnumeration = objUsers.elements();
-				Vector<String> objUserNames = new Vector<String>();
+				Vector<String> objUserNames = new Vector<>();
 				while (objEnumeration.hasMoreElements()) {
 					Element singleUser = objEnumeration.nextElement();
 					objUserNames.add(singleUser.getAttribute("name"));

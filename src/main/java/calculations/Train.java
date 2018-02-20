@@ -1,6 +1,5 @@
 package calculations;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -109,10 +108,10 @@ public class Train extends Thread
 	{
 		this.no = trainNo;
 		this.name = trainName;
-		stations = new Vector<String>();
-		arrivalTimes = new HashMap<String,String>();
-		departureTimes = new HashMap<String,String>();
-		distances = new HashMap<String,Integer>();
+		stations = new Vector<>();
+		arrivalTimes = new HashMap<>();
+		departureTimes = new HashMap<>();
+		distances = new HashMap<>();
 		distance = 0;
 		lag = 0;
 		if(direction.equals("TowardsHome"))	this.direction = HOME;

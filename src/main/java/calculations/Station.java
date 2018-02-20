@@ -103,11 +103,11 @@ public class Station
 		name = objStationData.getAttribute("name");
 		aspects = new Integer[] {STOP,STOP};
 
-		points = new Vector<Integer>();
+		points = new Vector<>();
 		points.add(MAIN_TRACK);
 		points.add(MAIN_TRACK);
 
-		tracks = new Vector<Integer>();
+		tracks = new Vector<>();
 		Integer track_array[] = {MAIN_TRACK,LOOP1_TRACK,LOOP2_TRACK};
 		for(int i=0; i < Integer.parseInt(objStationData.getAttribute("nooftracks"));i++)
 		{
