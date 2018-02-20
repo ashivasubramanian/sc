@@ -23,7 +23,7 @@ public class StationsTab extends JPanel implements ActionListener
 	/**
 	 * A <code>JComboBox</code> control that lists the stations on the section.
 	 */
-	JComboBox objStations;
+	JComboBox<String> objStations;
 
 	/**
 	 * A <code>JButton</code> control that can be used to set the aspects and the points
@@ -31,13 +31,13 @@ public class StationsTab extends JPanel implements ActionListener
 	 */
 	JButton objSet;
 
-	JComboBox objPointFacingCalicutValue;
+	JComboBox<String> objPointFacingCalicutValue;
 
-	JComboBox objPointFacingShoranurValue;
+	JComboBox<String> objPointFacingShoranurValue;
 
-	JComboBox objAspectTowardsShoranurValue;
+	JComboBox<String> objAspectTowardsShoranurValue;
 
-	JComboBox objAspectTowardsCalicutValue;
+	JComboBox<String> objAspectTowardsCalicutValue;
 
 	/**
 	 * Initializes all the controls that are available under the Stations tab of the
@@ -58,7 +58,7 @@ public class StationsTab extends JPanel implements ActionListener
 		objConstraints.weighty = 1.0;
 		objLayout.setConstraints(objSelectStation,objConstraints);
 
-		objStations = new JComboBox( GamePane.getInstance().getStationNames());
+		objStations = new JComboBox<>( GamePane.getInstance().getStationNames());
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 0;
 		objLayout.setConstraints(objStations,objConstraints);
@@ -79,7 +79,7 @@ public class StationsTab extends JPanel implements ActionListener
 		objConstraints.gridy = 2;
 		objLayout.setConstraints(objPointFacingCalicut,objConstraints);
 
-		objPointFacingCalicutValue = new JComboBox( new Object[]{"Main","Loop(pf)"});
+		objPointFacingCalicutValue = new JComboBox<>( new String[]{"Main","Loop(pf)"});
 		objPointFacingCalicutValue.setFont(objNormalFont);
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 2;
@@ -90,7 +90,7 @@ public class StationsTab extends JPanel implements ActionListener
 		objConstraints.gridy = 3;
 		objLayout.setConstraints(objPointFacingShoranur,objConstraints);
 
-		objPointFacingShoranurValue = new JComboBox( new Object[]{"Main","Loop(pf)"});
+		objPointFacingShoranurValue = new JComboBox<>( new String[]{"Main","Loop(pf)"});
 		objPointFacingShoranurValue.setFont(objNormalFont);
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 3;
@@ -103,7 +103,7 @@ public class StationsTab extends JPanel implements ActionListener
 		objConstraints.gridy = 4;
 		objLayout.setConstraints(objAspectTowardsCalicut,objConstraints);
 
-		objAspectTowardsCalicutValue = new JComboBox( new Object[]{"Red","Amber","Green"});
+		objAspectTowardsCalicutValue = new JComboBox<>( new String[]{"Red","Amber","Green"});
 		objAspectTowardsCalicutValue.setFont(objNormalFont);
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 4;
@@ -115,7 +115,7 @@ public class StationsTab extends JPanel implements ActionListener
 		objConstraints.gridy = 5;
 		objLayout.setConstraints(objAspectTowardsShoranur,objConstraints);
 
-		objAspectTowardsShoranurValue = new JComboBox( new Object[]{"Red","Amber","Green"});
+		objAspectTowardsShoranurValue = new JComboBox<>( new String[]{"Red","Amber","Green"});
 		objAspectTowardsShoranurValue.setFont(objNormalFont);
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 5;

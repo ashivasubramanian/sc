@@ -44,7 +44,7 @@ public class LoginInterface
 	/**
 	 * The <code>JList</code> which displays the list of user names.
 	 */
-	JList objList;
+	JList<String> objList;
 
 	/**
 	 * The <code>JButton</code> control which displays the 'Login' caption.
@@ -107,7 +107,7 @@ public class LoginInterface
 		objConstraints.weighty = 1.0;
 		objLayout.setConstraints(objSelectUserName,objConstraints);
 
-		objList = new JList();
+		objList = new JList<>();
 		objList.setVisibleRowCount(5);
 		objList.setSelectedIndex(0);
 		objList.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION);

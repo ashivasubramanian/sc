@@ -33,7 +33,7 @@ public class TrainsTab extends JPanel
 		objConstraints.weighty = 1.0;
 		objLayout.setConstraints(objSelectTrain,objConstraints);
 
-		JComboBox objTrains = new JComboBox(GamePane.getInstance().getTrainNames());
+		JComboBox<String> objTrains = new JComboBox<>(GamePane.getInstance().getTrainNames());
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 0;
 		objLayout.setConstraints(objTrains,objConstraints);

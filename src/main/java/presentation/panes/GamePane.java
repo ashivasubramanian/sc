@@ -45,7 +45,7 @@ public final class GamePane
 	 * <p>NOTE: This is to be checked. I think that the code has since been updated
 	 * to reflect trains that run only in the next one hour.
 	 */
-	Vector objTrains;
+	Vector<String> objTrains;
 	
 	/**
 	 * Stores the horizontal resolution of the screen.
@@ -137,9 +137,8 @@ public final class GamePane
 	 *
 	 * @param trains a <code>Vector</code> of trains that are currently running
 	 */
-	public void setTrainNames(Vector trains)
-	{
-		objTrains = trains;
+	public void setTrainNames(Vector<String> trains) {
+	    objTrains = trains;
 	}
 
 	/**
@@ -147,9 +146,8 @@ public final class GamePane
 	 *
 	 * @return a <code>Vector</code> of trains that are currently running
 	 */
-	public Vector getTrainNames()
-	{
-		return objTrains;
+	public Vector<String> getTrainNames() {
+	    return objTrains;
 	}
 
 	/**
