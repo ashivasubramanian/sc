@@ -24,10 +24,10 @@ public class RendererTest {
 
 	@Test
 	public void shouldSetStationAspects() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		Vector<String> stationNames = new Vector<String>();
+		Vector<String> stationNames = new Vector<>();
 		String stationName = "station1";
 		stationNames.add(stationName);
-		Vector<Station> stations = new Vector<Station>();
+		Vector<Station> stations = new Vector<>();
 		Element mockStationElement = mock(Element.class);
 		when(mockStationElement.getAttribute("name")).thenReturn(stationName);
 		when(mockStationElement.getAttribute("nooftracks")).thenReturn("3");
