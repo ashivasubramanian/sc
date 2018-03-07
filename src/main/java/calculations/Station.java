@@ -2,6 +2,8 @@ package calculations;
 
 import java.util.Vector;
 
+import common.models.SignalAspect;
+
 /**
  * The <code>Station</code> class represents a station on the section. Any station
  * contains tracks, points and signals, which lie under the station's control.
@@ -19,21 +21,6 @@ import java.util.Vector;
  */
 public class Station
 {
-	/**
-	 * A constant <code>Integer</code> for the STOP(red) aspect.
-	 */
-	final Integer STOP = new Integer(1);
-
-	/**
-	 * A constant <code>Integer</code> for the CAUTION(amber) aspect.
-	 */
-	final Integer CAUTION = new Integer(2);
-
-	/**
-	 * A constant <code>Integer</code> for the PROCEED(green) aspect.
-	 */
-	final Integer PROCEED = new Integer(3);
-
 	/**
 	 * A constant <code>Integer</code> for the main track.
 	 */
@@ -74,14 +61,14 @@ public class Station
 	Vector<Integer> points;
 
 	/**
-	 * A <code>Integer</code> array of aspects inside the station. This is
+	 * An array of aspects inside the station. This is
 	 * initialized to STOP by the constructor. <p>At any point during the game, any
 	 * aspect of the station can be changed using the
 	 * <code>setAspect(int, String)</code> method. All the aspects can be retrieved
 	 * using <code>getAspects()</code>. Currently, there is no way to obtain only
 	 * a particular aspect.
 	 */
-	Integer[] aspects;
+	SignalAspect[] aspects;
 
 	/**
 	 * The distance of the station from the home station.
@@ -101,13 +88,13 @@ public class Station
 	public Station(org.w3c.dom.Element objStationData)
 	{
 		name = objStationData.getAttribute("name");
-		aspects = new Integer[] {STOP,STOP};
+		aspects = new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP};
 
 		points = new Vector<>();
 		points.add(MAIN_TRACK);
 		points.add(MAIN_TRACK);
 
-		tracks = new Vector<Integer>();
+		tracks = new Vector<>();
 		Integer track_array[] = {MAIN_TRACK,LOOP1_TRACK,LOOP2_TRACK};
 		for(int i=0; i < Integer.parseInt(objStationData.getAttribute("nooftracks"));i++)
 		{
@@ -143,25 +130,21 @@ public class Station
 	 *
 	 * @return An <code>Integer</code> array that contains both aspects.
 	 */
-	public Integer[] getAspects()
-	{
-		return aspects;
+	public Integer[] getAspects() {
+	    Vector<Integer> tempAspects = new Vector<>();
+	    for (SignalAspect aspect : aspects) {
+		tempAspects.add(new Integer(aspect.ordinal()));
+	    }
+	    return tempAspects.toArray(new Integer[1]);
 	}
 
 	/**
-	 * Sets the specified aspect to the specified signal. <code>aspect</code>
-	 * should be "Red", "Amber" or "Green".<br>
-	 * NOTE: What happens when <code>signal</code> is more than 3?
+	 * Sets the specified aspect to the specified signal.
 	 *
 	 * @param signal The signal to which <code>aspect</code> is to be set
 	 * @param aspect The aspect to be set to <code>signal</code>
 	 */
-	public void setAspect(int signal, String aspect)
-	{
-		int lAspect = 0;
-		if(aspect.equals("Red"))	lAspect = 1;
-		else if(aspect.equals("Amber"))	lAspect = 2;
-		else if(aspect.equals("Green"))	lAspect = 3;
-		aspects[signal] = lAspect;
+	public void setAspect(int signal, SignalAspect aspect) {
+	    aspects[signal] = aspect;
 	}
 }

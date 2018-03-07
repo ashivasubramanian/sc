@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 import calculations.Station;
 import calculations.Train;
 import calculations.data_access.DataAccess;
+import common.models.SignalAspect;
 import presentation.panes.GamePane;
 import presentation.panes.InfoPane;
 import presentation.windows.GameScreen;
@@ -296,16 +297,14 @@ public final class Renderer extends Thread
 	 * @param aspect  A <code>String</code> array that contains the aspect
 	 *                values for the station specified by <code>station</code>.
 	 */
-	public void setAspect(String station, String[] aspect)
-	{
-		int index = objStationNames.indexOf(station);
-		station = station.replace(' ','-');
-		Station objStation = objStations.get(index);
-		int i = 0;
-		while( i < 2)
-		{
-			objStation.setAspect(i,aspect[i]);
-			i++;
-		}
+	public void setAspect(String station, SignalAspect[] aspect) {
+	    int index = objStationNames.indexOf(station);
+	    station = station.replace(' ', '-');
+	    Station objStation = objStations.get(index);
+	    int i = 0;
+	    while (i < 2) {
+		objStation.setAspect(i, aspect[i]);
+		i++;
+	    }
 	}
 }

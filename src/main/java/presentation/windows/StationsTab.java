@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import common.models.SignalAspect;
 import presentation.panes.GamePane;
 import rendering.Renderer;
 
@@ -35,9 +36,9 @@ public class StationsTab extends JPanel implements ActionListener
 
 	JComboBox<String> objPointFacingShoranurValue;
 
-	JComboBox<String> objAspectTowardsShoranurValue;
+	JComboBox<SignalAspect> objAspectTowardsShoranurValue;
 
-	JComboBox<String> objAspectTowardsCalicutValue;
+	JComboBox<SignalAspect> objAspectTowardsCalicutValue;
 
 	/**
 	 * Initializes all the controls that are available under the Stations tab of the
@@ -103,7 +104,7 @@ public class StationsTab extends JPanel implements ActionListener
 		objConstraints.gridy = 4;
 		objLayout.setConstraints(objAspectTowardsCalicut,objConstraints);
 
-		objAspectTowardsCalicutValue = new JComboBox<>( new String[]{"Red","Amber","Green"});
+		objAspectTowardsCalicutValue = new JComboBox<>(SignalAspect.values());
 		objAspectTowardsCalicutValue.setFont(objNormalFont);
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 4;
@@ -115,7 +116,7 @@ public class StationsTab extends JPanel implements ActionListener
 		objConstraints.gridy = 5;
 		objLayout.setConstraints(objAspectTowardsShoranur,objConstraints);
 
-		objAspectTowardsShoranurValue = new JComboBox<>( new String[]{"Red","Amber","Green"});
+		objAspectTowardsShoranurValue = new JComboBox<>(SignalAspect.values());
 		objAspectTowardsShoranurValue.setFont(objNormalFont);
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 5;
@@ -154,9 +155,9 @@ public class StationsTab extends JPanel implements ActionListener
 	{
 		Renderer objRenderer = Renderer.getInstance();
 		objRenderer.setAspect(objStations.getSelectedItem().toString(),
-			new String[] {
-					objAspectTowardsCalicutValue.getSelectedItem().toString(),
-					objAspectTowardsShoranurValue.getSelectedItem().toString()
+			new SignalAspect[] {
+					(SignalAspect) objAspectTowardsCalicutValue.getSelectedItem(),
+					(SignalAspect) objAspectTowardsShoranurValue.getSelectedItem()
 				}
 		);
 	}

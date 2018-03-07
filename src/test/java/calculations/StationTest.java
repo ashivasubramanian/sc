@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 import org.w3c.dom.Element;
 
+import common.models.SignalAspect;
+
 public class StationTest {
 	
 	@Test
@@ -31,7 +33,7 @@ public class StationTest {
 
 		Station station = new Station(data);
 		assertArrayEquals("Station aspects not set to STOP.",
-				new Integer[] {station.STOP, station.STOP},
+				new Integer[] {0, 0},
 				station.getAspects());
 	}
 	
@@ -70,13 +72,13 @@ public class StationTest {
 		when(data.getAttribute("distancefromhome")).thenReturn("47");
 
 		Station station = new Station(data);
-		station.setAspect(1, "Amber");
+		station.setAspect(1, SignalAspect.CAUTION);
 		assertArrayEquals("Second signal not set to Amber.",
-				new Integer[] {station.STOP, station.CAUTION},
+				new Integer[] {0, 1},
 				station.getAspects());
-		station.setAspect(0, "Green");
+		station.setAspect(0, SignalAspect.PROCEED);
 		assertArrayEquals("First signal not set to Green.",
-				new Integer[] {station.PROCEED, station.CAUTION},
+				new Integer[] {2, 1},
 				station.getAspects());
 	}
 

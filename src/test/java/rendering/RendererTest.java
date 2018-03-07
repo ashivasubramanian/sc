@@ -15,6 +15,7 @@ import org.w3c.dom.Element;
 
 import calculations.Station;
 import calculations.Train;
+import common.models.SignalAspect;
 import presentation.panes.GamePane;
 
 //TODO: Test methods shouldLoadStations() and shouldLoadTrains() only test that some data was loaded, not whether the correct data was loaded.
@@ -39,10 +40,10 @@ public class RendererTest {
 		renderer.getClass().getDeclaredField("objStationNames").set(renderer, stationNames);
 		renderer.getClass().getDeclaredField("objStations").set(renderer, stations);
 		
-		String[] aspect = new String[] {"Green", "Green"};
+		SignalAspect[] aspect = new SignalAspect[] {SignalAspect.PROCEED, SignalAspect.PROCEED};
 		renderer.setAspect(stationName, aspect);
 		
-		assertArrayEquals(new Integer[] {3, 3}, station.getAspects());
+		assertArrayEquals(new Integer[] {2, 2}, station.getAspects());
 	}
 	
 	@Test
