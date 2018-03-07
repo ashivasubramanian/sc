@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import common.models.SignalAspect;
+
 /**
  * The <code>GameScreen</code> class renders/updates the game screen and
  * all the objects in it. The game screen is the window that opens up after
@@ -74,7 +76,7 @@ public class GameScreen extends JFrame
 	/**
 	 * Contains a list of aspect values for all the signals on the section.
 	 */
-	Vector<Integer[]> objAspects;
+	Vector<SignalAspect[]> objAspects;
 	
 	JTabbedPane objTabPane;
 
@@ -170,7 +172,7 @@ public class GameScreen extends JFrame
 		objGraphics.drawLine(0,201,800,201);
 		Enumeration<String> names = objStationNames.elements();
 		Enumeration<Point> positions = objStationPositions.elements();
-		Enumeration<Integer[]> aspects = objAspects.elements();
+		Enumeration<SignalAspect[]> aspects = objAspects.elements();
 		int ctr = 1;
 		int x = 0, y = 0;
 		while(names.hasMoreElements())
@@ -233,27 +235,17 @@ public class GameScreen extends JFrame
 	 *
 	 * @param x the x-position at which to draw the aspect
 	 * @param y the y-position at which to draw the aspect
-	 * @param aspectsForStation An <code>Integer</code> array of aspect
+	 * @param aspectsForStation A <code>SignalAspect</code> array of aspect
 	 * values for the two signals in the station
 	 */
-	private void drawAspects(int x, int y, Integer[] aspectsForStation)
-	{
-		for(int i = 0; i < aspectsForStation.length; i++)
-		{
-			switch(aspectsForStation[i])
-			{
-				case 1:
-					objGraphics.setColor(java.awt.Color.RED);
-					break;
-				case 2:
-					objGraphics.setColor(java.awt.Color.ORANGE);
-					break;
-				case 3:
-					objGraphics.setColor(java.awt.Color.GREEN);
-			}
-			if( i == 0)	objGraphics.fillArc(x+6, y-7, 4, 5, 0, 360);
-			else if ( i == 1)	objGraphics.fillArc(x+6, y+4, 4, 5, 0, 360);
-		}
+	private void drawAspects(int x, int y, SignalAspect[] aspectsForStation) {
+	    for (int i = 0; i < aspectsForStation.length; i++) {
+		objGraphics.setColor(aspectsForStation[i].getColour());
+		if (i == 0)
+		    objGraphics.fillArc(x + 6, y - 7, 4, 5, 0, 360);
+		else if (i == 1)
+		    objGraphics.fillArc(x + 6, y + 4, 4, 5, 0, 360);
+	    }
 	}
 
 	/**
@@ -345,7 +337,7 @@ public class GameScreen extends JFrame
 	 * @param aspects the aspects to be drawn. These aspects are for the entire
 	 *                section.
 	 */
-	public void setAspects(Vector<Integer[]> aspects)
+	public void setAspects(Vector<SignalAspect[]> aspects)
 	{
 		objAspects = aspects;
 	}

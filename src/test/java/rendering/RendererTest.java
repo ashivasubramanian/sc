@@ -40,10 +40,10 @@ public class RendererTest {
 		renderer.getClass().getDeclaredField("objStationNames").set(renderer, stationNames);
 		renderer.getClass().getDeclaredField("objStations").set(renderer, stations);
 		
-		SignalAspect[] aspect = new SignalAspect[] {SignalAspect.PROCEED, SignalAspect.PROCEED};
-		renderer.setAspect(stationName, aspect);
+		SignalAspect[] signalAspects = new SignalAspect[] {SignalAspect.PROCEED, SignalAspect.PROCEED};
+		renderer.setAspect(stationName, signalAspects);
 		
-		assertArrayEquals(new Integer[] {2, 2}, station.getAspects());
+		assertArrayEquals(signalAspects, station.getAspects());
 	}
 	
 	@Test

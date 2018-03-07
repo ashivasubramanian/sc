@@ -33,7 +33,7 @@ public class StationTest {
 
 		Station station = new Station(data);
 		assertArrayEquals("Station aspects not set to STOP.",
-				new Integer[] {0, 0},
+				new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP},
 				station.getAspects());
 	}
 	
@@ -74,11 +74,11 @@ public class StationTest {
 		Station station = new Station(data);
 		station.setAspect(1, SignalAspect.CAUTION);
 		assertArrayEquals("Second signal not set to Amber.",
-				new Integer[] {0, 1},
+				new SignalAspect[] {SignalAspect.STOP, SignalAspect.CAUTION},
 				station.getAspects());
 		station.setAspect(0, SignalAspect.PROCEED);
 		assertArrayEquals("First signal not set to Green.",
-				new Integer[] {2, 1},
+				new SignalAspect[] {SignalAspect.PROCEED, SignalAspect.CAUTION},
 				station.getAspects());
 	}
 

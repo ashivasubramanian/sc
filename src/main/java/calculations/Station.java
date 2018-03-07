@@ -130,12 +130,8 @@ public class Station
 	 *
 	 * @return An <code>Integer</code> array that contains both aspects.
 	 */
-	public Integer[] getAspects() {
-	    Vector<Integer> tempAspects = new Vector<>();
-	    for (SignalAspect aspect : aspects) {
-		tempAspects.add(new Integer(aspect.ordinal()));
-	    }
-	    return tempAspects.toArray(new Integer[1]);
+	public SignalAspect[] getAspects() {
+	    return aspects;
 	}
 
 	/**

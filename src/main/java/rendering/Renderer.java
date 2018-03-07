@@ -72,7 +72,7 @@ public final class Renderer extends Thread
 
 	Vector<String> objStationNames;
 
-	Vector<Integer[]> aspects;
+	Vector<SignalAspect[]> aspects;
 	
 	/**
 	 * Constructor made private to disable default constructor provided by Java.
