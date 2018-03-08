@@ -335,8 +335,7 @@ public class GameScreen extends JFrame
 	 * @param aspects the aspects to be drawn. These aspects are for the entire
 	 *                section.
 	 */
-	public void setAspects(Vector<SignalAspect[]> aspects)
-	{
-		objAspects = aspects;
+	public void setAspects(Vector<SignalAspect[]> aspects) {
+	    objAspects = aspects;
 	}
 }

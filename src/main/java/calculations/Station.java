@@ -85,23 +85,21 @@ public class Station
 	 * @param objStationData Contains station data such as name, no. of tracks,
 	 *                       no. of points and its distance
 	 */
-	public Station(org.w3c.dom.Element objStationData)
-	{
-		name = objStationData.getAttribute("name");
-		aspects = new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP};
+	public Station(org.w3c.dom.Element objStationData) {
+	    name = objStationData.getAttribute("name");
+	    aspects = new SignalAspect[] { SignalAspect.STOP, SignalAspect.STOP };
 
-		points = new Vector<>();
-		points.add(MAIN_TRACK);
-		points.add(MAIN_TRACK);
+	    points = new Vector<>();
+	    points.add(MAIN_TRACK);
+	    points.add(MAIN_TRACK);
 
-		tracks = new Vector<>();
-		Integer track_array[] = {MAIN_TRACK,LOOP1_TRACK,LOOP2_TRACK};
-		for(int i=0; i < Integer.parseInt(objStationData.getAttribute("nooftracks"));i++)
-		{
-			tracks.add(track_array[i]);
-		}
+	    tracks = new Vector<>();
+	    Integer track_array[] = { MAIN_TRACK, LOOP1_TRACK, LOOP2_TRACK };
+	    for (int i = 0; i < Integer.parseInt(objStationData.getAttribute("nooftracks")); i++) {
+		tracks.add(track_array[i]);
+	    }
 
-		distance_from_home = Integer.parseInt(objStationData.getAttribute("distancefromhome"));
+	    distance_from_home = Integer.parseInt(objStationData.getAttribute("distancefromhome"));
 	}
 
 	/**
