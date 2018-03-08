@@ -125,8 +125,8 @@ public class Station
 	}
 
 	/**
-	 * Returns all the aspects of the station.
-	 * The method returns the aspects of both directions as an array.
+	 * Returns the current aspects of both signals at the station.
+	 * The method returns the aspects of both signals as an array.
 	 *
 	 * @return An <code>Integer</code> array that contains both aspects.
 	 */

@@ -228,13 +228,13 @@ public class GameScreen extends JFrame
 	}
 
 	/**
-	 * Draws the aspects with their current colours for a particular station.
+	 * Draws the aspects of the signals for a particular station.
 	 * Here, <code>x</code> and <code>y</code> represent the x and y
 	 * coordinates of the station, not the signal. Hence, the method does
 	 * a certain offset to draw the aspect.
 	 *
-	 * @param x the x-position at which to draw the aspect
-	 * @param y the y-position at which to draw the aspect
+	 * @param x the x-position of the station
+	 * @param y the y-position of the station
 	 * @param aspectsForStation A <code>SignalAspect</code> array of aspect
 	 * values for the two signals in the station
 	 */
@@ -331,8 +331,6 @@ public class GameScreen extends JFrame
 
 	/**
 	 * Sets a <code>Vector</code> of aspects that are to be drawn on the screen.
-	 * <p>Note that <code>aspects</code> should be a <code>Vector</code> of
-	 * <code>Integer</code>s.
 	 *
 	 * @param aspects the aspects to be drawn. These aspects are for the entire
 	 *                section.

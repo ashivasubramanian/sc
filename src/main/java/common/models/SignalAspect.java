@@ -3,7 +3,8 @@ package common.models;
 import java.awt.Color;
 
 /**
- * An enum that contains the possible states, aka aspects, of a signal.
+ * A signal's aspect is what is colloquially referred to as "colour of the signal".
+ * This enum describes contains the possible aspects of a signal.
  */
 public enum SignalAspect {
     
