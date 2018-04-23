@@ -29,7 +29,7 @@ import rendering.Renderer;
  * The <code>LoginInterface</code> class displays the login interface to the user.
  * <p>TO DO: Can't we extends JFrame here?
  */
-public class LoginInterface
+public class LoginInterface implements Runnable
 {
 	/**
 	 * The <code>JFrame</code> object that is the Login interface.
@@ -94,7 +94,7 @@ public class LoginInterface
 	/**
 	 * Initializes the components of the login interface and displays them to the user.
 	 */
-	public void drawInterface()
+	public void run()
 	{
 		objLayout = new GridBagLayout();
 		objConstraints = new GridBagConstraints();

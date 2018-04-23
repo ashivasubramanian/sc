@@ -1,3 +1,6 @@
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import presentation.windows.LoginInterface;
@@ -21,7 +24,11 @@ public class Main
 		} catch (Exception e) {
 			
 		}
-		LoginInterface objLogin = new LoginInterface();
-		objLogin.drawInterface();
+		try {
+		    LoginInterface objLogin = new LoginInterface();
+		    SwingUtilities.invokeAndWait(objLogin);
+		} catch (InvocationTargetException | InterruptedException e) {
+		    e.printStackTrace();
+		}
 	}
 }
