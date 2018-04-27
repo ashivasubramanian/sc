@@ -46,16 +46,6 @@ public final class GamePane
 	 * to reflect trains that run only in the next one hour.
 	 */
 	Vector<String> objTrains;
-	
-	/**
-	 * Stores the horizontal resolution of the screen.
-	 */
-	int screenWidth;
-	
-	/**
-	 * Stores the vertical resolution of the screen.
-	 */
-	int screenHeight;
 
 	/**
 	 * Contains an instance of this class. This is the instance that is returned
@@ -148,41 +138,5 @@ public final class GamePane
 	 */
 	public Vector<String> getTrainNames() {
 	    return objTrains;
-	}
-
-	/**
-	 * Returns the vertical resolution of the screen.
-	 * 
-	 * @return the vertical resolution
-	 */
-	public int getScreenHeight() {
-		return screenHeight;
-	}
-
-	/**
-	 * Sets the vertical resolution of the screen.
-	 * 
-	 * @param screenHeight the vertical resolution
-	 */
-	public void setScreenHeight(int screenHeight) {
-		this.screenHeight = screenHeight;
-	}
-
-	/**
-	 * Returns the horizontal resolution of the screen.
-	 * 
-	 * @return the horizontal resolution
-	 */
-	public int getScreenWidth() {
-		return screenWidth;
-	}
-
-	/**
-	 * Sets the horizontal resolution of the screen.
-	 * 
-	 * @param screenWidth the horizontal resolution
-	 */
-	public void setScreenWidth(int screenWidth) {
-		this.screenWidth = screenWidth;
 	}
 }
