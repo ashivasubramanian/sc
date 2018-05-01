@@ -15,11 +15,13 @@ package rendering;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Element;
@@ -93,12 +95,14 @@ public final class Renderer extends Thread
 	 * Opens up the game screen.
 	 *
 	 * NOTE: This code might require cleanup.
+	 * @throws InterruptedException 
+	 * @throws InvocationTargetException 
 	 */
-	public void setGameScreen() throws IOException, SAXException, ParserConfigurationException
+	public void setGameScreen() throws IOException, SAXException, ParserConfigurationException, InvocationTargetException, InterruptedException
 	{
 		getInitialData();
 		objGameScreen = new GameScreen();
-		start();
+		SwingUtilities.invokeLater(objGameScreen);
 	}
 
 	/**

@@ -18,7 +18,7 @@ import common.models.SignalAspect;
  * the user has logged in. It is the screen that displays the user name, his score
  * as well as all the trains and stations on the section.
  */
-public class GameScreen extends JFrame
+public class GameScreen extends JFrame implements Runnable
 {
 	/**
 	 * The <code>Font</code> object used to render normal text.
@@ -87,7 +87,7 @@ public class GameScreen extends JFrame
 	 * getGraphics()</code>. For some reason, the variable would be populated only after
 	 * setVisible(true). Dunno why this occurs.
 	 */
-	public GameScreen()
+	public void run()
 	{
 		objNormalFont = new Font("Arial",Font.PLAIN,12);
 		objBoldedFont = new Font("Arial", Font.BOLD,12);
