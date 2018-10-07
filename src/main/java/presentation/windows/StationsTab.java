@@ -19,7 +19,7 @@ import rendering.Renderer;
  * The <code>StationsTab</code> class contains the content that is drawn under the Stations
  * tab of the Control Panel.
  */
-public class StationsTab extends JPanel implements ActionListener
+public class StationsTab extends JPanel implements ActionListener, Runnable
 {
 	/**
 	 * A <code>JComboBox</code> control that lists the stations on the section.
@@ -44,7 +44,7 @@ public class StationsTab extends JPanel implements ActionListener
 	 * Initializes all the controls that are available under the Stations tab of the
 	 * Control Panel.
 	 */
-	public StationsTab() {
+	public void run() {
 	    Font objNormalFont = new Font("Arial", Font.PLAIN, 12);
 	    Font objBoldFont = new Font("Arial", Font.BOLD, 12);
 	    GridBagLayout objLayout = new GridBagLayout();

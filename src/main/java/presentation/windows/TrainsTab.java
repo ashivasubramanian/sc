@@ -14,13 +14,13 @@ import presentation.panes.GamePane;
  * The <code>TrainsTab</code> class contains the content that is drawn under the Trains
  * tab of the Control Panel.
  */
-public class TrainsTab extends JPanel
+public class TrainsTab extends JPanel implements Runnable
 {
 	/**
 	 * Initializes all the controls that are available under the Trains tab of the
 	 * Control Panel.
 	 */
-	public TrainsTab()
+	public void run()
 	{
 		Font objNormalFont = new Font("Arial",Font.PLAIN,12);
 		GridBagLayout objLayout = new GridBagLayout();
