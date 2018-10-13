@@ -3,7 +3,7 @@ package presentation.panes;
 import java.util.Calendar;
 
 /**
- * The <code>InfoPanel</code> class contains methods that draw/update the Info Panel.
+ * The <code>InfoPanel</code> class contains methods that hold Info Panel information.
  * The Info Panel is the panel on the game screen that displays the user name,
  * score and the current time.<p>
  * Because the
