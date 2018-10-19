@@ -1,3 +1,4 @@
 WEB-INF/classes/
 .idea/
 *.i*
+target/
