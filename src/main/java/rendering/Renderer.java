@@ -105,6 +105,7 @@ public final class Renderer extends Thread {
         getInitialData();
         objGameScreen = new GameScreen();
         SwingUtilities.invokeLater(objGameScreen);
+        start();
     }
 
     /**
