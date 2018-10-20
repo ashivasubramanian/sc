@@ -17,8 +17,8 @@ public class StationTest {
 	public void initializingStationWithLegalValuesShouldPass() {
 		Element data = mock(Element.class);
 		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("nooftracks")).thenReturn("3");
-		when(data.getAttribute("distancefromhome")).thenReturn("47");
+		when(data.getAttribute("no-of-tracks")).thenReturn("3");
+		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
 		Station station = new Station(data);
 		assertNotNull(station);
@@ -28,8 +28,8 @@ public class StationTest {
 	public void stationShouldBeInitializedWithSTOPAspect() {
 		Element data = mock(Element.class);
 		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("nooftracks")).thenReturn("3");
-		when(data.getAttribute("distancefromhome")).thenReturn("47");
+		when(data.getAttribute("no-of-tracks")).thenReturn("3");
+		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
 		Station station = new Station(data);
 		assertArrayEquals("Station aspects not set to STOP.",
@@ -41,8 +41,8 @@ public class StationTest {
 	public void stationShouldBeInitializedWithTwoPoints() {
 		Element data = mock(Element.class);
 		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("nooftracks")).thenReturn("3");
-		when(data.getAttribute("distancefromhome")).thenReturn("47");
+		when(data.getAttribute("no-of-tracks")).thenReturn("3");
+		when(data.getAttribute("distance-from-home")).thenReturn("47");
 		
 		Station station = new Station(data);
 		assertEquals(2, station.points.size());
@@ -54,8 +54,8 @@ public class StationTest {
 	public void stationShouldBeInitializedWithThreeTracks() {
 		Element data = mock(Element.class);
 		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("nooftracks")).thenReturn("3");
-		when(data.getAttribute("distancefromhome")).thenReturn("47");
+		when(data.getAttribute("no-of-tracks")).thenReturn("3");
+		when(data.getAttribute("distance-from-home")).thenReturn("47");
 		
 		Station station = new Station(data);
 		assertEquals(3, station.tracks.size());
@@ -68,8 +68,8 @@ public class StationTest {
 	public void changingAspectForASignalShouldPass() {
 		Element data = mock(Element.class);
 		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("nooftracks")).thenReturn("3");
-		when(data.getAttribute("distancefromhome")).thenReturn("47");
+		when(data.getAttribute("no-of-tracks")).thenReturn("3");
+		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
 		Station station = new Station(data);
 		station.setAspect(1, SignalAspect.CAUTION);

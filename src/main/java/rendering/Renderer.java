@@ -125,7 +125,7 @@ public final class Renderer extends Thread {
 
     private void populateStations() throws IOException, SAXException, ParserConfigurationException {
         this.objStations = new Vector<>();
-        InputStream stationsXMLStream = getClass().getResourceAsStream("/data/Stations.xml");
+        InputStream stationsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
         Vector<Element> objStations = DataAccess.getInstance().extractData(stationsXMLStream, "station");
         objStationNames = new Vector<>();
         Vector<Integer> objStationDistances = new Vector<>();
@@ -146,7 +146,7 @@ public final class Renderer extends Thread {
     private void populateTrains()
             throws IOException, SAXException, ParserConfigurationException {
         //Let's get the daily trains first
-        InputStream trainsXMLStream = getClass().getResourceAsStream("/data/Trains.xml");
+        InputStream trainsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
         Vector<Element> temp1 = DataAccess.getInstance().extractData(trainsXMLStream, "train[@day-of-arrival=Daily]");
 
         for (Element singleElement : temp1) {
@@ -179,7 +179,7 @@ public final class Renderer extends Thread {
             case Calendar.SATURDAY:
                 day = "Sa";
         }
-        trainsXMLStream = getClass().getResourceAsStream("/data/Trains.xml");
+        trainsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
         Vector<Element> temp2 = DataAccess.getInstance().extractData(trainsXMLStream, "train.contains(@day-of-arrival," + day + ")");
 
         System.out.println("Day: " + day);

@@ -31,8 +31,8 @@ public class RendererTest {
 		Vector<Station> stations = new Vector<>();
 		Element mockStationElement = mock(Element.class);
 		when(mockStationElement.getAttribute("name")).thenReturn(stationName);
-		when(mockStationElement.getAttribute("nooftracks")).thenReturn("3");
-		when(mockStationElement.getAttribute("distancefromhome")).thenReturn("30");
+		when(mockStationElement.getAttribute("no-of-tracks")).thenReturn("3");
+		when(mockStationElement.getAttribute("distance-from-home")).thenReturn("30");
 		Station station = new Station(mockStationElement);
 		stations.add(station);
 		

@@ -95,11 +95,11 @@ public class Station
 
 	    tracks = new Vector<>();
 	    Integer track_array[] = { MAIN_TRACK, LOOP1_TRACK, LOOP2_TRACK };
-	    for (int i = 0; i < Integer.parseInt(objStationData.getAttribute("nooftracks")); i++) {
+	    for (int i = 0; i < Integer.parseInt(objStationData.getAttribute("no-of-tracks")); i++) {
 		tracks.add(track_array[i]);
 	    }
 
-	    distance_from_home = Integer.parseInt(objStationData.getAttribute("distancefromhome"));
+	    distance_from_home = Integer.parseInt(objStationData.getAttribute("distance-from-home"));
 	}
 
 	/**
