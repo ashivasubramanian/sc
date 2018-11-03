@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" arrival-time="17:25" departure-time="17:30"/>
- <stoppage name="Ferok" departure-time="17:45"/>
- <stoppage name="Parpanangadi" departure-time="18:05"/>
- <stoppage name="Tanur" departure-time="18:15"/>
- <stoppage name="Tirur" departure-time="18:25"/>
- <stoppage name="Kuttipuram" departure-time="18:45"/>
- <stoppage name="Pattambi" departure-time="19:05"/>
- <stoppage name="Shoranur-Junction" arrival-time="19:35" departure-time="19:45"/>
-</stoppages>
+<train number="6602" name="Mangalore Chennai Mail">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="17:25" departure-time="17:30"/>
+        <stop code="FER" name="Ferok" departure-time="17:45"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="18:05"/>
+        <stop code="TAN" name="Tanur" departure-time="18:15"/>
+        <stop code="TIR" name="Tirur" departure-time="18:25"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="18:45"/>
+        <stop code="PAT" name="Pattambi" departure-time="19:05"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="19:35" departure-time="19:45"/>
+    </stops>
+</train>

@@ -133,7 +133,7 @@ public class Train extends Thread
 			throws IOException, SAXException, ParserConfigurationException {
 		System.out.println( "Loading data for " + no);
 		InputStream trainXMLStream = getClass().getResourceAsStream("/data/" + no + ".xml");
-		Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stoppage");
+		Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
 		if(stops.size() > 0) {
 			for (Element stop : stops) {
 				stations.add( stop.getAttribute("name"));

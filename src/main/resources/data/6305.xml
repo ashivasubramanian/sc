@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" arrival-time="11:00" departure-time="11:05"/>
- <stoppage name="Tirur" departure-time="09:50"/>
- <stoppage name="Kuttipuram" departure-time="09:30"/>
- <stoppage name="Shoranur-Junction" arrival-time="08:52" departure-time="08:55"/>
-</stoppages>
+<train number="6305" name="Intercity Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="11:00" departure-time="11:05"/>
+        <stop code="TIR" name="Tirur" departure-time="09:50"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="09:30"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="08:52" departure-time="08:55"/>
+    </stops>
+</train>

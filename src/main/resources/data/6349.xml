@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" arrival-time="16:00" departure-time="16:05"/>
- <stoppage name="Ferok" departure-time="15:20"/>
- <stoppage name="Parpanangadi" departure-time="15:00"/>
- <stoppage name="Tanur" departure-time="14:50"/>
- <stoppage name="Tirur" departure-time="14:40"/>
- <stoppage name="Kuttipuram" departure-time="14:20"/>
- <stoppage name="Pattambi" departure-time="14:00"/>
- <stoppage name="Shoranur-Junction" arrival-time="13:40" departure-time="13:45"/>
-</stoppages>
+<train number="6349" name="Parasuram Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="16:00" departure-time="16:05"/>
+        <stop code="FER" name="Ferok" departure-time="15:20"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="15:00"/>
+        <stop code="TAN" name="Tanur" departure-time="14:50"/>
+        <stop code="TIR" name="Tirur" departure-time="14:40"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="14:20"/>
+        <stop code="PAT" name="Pattambi" departure-time="14:00"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="13:40" departure-time="13:45"/>
+    </stops>
+</train>

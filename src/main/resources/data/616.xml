@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" departure-time="18:05"/>
- <stoppage name="Kallayi" departure-time="18:10"/>
- <stoppage name="Ferok" departure-time="18:20"/>
- <stoppage name="Kadalundi" departure-time="18:27"/>
- <stoppage name="Vallikunnu" departure-time="18:35"/>
- <stoppage name="Parpanangadi" departure-time="18:45"/>
- <stoppage name="Tanur" departure-time="18:55"/>
- <stoppage name="Tirur" arrival-time="19:03" departure-time="19:05"/>
- <stoppage name="Tirunnavaya" departure-time="19:15"/>
- <stoppage name="Kuttipuram" departure-time="19:25"/>
- <stoppage name="Perashannur-Halt" departure-time="19:32"/>
- <stoppage name="Pallipuram" departure-time="19:40"/>
- <stoppage name="Kodumunda-Halt" departure-time="19:47"/>
- <stoppage name="Pattambi" departure-time="19:55"/>
- <stoppage name="Karakad" departure-time="20:10"/>
- <stoppage name="Shoranur-Junction" arrival-time="20:45"/>
-</stoppages>
+<train number="616" name="Calicut Trichur Passenger">
+    <stops>
+        <stop code="CAL" name="Calicut" departure-time="18:05"/>
+        <stop code="KAL" name="Kallayi" departure-time="18:10"/>
+        <stop code="FER" name="Ferok" departure-time="18:20"/>
+        <stop code="KAD" name="Kadalundi" departure-time="18:27"/>
+        <stop code="VAL" name="Vallikunnu" departure-time="18:35"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="18:45"/>
+        <stop code="TAN" name="Tanur" departure-time="18:55"/>
+        <stop code="TIR" name="Tirur" arrival-time="19:03" departure-time="19:05"/>
+        <stop code="TNVA" name="Tirunnavaya" departure-time="19:15"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="19:25"/>
+        <stop code="PER" name="Perashannur-Halt" departure-time="19:32"/>
+        <stop code="PAL" name="Pallipuram" departure-time="19:40"/>
+        <stop code="KOD" name="Kodumunda-Halt" departure-time="19:47"/>
+        <stop code="PAT" name="Pattambi" departure-time="19:55"/>
+        <stop code="KAR" name="Karakad" departure-time="20:10"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="20:45"/>
+   </stops>
+</train>

@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" arrival-time="08:05" departure-time="08:10"/>
- <stoppage name="Ferok" departure-time="08:25"/>
- <stoppage name="Kadalundi" departure-time="08:32"/>
- <stoppage name="Vallikunnu" departure-time="08:39"/>
- <stoppage name="Parpanangadi" departure-time="08:46"/>
- <stoppage name="Tanur" departure-time="08:56"/>
- <stoppage name="Tirur" arrival-time="09:08" departure-time="09:10"/>
- <stoppage name="Tirunnavaya" departure-time="09:20"/>
- <stoppage name="Kuttipuram" departure-time="09:30"/>
- <stoppage name="Pallipuram" departure-time="09:45"/>
- <stoppage name="Pattambi" departure-time="10:00"/>
- <stoppage name="Karakad" departure-time="10:10"/>
- <stoppage name="Shoranur-Junction" arrival-time="10:35" departure-time="10:40"/>
-</stoppages>
+<train number="610" name="Cannanore Coimbatore Fast Passenger">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="08:05" departure-time="08:10"/>
+        <stop code="FER" name="Ferok" departure-time="08:25"/>
+        <stop code="KAD" name="Kadalundi" departure-time="08:32"/>
+        <stop code="VAL" name="Vallikunnu" departure-time="08:39"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="08:46"/>
+        <stop code="TAN" name="Tanur" departure-time="08:56"/>
+        <stop code="TIR" name="Tirur" arrival-time="09:08" departure-time="09:10"/>
+        <stop code="TNVA" name="Tirunnavaya" departure-time="09:20"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="09:30"/>
+        <stop code="PAL" name="Pallipuram" departure-time="09:45"/>
+        <stop code="PAT" name="Pattambi" departure-time="10:00"/>
+        <stop code="KAT" name="Karakad" departure-time="10:10"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="10:35" departure-time="10:40"/>
+   </stops>
+</train>

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stoppages>
- <stoppage name="Calicut" arrival-time="16:55" departure-time="17:00"/>
- <stoppage name="Ferok" departure-time="16:05"/>
- <stoppage name="Kadalundi" departure-time="15:55"/>
- <stoppage name="Parpanangadi" departure-time="15:40"/>
- <stoppage name="Tanur" departure-time="15:30"/>
- <stoppage name="Tirur" arrival-time="15:15" departure-time="15:20"/>
- <stoppage name="Kuttipuram" departure-time="14:55"/>
- <stoppage name="Pattambi" departure-time="14:32"/>
- <stoppage name="Shoranur-Junction" arrival-time="14:15" departure-time="14:20"/>
-</stoppages>
+<train number="6867" name="Tiruchi Mangalore Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="16:55" departure-time="17:00"/>
+        <stop code="FER" name="Ferok" departure-time="16:05"/>
+        <stop code="KAD" name="Kadalundi" departure-time="15:55"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="15:40"/>
+        <stop code="TAN" name="Tanur" departure-time="15:30"/>
+        <stop code="TIR" name="Tirur" arrival-time="15:15" departure-time="15:20"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="14:55"/>
+        <stop code="PAT" name="Pattambi" departure-time="14:32"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="14:15" departure-time="14:20"/>
+    </stops>
+</train>
