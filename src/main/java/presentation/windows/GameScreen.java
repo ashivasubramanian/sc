@@ -11,6 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import common.models.SignalAspect;
+import game_engine.Game;
+import java.util.concurrent.atomic.AtomicReference;
+import rendering.StationAspectsWorker;
+import rendering.TimeWorker;
+import rendering.TrainPositionsWorker;
 
 /**
  * The <code>GameScreen</code> class renders/updates the game screen and all the
@@ -43,7 +48,7 @@ public class GameScreen extends JFrame implements Runnable {
     /**
      * The time to be displayed on the screen.
      */
-    String time;
+    private AtomicReference<String> time = new AtomicReference<>("");
 
     /**
      * Stores the current graphics context.
@@ -73,14 +78,36 @@ public class GameScreen extends JFrame implements Runnable {
      * trains. These are then converted to on-screen positions by
      * <code>drawTrains()</code>.
      */
-    Vector<Float> objTrainPositions;
+    private AtomicReference<Vector<Float>> objTrainPositions;
 
     /**
      * Contains a list of aspect values for all the signals on the section.
      */
-    Vector<SignalAspect[]> objAspects;
+    private AtomicReference<Vector<SignalAspect[]>> objAspects;
 
     JTabbedPane objTabPane;
+    
+    private Game game;
+
+    public GameScreen(String username, Game game, String score) {
+        this.userName = username;
+        this.game = game;
+        this.objStationNames = game.getStations().stream()
+                .map(station -> station.getName())
+                .collect(Vector::new, Vector::add, Vector::addAll);
+        this.objStationPositions = game.getStations().stream()
+                .map(station -> new Point((station.getDistanceFromHome()*790)/86,200))
+                .collect(Vector::new, Vector::add, Vector::addAll);
+        this.score = score;
+        SignalAspect[] defaultAspects = new SignalAspect[]{SignalAspect.STOP, SignalAspect.STOP};
+        this.objAspects = new AtomicReference<>(game.getStations().stream()
+                .map(station -> defaultAspects)
+                .collect(Vector::new, Vector::add, Vector::addAll));
+        Vector<Float> defaultTrainPositions = game.getTrains().stream()
+                .map(train -> 0.0f)
+                .collect(Vector::new, Vector::add, Vector::addAll);
+        this.objTrainPositions = new AtomicReference<>(defaultTrainPositions);
+    }
 
     /**
      * Initializes the required fonts and opens up the game screen.
@@ -111,6 +138,10 @@ public class GameScreen extends JFrame implements Runnable {
         objPanel.setSize(1024, 300);
         getContentPane().add(objTabPane);
         getContentPane().add(objPanel);
+        
+        new TimeWorker(this).execute();
+        new StationAspectsWorker(this, this.game).execute();
+        new TrainPositionsWorker(this, this.game).execute();
     }
 
     /**
@@ -171,7 +202,7 @@ public class GameScreen extends JFrame implements Runnable {
         objGraphics.drawLine(0, 201, 800, 201);
         Enumeration<String> names = objStationNames.elements();
         Enumeration<Point> positions = objStationPositions.elements();
-        Enumeration<SignalAspect[]> aspects = objAspects.elements();
+        Enumeration<SignalAspect[]> aspects = objAspects.get().elements();
         int ctr = 1;
         int x = 0, y = 0;
         while (names.hasMoreElements()) {
@@ -214,7 +245,7 @@ public class GameScreen extends JFrame implements Runnable {
      * current positions.
      */
     private void drawTrains() {
-        Enumeration<Float> objEnumeration = objTrainPositions.elements();
+        Enumeration<Float> objEnumeration = objTrainPositions.get().elements();
         while (objEnumeration.hasMoreElements()) {
             float distance = objEnumeration.nextElement();
             int x = new Float((distance * 800) / 86).intValue();
@@ -277,7 +308,7 @@ public class GameScreen extends JFrame implements Runnable {
         objGraphics.drawLine(0, 51, 800, 51);
         drawUser(userName);
         drawScore(score);
-        drawTime(time);
+        drawTime(time.get());
         drawSection();
         drawTrains();
     }
@@ -306,7 +337,7 @@ public class GameScreen extends JFrame implements Runnable {
      * @param time The time to be drawn.
      */
     public void setTime(String time) {
-        this.time = time;
+        this.time.set(time);
     }
 
     /**
@@ -317,7 +348,7 @@ public class GameScreen extends JFrame implements Runnable {
      * @param positions a <code>Vector</code> of real-life positions
      */
     public void setTrainPositions(Vector<Float> positions) {
-        objTrainPositions = positions;
+        objTrainPositions.set(positions);
     }
 
     /**
@@ -327,6 +358,6 @@ public class GameScreen extends JFrame implements Runnable {
      * section.
      */
     public void setAspects(Vector<SignalAspect[]> aspects) {
-        objAspects = aspects;
+        objAspects.set(aspects);
     }
 }

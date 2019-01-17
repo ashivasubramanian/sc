@@ -1,5 +1,6 @@
 package presentation.windows;
 
+import game_engine.Game;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,9 +22,8 @@ import javax.swing.JTextField;
 
 import org.w3c.dom.Element;
 
-import calculations.data_access.DataAccess;
-import presentation.panes.InfoPane;
-import rendering.Renderer;
+import game_engine.data_access.DataAccess;
+import javax.swing.SwingUtilities;
 
 /**
  * The <code>LoginInterface</code> class displays the login interface to the
@@ -83,12 +83,6 @@ public class LoginInterface implements Runnable {
      * controls on the <code>JFrame</code>.
      */
     GridBagConstraints objConstraints;
-
-    /**
-     * The <code>InfoPane</code> instance into which the username selected and
-     * the user's score are set.
-     */
-    InfoPane objInfoPane;
 
     /**
      * A <code>Vector</code> that contains the user objects.
@@ -244,28 +238,26 @@ public class LoginInterface implements Runnable {
                         javax.swing.JOptionPane.showMessageDialog(objFrame, "Unable to add user.", "Error!!", javax.swing.JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    objInfoPane = new InfoPane();
-                    objInfoPane.setUserName(newUserName);
-                    objInfoPane.setScore(100);
+                    Game game = new Game();
+                    GameScreen gameScreen = new GameScreen(newUserName, game, "100");
+                    SwingUtilities.invokeLater(gameScreen);
                 } else {
                     if (objList.getSelectedValue() == null) {
                         javax.swing.JOptionPane.showMessageDialog(objFrame, "Please select a username, or sign up.", "Error!!", javax.swing.JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    objInfoPane = new InfoPane();
-                    objInfoPane.setUserName(objList.getSelectedValue().toString());
+                    String score = "0";
                     Enumeration<Element> objEnumeration = objUsers.elements();
                     while (objEnumeration.hasMoreElements()) {
                         Element singleUser = objEnumeration.nextElement();
                         if (singleUser.getAttribute("name").equals(objList.getSelectedValue().toString())) {
-                            objInfoPane.setScore(Integer.parseInt(singleUser.getAttribute("score")));
+                            score = singleUser.getAttribute("score");
                         }
                     }
+                    Game game = new Game();
+                    GameScreen gameScreen = new GameScreen(objList.getSelectedValue().toString(), game, score);
+                    SwingUtilities.invokeLater(gameScreen);
                 }
-                Renderer.getInstance().setInfoPane(objInfoPane);
-                objInfoPane = null;
-                objFrame.setVisible(false);
-                Renderer.getInstance().setGameScreen();
                 objFrame.dispose();
             } catch (Exception e) {
                 javax.swing.JOptionPane.showMessageDialog(objFrame, e.getMessage());
