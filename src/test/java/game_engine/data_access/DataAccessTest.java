@@ -1,5 +1,6 @@
-package calculations.data_access;
+package game_engine.data_access;
 
+import game_engine.data_access.DataAccess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -1,5 +1,6 @@
-package calculations;
+package game_engine;
 
+import game_engine.Train;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

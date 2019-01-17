@@ -1,5 +1,6 @@
-package calculations;
+package game_engine;
 
+import game_engine.Station;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

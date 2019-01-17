@@ -1,4 +1,4 @@
-package calculations;
+package game_engine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import calculations.data_access.DataAccess;
+import game_engine.data_access.DataAccess;
 
 
 /**
@@ -240,4 +240,12 @@ public class Train extends Thread
 	{
 		return direction;
 	}
+
+    public String getNumber() {
+        return this.no;
+    }
+
+    public String getTrainName() {
+        return this.name;
+    }
 }

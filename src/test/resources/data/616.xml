@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="616" name="Calicut Shoranur Passenger">
+    <stops>
+        <stop code="CAL" station="Calicut" arrival-time="00:00" departure-time="00:05"/>
+        <stop code="SRR" station="Shoranur-Junction" arrival-time="23:30" departure-time="23:59"/>
+   </stops>
+</train>
