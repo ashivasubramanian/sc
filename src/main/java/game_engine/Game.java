@@ -1,5 +1,6 @@
 package game_engine;
 
+import common.models.SignalAspect;
 import game_engine.data_access.DataAccess;
 import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
@@ -163,6 +164,17 @@ public class Game {
                 .map(station -> new StationDto(station.getName(), station.getDistance(), station.getAspects()))
                 .collect(Collectors.toList());
         return Collections.unmodifiableList(stationsDto);
+    }
+
+    public void setStationAspect(String stationName, SignalAspect[] signalAspect) {
+        Station station = this.stations.stream()
+                .filter(singleStation -> singleStation.getName().equals(stationName))
+                .findFirst().get();
+        int i = 0;
+        while (i < 2) {
+            station.setAspect(i, signalAspect[i]);
+            i++;
+        }
     }
 
 }

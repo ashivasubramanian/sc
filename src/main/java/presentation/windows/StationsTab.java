@@ -12,8 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import common.models.SignalAspect;
+import game_engine.Game;
 import presentation.panes.GamePane;
-import rendering.Renderer;
 
 /**
  * The <code>StationsTab</code> class contains the content that is drawn under the Stations
@@ -39,6 +39,12 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	JComboBox<SignalAspect> objAspectTowardsShoranurValue;
 
 	JComboBox<SignalAspect> objAspectTowardsCalicutValue;
+    
+        private Game game;
+        
+        public StationsTab(Game game) {
+            this.game = game;
+        }
 
 	/**
 	 * Initializes all the controls that are available under the Stations tab of the
@@ -151,8 +157,7 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	 *            The <code>ActionEvent</code> that represents the button click.
 	 */
 	public void actionPerformed(ActionEvent objActionEvent) {
-	    Renderer objRenderer = Renderer.getInstance();
-	    objRenderer.setAspect(objStations.getSelectedItem().toString(),
+            this.game.setStationAspect(objStations.getSelectedItem().toString(),
 		    new SignalAspect[] { (SignalAspect) objAspectTowardsCalicutValue.getSelectedItem(),
 			    (SignalAspect) objAspectTowardsShoranurValue.getSelectedItem() });
 	}

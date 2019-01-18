@@ -128,7 +128,7 @@ public class GameScreen extends JFrame implements Runnable {
         objGraphics = getGraphics();
 
         objTabPane = new JTabbedPane();
-        objTabPane.addTab("Stations", new StationsTab());
+        objTabPane.addTab("Stations", new StationsTab(this.game));
         objTabPane.addTab("Trains", new TrainsTab());
         objTabPane.setVisible(true);
         objTabPane.requestFocusInWindow();

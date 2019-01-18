@@ -1,15 +1,10 @@
 package game_engine;
 
-import game_engine.data_access.DataAccess;
+import common.models.SignalAspect;
 import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
-import java.io.IOException;
-import java.io.InputStream;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
 
 public class GameTest {
     
@@ -35,5 +30,18 @@ public class GameTest {
     public void shouldExposeTrainDataAsImmutableCollection() throws Exception {
         Game game = new Game();
         game.getTrains().add(new TrainDto("New Train", 100f, 1));
+    }
+
+    @Test
+    public void shouldSetStationAspects() throws Exception {
+        Game game = new Game();
+        StationDto calicutStationDto = game.getStations().stream()
+                .filter(station -> station.getName().equals("Calicut"))
+                .findFirst().get();
+        SignalAspect[] defaultSignalAspects = new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP};
+        assertArrayEquals(defaultSignalAspects, calicutStationDto.getAspects());
+        SignalAspect[] newSignalAspects = new SignalAspect[]{SignalAspect.PROCEED, SignalAspect.PROCEED};
+        game.setStationAspect("Calicut", newSignalAspects);
+        assertArrayEquals(newSignalAspects, calicutStationDto.getAspects());
     }
 }
