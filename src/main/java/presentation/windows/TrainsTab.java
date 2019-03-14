@@ -1,14 +1,16 @@
 package presentation.windows;
 
+import game_engine.Game;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import presentation.panes.GamePane;
 
 /**
  * The <code>TrainsTab</code> class contains the content that is drawn under the Trains
@@ -16,6 +18,13 @@ import presentation.panes.GamePane;
  */
 public class TrainsTab extends JPanel implements Runnable
 {
+
+    private Game game;
+
+    public TrainsTab(Game game) {
+        this.game = game;
+        SwingUtilities.invokeLater(this);
+    }
 	/**
 	 * Initializes all the controls that are available under the Trains tab of the
 	 * Control Panel.
@@ -33,7 +42,11 @@ public class TrainsTab extends JPanel implements Runnable
 		objConstraints.weighty = 1.0;
 		objLayout.setConstraints(objSelectTrain,objConstraints);
 
-		JComboBox<String> objTrains = new JComboBox<>(GamePane.getInstance().getTrainNames());
+                String[] trainNames = this.game.getTrains().stream()
+                        .map(train -> train.getName())
+                        .collect(Collectors.toList())
+                        .toArray(new String[0]);
+		JComboBox<String> objTrains = new JComboBox<>(trainNames);
 		objConstraints.gridx = 1;
 		objConstraints.gridy = 0;
 		objLayout.setConstraints(objTrains,objConstraints);

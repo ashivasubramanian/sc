@@ -13,7 +13,8 @@ import javax.swing.JPanel;
 
 import common.models.SignalAspect;
 import game_engine.Game;
-import presentation.panes.GamePane;
+import java.util.stream.Collectors;
+import javax.swing.SwingUtilities;
 
 /**
  * The <code>StationsTab</code> class contains the content that is drawn under the Stations
@@ -44,6 +45,7 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
         
         public StationsTab(Game game) {
             this.game = game;
+            SwingUtilities.invokeLater(this);
         }
 
 	/**
@@ -64,7 +66,11 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	    objConstraints.weighty = 1.0;
 	    objLayout.setConstraints(objSelectStation, objConstraints);
 
-	    objStations = new JComboBox<>(GamePane.getInstance().getStationNames());
+            String[] stationNames = this.game.getStations().stream()
+                    .map(station -> station.getName())
+                    .collect(Collectors.toList())
+                    .toArray(new String[0]);
+	    objStations = new JComboBox<>(stationNames);
 	    objConstraints.gridx = 1;
 	    objConstraints.gridy = 0;
 	    objLayout.setConstraints(objStations, objConstraints);

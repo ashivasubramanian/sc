@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.SwingWorker;
-import presentation.windows.GameScreen;
+import presentation.windows.GameInfoPanel;
 
 /**
  * The <code>StationAspectsWorker</code> class fetches the latest aspects at each
@@ -16,12 +16,12 @@ import presentation.windows.GameScreen;
  */
 public class StationAspectsWorker extends SwingWorker<List<SignalAspect[]>, List<SignalAspect[]>> {
 
-    private GameScreen gameScreen;
+    private GameInfoPanel gameInfoPanel;
 
     private Game game;
 
-    public StationAspectsWorker(GameScreen gameScreen, Game game) {
-        this.gameScreen = gameScreen;
+    public StationAspectsWorker(GameInfoPanel gameInfoPanel, Game game) {
+        this.gameInfoPanel = gameInfoPanel;
         this.game = game;
     }
 
@@ -41,8 +41,8 @@ public class StationAspectsWorker extends SwingWorker<List<SignalAspect[]>, List
     protected void process(List<List<SignalAspect[]>> multipleListsOfAspects) {
         List<SignalAspect[]> latestSignalAspectsForAllStations = multipleListsOfAspects.get(
             multipleListsOfAspects.size() - 1);
-        gameScreen.setAspects(new Vector(latestSignalAspectsForAllStations));
-        gameScreen.repaint(0, 200, 800, 210);
+        gameInfoPanel.setAspects(new Vector(latestSignalAspectsForAllStations));
+        gameInfoPanel.repaint(0, 200, 800, 210);
     }
     
 }

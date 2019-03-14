@@ -4,7 +4,7 @@ import static java.lang.Thread.sleep;
 import java.util.Calendar;
 import java.util.List;
 import javax.swing.SwingWorker;
-import presentation.windows.GameScreen;
+import presentation.windows.GameInfoPanel;
 
 /**
  * The <code>TimeWorker</code> class fetches the current time,
@@ -12,10 +12,10 @@ import presentation.windows.GameScreen;
  */
 public class TimeWorker extends SwingWorker<String, String> {
 
-    private GameScreen gameScreen;
+    private GameInfoPanel gameInfoPanel;
 
-    public TimeWorker(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public TimeWorker(GameInfoPanel gameInfoPanel) {
+        this.gameInfoPanel = gameInfoPanel;
     }
 
     @Override
@@ -31,8 +31,8 @@ public class TimeWorker extends SwingWorker<String, String> {
     @Override
     protected void process(List<String> multipleTimes) {
         String latestTime = multipleTimes.get(multipleTimes.size() - 1);
-        gameScreen.setTime(latestTime);
-        gameScreen.repaint(700, 20, 50, 20);
+        this.gameInfoPanel.setTime(latestTime);
+        this.gameInfoPanel.repaint(700, 20, 50, 20);
     }
     
 }

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.SwingWorker;
-import presentation.windows.GameScreen;
+import presentation.windows.GameInfoPanel;
 
 /**
  * The <code>TrainPositionsWorker</code> class fetches the latest position of each
@@ -16,12 +16,12 @@ import presentation.windows.GameScreen;
  */
 public class TrainPositionsWorker extends SwingWorker<List<Float>, List<Float>> {
 
-    private GameScreen gameScreen;
+    private GameInfoPanel gameInfoPanel;
 
     private Game game;
 
-    public TrainPositionsWorker(GameScreen gameScreen, Game game) {
-        this.gameScreen = gameScreen;
+    public TrainPositionsWorker(GameInfoPanel gameInfoPanel, Game game) {
+        this.gameInfoPanel = gameInfoPanel;
         this.game = game;
     }
 
@@ -51,7 +51,7 @@ public class TrainPositionsWorker extends SwingWorker<List<Float>, List<Float>> 
     protected void process(List<List<Float>> multipleListsOfTrainPositions) {
         List<Float> latestTrainPositionList = multipleListsOfTrainPositions.get(
                 multipleListsOfTrainPositions.size() - 1);
-        gameScreen.setTrainPositions(new Vector(latestTrainPositionList));
-        gameScreen.repaint(0, 200, 800, 210);
+        gameInfoPanel.setTrainPositions(new Vector(latestTrainPositionList));
+        gameInfoPanel.repaint(0, 200, 800, 210);
     }
 }
