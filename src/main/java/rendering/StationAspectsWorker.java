@@ -42,7 +42,7 @@ public class StationAspectsWorker extends SwingWorker<List<SignalAspect[]>, List
         List<SignalAspect[]> latestSignalAspectsForAllStations = multipleListsOfAspects.get(
             multipleListsOfAspects.size() - 1);
         gameInfoPanel.setAspects(new Vector(latestSignalAspectsForAllStations));
-        gameInfoPanel.repaint(0, 200, 800, 210);
+        gameInfoPanel.repaint(0, 193, 800, 205);
     }
     
 }
