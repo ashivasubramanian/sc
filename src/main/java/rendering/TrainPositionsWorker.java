@@ -52,6 +52,6 @@ public class TrainPositionsWorker extends SwingWorker<List<Float>, List<Float>> 
         List<Float> latestTrainPositionList = multipleListsOfTrainPositions.get(
                 multipleListsOfTrainPositions.size() - 1);
         gameInfoPanel.setTrainPositions(new Vector(latestTrainPositionList));
-        gameInfoPanel.repaint(0, 200, 800, 210);
+        gameInfoPanel.repaint(0, 195, 800, 20);
     }
 }
