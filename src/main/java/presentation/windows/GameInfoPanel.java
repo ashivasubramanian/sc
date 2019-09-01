@@ -145,7 +145,6 @@ public class GameInfoPanel extends JPanel {
      */
     private void drawTime(String time) {
         objGraphics.setFont(objNormalFont);
-        objGraphics.clearRect(700, 20, 50, 20);
         objGraphics.drawString(time, 700, 40);
     }
 
