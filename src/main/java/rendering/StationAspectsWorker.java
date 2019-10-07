@@ -3,6 +3,7 @@ package rendering;
 import common.models.SignalAspect;
 import game_engine.Game;
 import game_engine.dto.StationDto;
+import java.awt.Dimension;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,13 @@ public class StationAspectsWorker extends SwingWorker<List<SignalAspect[]>, List
     private GameInfoPanel gameInfoPanel;
 
     private Game game;
+    
+    private Dimension screenSize;
 
-    public StationAspectsWorker(GameInfoPanel gameInfoPanel, Game game) {
+    public StationAspectsWorker(GameInfoPanel gameInfoPanel, Game game, Dimension screenSize) {
         this.gameInfoPanel = gameInfoPanel;
         this.game = game;
+        this.screenSize = screenSize;
     }
 
     @Override
@@ -39,10 +43,12 @@ public class StationAspectsWorker extends SwingWorker<List<SignalAspect[]>, List
 
     @Override
     protected void process(List<List<SignalAspect[]>> multipleListsOfAspects) {
+        int twentyFifthPercentOfHeight = this.screenSize.height * 25 / 100;
         List<SignalAspect[]> latestSignalAspectsForAllStations = multipleListsOfAspects.get(
             multipleListsOfAspects.size() - 1);
         gameInfoPanel.setAspects(new Vector(latestSignalAspectsForAllStations));
-        gameInfoPanel.repaint(0, 193, 800, 11);
+        gameInfoPanel.repaint(0, twentyFifthPercentOfHeight - 7,
+                this.screenSize.width, 11);
     }
     
 }

@@ -7,10 +7,15 @@ package presentation.windows;
 
 import common.models.SignalAspect;
 import game_engine.Game;
+import game_engine.dto.StationDto;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.util.Enumeration;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.JPanel;
@@ -58,11 +63,14 @@ public class GameInfoPanel extends JPanel {
      */
     private AtomicReference<Vector<SignalAspect[]>> objAspects;
     private Game game;
+    
+    private Dimension screenSize;
 
-    public GameInfoPanel(String username, String score, Game game) {
+    public GameInfoPanel(Dimension screenSize, String username, String score, Game game) {
         this.userName = username;
         this.score = score;
         this.game = game;
+        this.screenSize = screenSize;
         objGraphics = getGraphics();
         objNormalFont = new Font("Arial", Font.PLAIN, 12);
         objBoldedFont = new Font("Arial", Font.BOLD, 12);
@@ -70,8 +78,11 @@ public class GameInfoPanel extends JPanel {
         this.objStationNames = this.game.getStations().stream()
                 .map(station -> station.getName())
                 .collect(Vector::new, Vector::add, Vector::addAll);
+        int twentyFifthPercentOfHeight = screenSize.height * 25 / 100;
+        int maxDistanceOfSection = this.game.getStations().stream()
+                .mapToInt(station -> station.getDistanceFromHome()).max().getAsInt();
         this.objStationPositions = this.game.getStations().stream()
-                .map(station -> new Point((station.getDistanceFromHome() * 790) / 86, 200))
+                .map(station -> new Point((station.getDistanceFromHome() * (screenSize.width - 25)) / maxDistanceOfSection, twentyFifthPercentOfHeight))
                 .collect(Vector::new, Vector::add, Vector::addAll);
         this.objAspects = new AtomicReference<>(this.game.getStations().stream()
                 .map(station -> defaultAspects)
@@ -92,8 +103,10 @@ public class GameInfoPanel extends JPanel {
         super.paintComponent(g);
         objGraphics = g;
         objGraphics.setColor(java.awt.Color.BLACK);
-        objGraphics.drawLine(0, 50, 800, 50);
-        objGraphics.drawLine(0, 51, 800, 51);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int tenPercentOfHeight = screenSize.height * 10/100;
+        objGraphics.drawLine(0, tenPercentOfHeight, screenSize.width, tenPercentOfHeight);
+        objGraphics.drawLine(0, tenPercentOfHeight + 1, screenSize.width, tenPercentOfHeight + 1);
         drawUser(userName);
         drawScore(score);
         drawTime(time.get());
@@ -125,7 +138,8 @@ public class GameInfoPanel extends JPanel {
         if (objGraphics.getFontMetrics().stringWidth(username) > 45) {
             overlap = objGraphics.getFontMetrics().stringWidth(username) - 45;
         }
-        objGraphics.drawString(username, 600 - overlap, 40);
+        objGraphics.drawString(username, (this.screenSize.width * 70 /100) - overlap,
+                this.screenSize.height * 5 / 100);
     }
 
     /**
@@ -135,7 +149,7 @@ public class GameInfoPanel extends JPanel {
      */
     private void drawScore(String score) {
         objGraphics.setFont(objNormalFont);
-        objGraphics.drawString(score, 650, 40);
+        objGraphics.drawString(score, this.screenSize.width * 80 / 100, this.screenSize.height * 5 /100);
     }
 
     /**
@@ -145,7 +159,7 @@ public class GameInfoPanel extends JPanel {
      */
     private void drawTime(String time) {
         objGraphics.setFont(objNormalFont);
-        objGraphics.drawString(time, 700, 40);
+        objGraphics.drawString(time, this.screenSize.width * 90 / 100, this.screenSize.height * 5 / 100);
     }
 
     /**
@@ -154,8 +168,9 @@ public class GameInfoPanel extends JPanel {
      * drawn.
      */
     private void drawSection() {
-        objGraphics.drawLine(0, 200, 800, 200);
-        objGraphics.drawLine(0, 201, 800, 201);
+        int twentyFifthPercentOfHeight = this.screenSize.height * 25 / 100;
+        objGraphics.drawLine(0, twentyFifthPercentOfHeight, this.screenSize.width, twentyFifthPercentOfHeight);
+        objGraphics.drawLine(0, twentyFifthPercentOfHeight + 1, this.screenSize.width, twentyFifthPercentOfHeight + 1);
         Enumeration<String> names = objStationNames.elements();
         Enumeration<Point> positions = objStationPositions.elements();
         Enumeration<SignalAspect[]> aspects = objAspects.get().elements();
@@ -201,12 +216,13 @@ public class GameInfoPanel extends JPanel {
      * current positions.
      */
     private void drawTrains() {
+        int twentyFifthPercentOfHeight = this.screenSize.height * 25 / 100;
         Enumeration<Float> objEnumeration = objTrainPositions.get().elements();
         while (objEnumeration.hasMoreElements()) {
             float distance = objEnumeration.nextElement();
-            int x = new Float((distance * 800) / 86).intValue();
+            int x = new Float((distance * this.screenSize.width) / 86).intValue();
             objGraphics.setColor(java.awt.Color.RED);
-            objGraphics.drawLine(x, 195, x, 205);
+            objGraphics.drawLine(x, twentyFifthPercentOfHeight - 5, x, twentyFifthPercentOfHeight + 5);
         }
     }
 

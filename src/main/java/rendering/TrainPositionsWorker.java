@@ -2,6 +2,7 @@ package rendering;
 
 import game_engine.Game;
 import game_engine.dto.TrainDto;
+import java.awt.Dimension;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,10 +20,13 @@ public class TrainPositionsWorker extends SwingWorker<List<Float>, List<Float>> 
     private GameInfoPanel gameInfoPanel;
 
     private Game game;
+    
+    private Dimension screenSize;
 
-    public TrainPositionsWorker(GameInfoPanel gameInfoPanel, Game game) {
+    public TrainPositionsWorker(GameInfoPanel gameInfoPanel, Game game, Dimension screenSize) {
         this.gameInfoPanel = gameInfoPanel;
         this.game = game;
+        this.screenSize = screenSize;
     }
 
     @Override
@@ -49,9 +53,11 @@ public class TrainPositionsWorker extends SwingWorker<List<Float>, List<Float>> 
 
     @Override
     protected void process(List<List<Float>> multipleListsOfTrainPositions) {
+        int twentyFifthPercentOfHeight = this.screenSize.height * 25 / 100;
         List<Float> latestTrainPositionList = multipleListsOfTrainPositions.get(
                 multipleListsOfTrainPositions.size() - 1);
         gameInfoPanel.setTrainPositions(new Vector(latestTrainPositionList));
-        gameInfoPanel.repaint(0, 195, 800, 20);
+        gameInfoPanel.repaint(0, twentyFifthPercentOfHeight - 5,
+                this.screenSize.width, 20);
     }
 }

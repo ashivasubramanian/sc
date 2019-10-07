@@ -10,6 +10,8 @@ import javax.swing.JTabbedPane;
 
 import common.models.SignalAspect;
 import game_engine.Game;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.SwingUtilities;
 import rendering.StationAspectsWorker;
@@ -108,10 +110,11 @@ public class GameScreen extends JFrame implements Runnable {
                 .collect(Vector::new, Vector::add, Vector::addAll);
         this.objTrainPositions = new AtomicReference<>(defaultTrainPositions);
         
-        gameInfoPanel = new GameInfoPanel(userName, score, game);
-        new TimeWorker(gameInfoPanel).execute();
-        new TrainPositionsWorker(gameInfoPanel, game).execute();
-        new StationAspectsWorker(gameInfoPanel, game).execute();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        gameInfoPanel = new GameInfoPanel(screenSize, userName, score, game);
+        new TimeWorker(gameInfoPanel, screenSize).execute();
+        new TrainPositionsWorker(gameInfoPanel, game, screenSize).execute();
+        new StationAspectsWorker(gameInfoPanel, game, screenSize).execute();
     }
 
     /**
@@ -138,7 +141,8 @@ public class GameScreen extends JFrame implements Runnable {
         objTabPane.requestFocusInWindow();
         objTabPane.setSize(200, 200);
         objTabPane.setLocation(500, 400);
-        gameInfoPanel.setSize(1024, 300);
+
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
         getContentPane().add(objTabPane);
         getContentPane().add(gameInfoPanel);
         setVisible(true);
