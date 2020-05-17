@@ -1,19 +1,19 @@
 package presentation.windows;
 
+import common.models.SignalAspect;
+import game_engine.Game;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.Vector;
-
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-
-import common.models.SignalAspect;
-import game_engine.Game;
-import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicReference;
-import javax.swing.SwingUtilities;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import rendering.StationAspectsWorker;
 import rendering.TimeWorker;
 import rendering.TrainPositionsWorker;
@@ -132,19 +132,20 @@ public class GameScreen extends JFrame implements Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Section Controller");
-
+        
         objTabPane = new JTabbedPane();
         StationsTab stationsTab = new StationsTab(this.game);
         objTabPane.addTab("Stations", stationsTab);
         TrainsTab trainsTab = new TrainsTab(this.game);
         objTabPane.addTab("Trains", trainsTab);
         objTabPane.requestFocusInWindow();
-        objTabPane.setSize(200, 200);
-        objTabPane.setLocation(500, 400);
+        JPanel tabPane = new JPanel();
+        tabPane.setLayout(new BorderLayout());
+        tabPane.add(objTabPane, BorderLayout.EAST);
 
-        setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        getContentPane().add(objTabPane);
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().add(gameInfoPanel);
+        getContentPane().add(tabPane);
         setVisible(true);
     }
 

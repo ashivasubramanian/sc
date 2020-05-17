@@ -91,6 +91,7 @@ public class GameInfoPanel extends JPanel {
                 .map(train -> 0.0f)
                 .collect(Vector::new, Vector::add, Vector::addAll);
         this.objTrainPositions = new AtomicReference<>(defaultTrainPositions);
+        setPreferredSize(new Dimension(this.screenSize.width / 2, this.screenSize.height / 2));
     }
     
         /**
