@@ -1,10 +1,10 @@
 package game_engine.data_access;
 
 import game_engine.data_access.DataAccess;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,20 +12,19 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class DataAccessTest {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @TempDir
+    public File temporaryFolder;
 
     @Test
     public void shouldCreateMissingUsersFile() {
-	String filePath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), "Users.xml");
+	String filePath = String.join(java.io.File.separator, temporaryFolder.getAbsolutePath(), "Users.xml");
 	File file = new File(filePath);
 
 	assertFalse(file.exists());
@@ -36,8 +35,8 @@ public class DataAccessTest {
 
     @Test
     public void shouldEnsureThatStandardFolderIsCreatedIfNotExisting() {
-	String standardDirectoryPath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), ".section_controller");
-	String usersXMLPath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), ".section_controller", "Users.xml");
+	String standardDirectoryPath = String.join(java.io.File.separator, temporaryFolder.getAbsolutePath(), ".section_controller");
+	String usersXMLPath = String.join(java.io.File.separator, temporaryFolder.getAbsolutePath(), ".section_controller", "Users.xml");
 	File standardDirectoryFile = new File(standardDirectoryPath);
 
 	assertFalse(standardDirectoryFile.exists());
@@ -48,7 +47,7 @@ public class DataAccessTest {
 
     @Test
     public void shouldEnsureThatNewlyCreatedUsersXMLHasEmptyContent() {
-	String filePath = String.join(java.io.File.separator, temporaryFolder.getRoot().getAbsolutePath(), "Users.xml");
+	String filePath = String.join(java.io.File.separator, temporaryFolder.getAbsolutePath(), "Users.xml");
 	File file = new File(filePath);
 
 	DataAccess dataAccess = DataAccess.getInstance();

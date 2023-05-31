@@ -1,15 +1,15 @@
 package game_engine;
 
 import game_engine.Train;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 public class TrainTest {
@@ -43,17 +43,17 @@ public class TrainTest {
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
 		}
-		assertEquals("Train1 direction was not set properly.", homeTrain.HOME,
-				homeTrain.getDirection());
-		assertEquals("Train2 direction was not set properly.", awayTrain.AWAY,
-				awayTrain.getDirection());
+		assertEquals(homeTrain.HOME,
+				homeTrain.getDirection(), "Train1 direction was not set properly.");
+		assertEquals(awayTrain.AWAY,
+				awayTrain.getDirection(), "Train2 direction was not set properly.");
 	}
 	
 	@Test
 	public void stationListMustBePopulatedOnInitialization() {
 		try {
 			Train someTrain = new Train("1097","Poorna Express", "TowardsHome");
-			assertTrue("Station list not set.", someTrain.stations.size() > 0);
+			assertTrue(someTrain.stations.size() > 0, "Station list not set.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
@@ -68,9 +68,8 @@ public class TrainTest {
 		try {
 			Train homeTrain = new Train("1097", "Mangala Lakshadweep Express", "TowardsHome");
 			Train awayTrain = new Train("1097", "Mangala Lakshadweep Express", "AwayFromHome");
-			assertEquals("Train directions are not reversed.",
-				homeTrain.stations.get(0),
-				awayTrain.stations.get(awayTrain.stations.size() - 1));
+			assertEquals(homeTrain.stations.get(0), awayTrain.stations.get(awayTrain.stations.size() - 1),
+					"Train directions are not reversed.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {

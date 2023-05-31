@@ -3,8 +3,8 @@ package game_engine;
 import common.models.SignalAspect;
 import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
     
@@ -20,16 +20,18 @@ public class GameTest {
         assertEquals(2, game.getTrains().size());
     }
     
-    @Test(expected=UnsupportedOperationException.class)
+    @Test
     public void shouldExposeStationDataAsImmutableCollection() throws Exception {
         Game game = new Game();
-        game.getStations().add(new StationDto("new_station", 18, null));
+        assertThrows(UnsupportedOperationException.class,
+                () -> game.getStations().add(new StationDto("new_station", 18, null)));
     }
     
-    @Test(expected=UnsupportedOperationException.class)
+    @Test
     public void shouldExposeTrainDataAsImmutableCollection() throws Exception {
         Game game = new Game();
-        game.getTrains().add(new TrainDto("New Train", 100f, 1));
+        assertThrows(UnsupportedOperationException.class,
+                () -> game.getTrains().add(new TrainDto("New Train", 100f, 1)));
     }
 
     @Test
