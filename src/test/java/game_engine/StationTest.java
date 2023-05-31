@@ -1,13 +1,13 @@
 package game_engine;
 
 import game_engine.Station;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import common.models.SignalAspect;
@@ -33,9 +33,8 @@ public class StationTest {
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
 		Station station = new Station(data);
-		assertArrayEquals("Station aspects not set to STOP.",
-				new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP},
-				station.getAspects());
+		assertArrayEquals(new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP},
+				station.getAspects(), "Station aspects not set to STOP.");
 	}
 	
 	@Test
@@ -74,13 +73,11 @@ public class StationTest {
 
 		Station station = new Station(data);
 		station.setAspect(1, SignalAspect.CAUTION);
-		assertArrayEquals("Second signal not set to Amber.",
-				new SignalAspect[] {SignalAspect.STOP, SignalAspect.CAUTION},
-				station.getAspects());
+		assertArrayEquals(new SignalAspect[] {SignalAspect.STOP, SignalAspect.CAUTION},
+				station.getAspects(), "Second signal not set to Amber.");
 		station.setAspect(0, SignalAspect.PROCEED);
-		assertArrayEquals("First signal not set to Green.",
-				new SignalAspect[] {SignalAspect.PROCEED, SignalAspect.CAUTION},
-				station.getAspects());
+		assertArrayEquals(new SignalAspect[] {SignalAspect.PROCEED, SignalAspect.CAUTION},
+				station.getAspects(), "First signal not set to Green.");
 	}
 
 }
