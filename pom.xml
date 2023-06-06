@@ -54,7 +54,6 @@
                     <launcher>start=section_controller/main.Main</launcher>
                     <addModules>section_controller</addModules>
                     <modulePaths>target/classes</modulePaths>
-                    <outputDirectory>target/standalone_exec</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
