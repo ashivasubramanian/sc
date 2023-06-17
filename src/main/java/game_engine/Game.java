@@ -7,9 +7,8 @@ import game_engine.dto.TrainDto;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
@@ -74,26 +73,26 @@ public class Game {
             
             String day = "";
             //Let's now find out what day it is, and then get the corresponding trains.
-            switch (new GregorianCalendar().get(Calendar.DAY_OF_WEEK)) {
-                case Calendar.SUNDAY:
+            switch (LocalDateTime.now().getDayOfWeek()) {
+                case SUNDAY:
                     day = "Su";
                     break;
-                case Calendar.MONDAY:
+                case MONDAY:
                     day = "M";
                     break;
-                case Calendar.TUESDAY:
+                case TUESDAY:
                     day = "Tu";
                     break;
-                case Calendar.WEDNESDAY:
+                case WEDNESDAY:
                     day = "W";
                     break;
-                case Calendar.THURSDAY:
+                case THURSDAY:
                     day = "Th";
                     break;
-                case Calendar.FRIDAY:
+                case FRIDAY:
                     day = "F";
                     break;
-                case Calendar.SATURDAY:
+                case SATURDAY:
                     day = "Sa";
             }
             trainsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
@@ -105,32 +104,25 @@ public class Game {
                 /*All trains for the day have been loaded. But we need only the trains that will
                 start from the first station in the next hour. So we check if the current time
                 falls within the train's first and last station times.*/
-                Calendar currentTime = Calendar.getInstance();
+                LocalDateTime currentTime = LocalDateTime.now();
                 String fs_time = "", ls_time = "";
                 //get the first station time
                 fs_time = train.getAttribute("section-entry-time");
                 ls_time = train.getAttribute("section-leaving-time");
                 //We have got the times; let us convert them into Calendar instances.
                 String[] time1 = fs_time.split(":");
-                Calendar first_station_time = Calendar.getInstance();
-                int fs_hour = Integer.parseInt(time1[0]);
-                first_station_time.set(Calendar.HOUR_OF_DAY, fs_hour);
-                first_station_time.set(Calendar.MINUTE, Integer.parseInt(time1[1]));
+                LocalDateTime first_station_time = LocalDateTime.now().withHour(Integer.parseInt(time1[0])).withMinute(Integer.parseInt(time1[1]));
                 String[] time2 = ls_time.split(":");
-                Calendar last_station_time = Calendar.getInstance();
-                int ls_hour = Integer.parseInt(time2[0]);
-                last_station_time.set(Calendar.HOUR_OF_DAY, ls_hour);
-                last_station_time.set(Calendar.MINUTE, Integer.parseInt(time2[1]));
-                
-                if (fs_hour >= 20) {
-                    if (ls_hour >= 0 && ls_hour <= 6) {
-                        int current_date = last_station_time.get(Calendar.DATE);
-                        last_station_time.set(Calendar.DATE, current_date + 1);
+                LocalDateTime last_station_time = LocalDateTime.now().withHour(Integer.parseInt(time2[0])).withMinute(Integer.parseInt(time2[1]));
+
+                if (first_station_time.getHour() >= 20) {
+                    if (last_station_time.getHour() >= 0 && last_station_time.getHour() <= 6) {
+                        last_station_time.plusDays(1);
                     }
                 }
                 
                 //We are ready to compare.
-                if (currentTime.after(first_station_time) && currentTime.before(last_station_time)) {
+                if (currentTime.isAfter(first_station_time) && currentTime.isBefore(last_station_time)) {
                     Train individual_train = new Train(train.getAttribute("number"), train.getAttribute("name"), train.getAttribute("direction"));
                     trains.add(individual_train);
                 }

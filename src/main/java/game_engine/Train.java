@@ -2,7 +2,7 @@ package game_engine;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -170,15 +170,14 @@ public class Train extends Thread
 		else if((departureTimes.get(station)).length() > 0)
 			time = departureTimes.get(station) + ":00";
 		String timecomponents[] = time.split(":");
-		Calendar first_station_time = Calendar.getInstance();
-		first_station_time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timecomponents[0]));
-		first_station_time.set(Calendar.MINUTE, Integer.parseInt(timecomponents[1]));
-		first_station_time.set(Calendar.SECOND, Integer.parseInt(timecomponents[2]));
+		LocalDateTime first_station_time = LocalDateTime.now()
+				.withHour(Integer.parseInt(timecomponents[0])).withMinute(Integer.parseInt(timecomponents[1]))
+				.withSecond(Integer.parseInt(timecomponents[2]));
 		int count = 0;
 		while(true)
 		{
-			Calendar currentTime = Calendar.getInstance();
-			if(first_station_time.before(currentTime)) {
+			LocalDateTime currentTime = LocalDateTime.now();
+			if(first_station_time.isBefore(currentTime)) {
 				//The train is already in the section.
 				float totalseconds = getTimeDifference(currentTime,first_station_time);
 				distance = 60 * (totalseconds/3600);
@@ -210,11 +209,11 @@ public class Train extends Thread
 	 * @param time2 The lesser time
 	 * @return The difference between the two times in seconds.
 	 */
-	private float getTimeDifference(Calendar time1, Calendar time2)
+	private float getTimeDifference(LocalDateTime time1, LocalDateTime time2)
 	{
-		float hours = time1.get(Calendar.HOUR_OF_DAY) - time2.get(Calendar.HOUR_OF_DAY);
-		float minutes = time1.get(Calendar.MINUTE) - time2.get(Calendar.MINUTE);
-		float seconds = time1.get(Calendar.SECOND) - time2.get(Calendar.SECOND);
+		float hours = time1.getHour() - time2.getHour();
+		float minutes = time1.getMinute() - time2.getMinute();
+		float seconds = time1.getSecond() - time2.getSecond();
 		float totalseconds = (hours * 3600) + (minutes * 60) + seconds;
 		return totalseconds;
 	}
