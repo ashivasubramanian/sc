@@ -3,7 +3,8 @@ package rendering;
 import java.awt.Color;
 import java.awt.Dimension;
 import static java.lang.Thread.sleep;
-import java.util.Calendar;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.SwingWorker;
 import presentation.windows.GameInfoPanel;
@@ -25,9 +26,9 @@ public class TimeWorker extends SwingWorker<String, String> {
     @Override
     protected String doInBackground() throws Exception {
         while(true) {
-            Calendar calendar = Calendar.getInstance();
-            publish(String.format("%1$s:%2$s:%3$s", calendar.get(Calendar.HOUR_OF_DAY),
-                    calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND)));
+            LocalDateTime currentTime = LocalDateTime.now();
+            publish(String.format("%1$s:%2$s:%3$s", currentTime.getHour(),
+                    currentTime.getMinute(), currentTime.getSecond()));
             sleep(2000);
         }
     }

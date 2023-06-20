@@ -109,7 +109,7 @@ public class Game {
                 //get the first station time
                 fs_time = train.getAttribute("section-entry-time");
                 ls_time = train.getAttribute("section-leaving-time");
-                //We have got the times; let us convert them into Calendar instances.
+                //We have got the times; let us convert them into LocalDateTime instances.
                 String[] time1 = fs_time.split(":");
                 LocalDateTime first_station_time = LocalDateTime.now().withHour(Integer.parseInt(time1[0])).withMinute(Integer.parseInt(time1[1]));
                 String[] time2 = ls_time.split(":");
