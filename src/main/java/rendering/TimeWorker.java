@@ -27,8 +27,7 @@ public class TimeWorker extends SwingWorker<String, String> {
     protected String doInBackground() throws Exception {
         while(true) {
             LocalDateTime currentTime = LocalDateTime.now();
-            publish(String.format("%1$s:%2$s:%3$s", currentTime.getHour(),
-                    currentTime.getMinute(), currentTime.getSecond()));
+            publish(String.format("%1$TH:%1$TM:%1$TS", currentTime));
             sleep(2000);
         }
     }
