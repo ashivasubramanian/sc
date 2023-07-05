@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import common.models.TrainDirection;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -25,20 +26,6 @@ import game_engine.data_access.DataAccess;
  */
 public class Train extends Thread
 {
-	/**
-	 * Final variable that stores which direction a train is travelling on the section.
-	 * A train with direction HOME is travelling towards Calicut. <br>The direction is
-	 * set using the <code>Train</code> constructor.
-	 */
-	final int HOME = 1;
-
-	/**
-	 * Final variable that stores which direction a train is travelling on the section.
-	 * A train with direction AWAY is travelling towards Shoranur Junction. <br>The
-	 * direction is set using the <code>Train</code> constructor.
-	 */
-	final int AWAY = 2;
-
 	/**
 	 * The unique number of the train.
 	 * This is of <code>String</code> datatype, rather than <code>int</code>,
@@ -90,10 +77,9 @@ public class Train extends Thread
 	float distance;
 
 	/**
-	 * The direction in which the train is travelling. This can either be HOME
-	 * or AWAY.
+	 * The direction in which the train is travelling.
 	 */
-	int direction;
+	TrainDirection direction;
 
 	/**
 	 * Constructor that initializes the <code>Train</code>.
@@ -114,8 +100,10 @@ public class Train extends Thread
 		distances = new HashMap<>();
 		distance = 0;
 		lag = 0;
-		if(direction.equals("TowardsHome"))	this.direction = HOME;
-		else if(direction.equals("AwayFromHome")) this.direction = AWAY;
+		if(direction.equals("TowardsHome"))
+			this.direction = TrainDirection.TOWARDS_HOME;
+		else if(direction.equals("AwayFromHome"))
+			this.direction = TrainDirection.AWAY_FROM_HOME;
 		populateTrainData();
 		start();
 	}
@@ -145,7 +133,8 @@ public class Train extends Thread
 			}
 		}
 		//Reversing the distances if travelling towards home
-		if (direction == HOME)	java.util.Collections.reverse(stations);
+		if (direction == TrainDirection.TOWARDS_HOME)
+			java.util.Collections.reverse(stations);
 	}
 
 	/**
@@ -230,12 +219,10 @@ public class Train extends Thread
 
 	/**
 	 * Returns the direction in which the train is travelling across the section.
-	 * The method returns 1 if the train is moving towards Calicut, and 2 if
-	 * the train is moving towards Shoranur.
 	 *
 	 * @return the direction of the train
 	 */
-	public int getDirection()
+	public TrainDirection getDirection()
 	{
 		return direction;
 	}

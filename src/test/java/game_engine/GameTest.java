@@ -1,6 +1,7 @@
 package game_engine;
 
 import common.models.SignalAspect;
+import common.models.TrainDirection;
 import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class GameTest {
     public void shouldExposeTrainDataAsImmutableCollection() throws Exception {
         Game game = new Game();
         assertThrows(UnsupportedOperationException.class,
-                () -> game.getTrains().add(new TrainDto("New Train", 100f, 1)));
+                () -> game.getTrains().add(new TrainDto("New Train", 100f, TrainDirection.TOWARDS_HOME)));
     }
 
     @Test

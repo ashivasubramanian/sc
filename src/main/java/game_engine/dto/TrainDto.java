@@ -1,5 +1,7 @@
 package game_engine.dto;
 
+import common.models.TrainDirection;
+
 /**
  * The <code>TrainDto</code> class holds data that is exposed by the game engine
  * for each train that is currently running on the section.
@@ -11,9 +13,9 @@ public class TrainDto {
     
     private Float distanceFromHome;
 
-    private int direction;
+    private TrainDirection direction;
 
-    public TrainDto(String name, Float distanceFromHome, int direction) {
+    public TrainDto(String name, Float distanceFromHome, TrainDirection direction) {
         this.name = name;
         this.distanceFromHome = distanceFromHome;
         this.direction = direction;
@@ -27,7 +29,7 @@ public class TrainDto {
         return distanceFromHome;
     }
     
-    public int getDirection() {
+    public TrainDirection getDirection() {
         return direction;
     }
 }

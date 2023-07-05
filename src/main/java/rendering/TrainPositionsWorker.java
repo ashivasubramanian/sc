@@ -1,5 +1,6 @@
 package rendering;
 
+import common.models.TrainDirection;
 import game_engine.Game;
 import game_engine.dto.TrainDto;
 import java.awt.Dimension;
@@ -41,7 +42,7 @@ public class TrainPositionsWorker extends SwingWorker<List<Float>, List<Float>> 
 				train shall be drawn only from home. So if the train is 16km from away,
 				then while drawing, it will be 16km from home. This is not what we want.
 				So we reverse it.*/
-                if (individualTrain.getDirection() == 1) { // towards Home; see Train.java for details
+                if (individualTrain.getDirection() == TrainDirection.TOWARDS_HOME) {
                     distance = 86 - distance;
                 }
                 objTrainPositions.add(distance);

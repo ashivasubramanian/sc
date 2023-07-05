@@ -1,5 +1,6 @@
 package game_engine;
 
+import common.models.TrainDirection;
 import game_engine.Train;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,9 +44,9 @@ public class TrainTest {
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
 		}
-		assertEquals(homeTrain.HOME,
+		assertEquals(TrainDirection.TOWARDS_HOME,
 				homeTrain.getDirection(), "Train1 direction was not set properly.");
-		assertEquals(awayTrain.AWAY,
+		assertEquals(TrainDirection.AWAY_FROM_HOME,
 				awayTrain.getDirection(), "Train2 direction was not set properly.");
 	}
 	
