@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<train number="6687" name="Navyug Express">
-    <stops>
-        <stop code="CAL" name="Calicut" arrival-time="20:30" departure-time="20:35"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="22:50" departure-time="22:55"/>
-    </stops>
-</train>
