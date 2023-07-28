@@ -45,7 +45,6 @@
         <train number="6627" name="West Coast Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="21:50" section-leaving-time="00:10"/>
         <train number="6329" name="Malabar Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="02:10" section-leaving-time="04:40"/>
         <train number="6604" name="Maveli Express" day-of-arrival="W,F,Su" direction="TowardsHome" section-entry-time="01:55" section-leaving-time="04:15"/>
-        <train number="6347" name="Trivandrum Cannanore Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="04:30" section-leaving-time="06:55"/>
         <train number="6601" name="Chennai Mangalore Mail" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="05:20" section-leaving-time="08:05"/>
         <train number="6527" name="Yeswantpur Cannanore Express" day-of-arrival="Sa" direction="TowardsHome" section-entry-time="05:50" section-leaving-time="08:20"/>
         <train number="6306" name="Intercity Express" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="17:00" section-leaving-time="19:15"/>
@@ -54,7 +53,6 @@
         <train number="6628" name="West Coast Express" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="01:35" section-leaving-time="04:15"/>
         <train number="6330" name="Malabar Express" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="22:55" section-leaving-time="01:35"/>
         <train number="6603" name="Maveli Express" day-of-arrival="Tu,Th,Sa" direction="AwayFromHome" section-entry-time="02:30" section-leaving-time="05:10"/>
-        <train number="6348" name="Cannanore Trivandrum Express" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="19:05" section-leaving-time="21:55"/>
         <train number="6602" name="Mangalore Chennai Mail" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="17:25" section-leaving-time="19:45"/>
         <train number="6528" name="Cannanore Yeswantpur Express" day-of-arrival="Su" direction="AwayFromHome" section-entry-time="19:25" section-leaving-time="21:55"/>
     </trains>
