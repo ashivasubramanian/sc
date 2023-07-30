@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<train number="1097" name="Poorna Express">
-    <stops>
-        <stop code="CAL" name="Calicut" arrival-time="23:35" departure-time="23:40" monsoon-arrival-time="00:25" monsoon-departure-time="00:30"/>
-        <stop code="TIR" name="Tirur" departure-time="00:30" monsoon-departure-time="01:25"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="02:05" departure-time="02:10" monsoon-arrival-time="03:25" monsoon-departure-time="03:30"/>
-    </stops>
-</train>

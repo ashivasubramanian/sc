@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16307" name="Alleppey Cannanore Express">
+    <stoppages>
+            <stop code="CAL" name="Calicut" arrival-time="21:40" departure-time="21:45"/>
+            <stop code="FER" name="Ferok" departure-time="21:05"/>
+            <stop code="PAR" name="Parpanangadi" departure-time="20:55"/>
+            <stop code="TAN" name="Tanur" departure-time="20:45"/>
+            <stop code="TIR" name="Tirur" departure-time="20:35"/>
+            <stop code="TNVA" name="Tirunnavaya" departure-time="20:25"/>
+            <stop code="KUT" name="Kuttipuram" departure-time="20:15"/>
+            <stop code="PAT" name="Pattambi" departure-time="19:57"/>
+            <stop code="SRR" name="Shoranur-Junction" arrival-time="19:40" departure-time="19:45"/>
+    </stoppages>
+</train>

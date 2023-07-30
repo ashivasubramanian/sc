@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<train number="2978" name="Marusagar Express">
-    <stops>
-        <stop code="CAL" name="Calicut" arrival-time="23:35" departure-time="23:40" monsoon-arrival-time="01:15" monsoon-departure-time="01:20"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="02:05" departure-time="02:10" monsoon-arrival-time="03:50" monsoon-departure-time="03:55"/>
-    </stops>
-</train>

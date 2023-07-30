@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<train number="2653" name="Kerala Sampark Kranti Express">
-    <stops>
-        <stop code="CAL" station="Calicut" arrival-time="16:40" departure-time="16:45"/>
-        <stop code="SRR" station="Shoranur-Junction" arrival-time="14:40" departure-time="14:45"/>
-    </stops>
-</train>

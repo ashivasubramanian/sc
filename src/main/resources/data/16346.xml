@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16346" name="Netravati Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="19:10" departure-time="19:15"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="18:05"/>
+        <stop code="TIR" name="Tirur" arrival-time="17:45" departure-time="17:50"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="17:25"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="16:45" departure-time="16:50"/>
+    </stops>
+</train>

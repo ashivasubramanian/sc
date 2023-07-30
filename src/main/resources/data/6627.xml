@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<train number="6627" name="West Coast Express">
-    <stops>
-        <stop code="CAL" name="Calicut" arrival-time="00:05" departure-time="00:10"/>
-        <stop code="TIR" name="Tirur" departure-time="22:50"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="22:30"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="21:50" departure-time="21:55"/>
-    </stops>
-</train>

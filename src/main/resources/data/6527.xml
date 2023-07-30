@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<train number="6527" name="Yeswantpur Cannanore Express">
-    <stops>
-        <stop code="CAL" name="Calicut" arrival-time="08:15" departure-time="08:20"/>
-        <stop code="TIR" name="Tirur" departure-time="06:45"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="05:50" departure-time="05:55"/>
-    </stops>
-</train>

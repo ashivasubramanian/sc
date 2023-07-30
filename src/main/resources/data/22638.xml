@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22638" name="West Coast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="01:35" departure-time="01:40"/>
+        <stop code="TIR" name="Tirur" arrival-time="02:30" departure-time="02:35"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="02:55"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="04:10" departure-time="04:15"/>
+    </stops>
+</train>
