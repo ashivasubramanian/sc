@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="12602" name="Mangalore Chennai Mail">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="17:25" departure-time="17:30"/>
+        <stop code="CAL" name="Calicut" arrival-time="17:27" departure-time="17:30"/>
         <stop code="FER" name="Ferok" departure-time="17:45"/>
         <stop code="PAR" name="Parpanangadi" departure-time="18:05"/>
         <stop code="TAN" name="Tanur" departure-time="18:15"/>
-        <stop code="TIR" name="Tirur" departure-time="18:25"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="18:45"/>
-        <stop code="PAT" name="Pattambi" departure-time="19:05"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="19:35" departure-time="19:45"/>
+        <stop code="TIR" name="Tirur" departure-time="18:30"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="18:50"/>
+        <stop code="PAT" name="Pattambi" departure-time="19:10"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="19:30" departure-time="19:35"/>
     </stops>
 </train>

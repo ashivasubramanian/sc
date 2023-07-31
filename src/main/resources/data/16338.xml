@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="16338" name="Ernakulam Okha Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="00:20" departure-time="00:25"/>
-        <stop code="FER" name="Ferok" departure-time="23:55"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="23:35"/>
-        <stop code="TIR" name="Tirur" departure-time="23:15"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="22:55"/>
-        <stop code="PAT" name="Pattambi" departure-time="22:30"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="22:10" departure-time="22:15"/>
+        <stop code="CAL" name="Calicut" arrival-time="00:07" departure-time="00:10"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="23:40"/>
+        <stop code="TIR" name="Tirur" departure-time="23:25"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="23:10"/>
+        <stop code="PAT" name="Pattambi" departure-time="22:55"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="22:35" departure-time="22:40"/>
     </stops>
 </train>

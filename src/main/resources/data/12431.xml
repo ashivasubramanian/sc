@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="12431" name="Rajdhani Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="02:58" departure-time="03:00"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="00:58" departure-time="01:00"/>
+        <stop code="CAL" name="Calicut" arrival-time="22:17" departure-time="22:20"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="20:55" departure-time="21:00"/>
     </stops>

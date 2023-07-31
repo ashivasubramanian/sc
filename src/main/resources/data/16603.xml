@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="16603" name="Maveli Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="02:30" departure-time="02:35"/>
-        <stop code="TIR" name="Tirur" departure-time="03:20"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="03:40"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="05:05" departure-time="05:10"/>
+        <stop code="CAL" name="Calicut" arrival-time="21:07" departure-time="21:10"/>
+        <stop code="FER" name="Ferok" arrival-time="21:24" departure-time="21:25"/>
+        <stop code="TIR" name="Tirur" departure-time="21:55"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="22:15"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="23:15" departure-time="23:20"/>
     </stops>
 </train>

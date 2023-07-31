@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<train number="16311" name="Jodhpur Trivandrum Express">
+<train number="16311" name="Shri Ganganagar Kochuveli Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="17:45" departure-time="17:50" monsoon-arrival-time="20:30" monsoon-departure-time="20:35"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="20:30" departure-time="20:35" monsoon-arrival-time="23:05" monsoon-departure-time="23:10"/>
+        <stop code="CAL" name="Calicut" arrival-time="12:52" departure-time="12:55" monsoon-arrival-time="20:30" monsoon-departure-time="20:35"/>
+        <stop code="TIR" name="Tirur" arrival-time="13:28" departure-time="13:30" monsoon-arrival-time="20:30" monsoon-departure-time="20:35"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="15:00" departure-time="15:05" monsoon-arrival-time="23:05" monsoon-departure-time="23:10"/>
     </stops>
 </train>

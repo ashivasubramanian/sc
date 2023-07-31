@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="12218" name="Kerala Sampark Kranti Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="05:55" departure-time="06:00" monsoon-arrival-time="09:10" monsoon-departure-time="09:15"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="08:43" departure-time="08:45" monsoon-arrival-time="11:50" monsoon-departure-time="11:55"/>
+        <stop code="CAL" name="Calicut" arrival-time="04:32" departure-time="04:35" monsoon-arrival-time="09:10" monsoon-departure-time="09:15"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="06:05" departure-time="06:10" monsoon-arrival-time="11:50" monsoon-departure-time="11:55"/>
     </stops>
 </train>

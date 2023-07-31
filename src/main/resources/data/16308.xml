@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="16308" name="Cannanore Alleppey Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="06:40" departure-time="06:45"/>
-        <stop code="FER" name="Ferok" departure-time="07:00"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="07:20"/>
-        <stop code="TAN" name="Tanur" departure-time="07:30"/>
-        <stop code="TIR" name="Tirur" departure-time="07:40"/>
-        <stop code="TNVA" name="Tirunnavaya" departure-time="07:50"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="08:00"/>
-        <stop code="PAT" name="Pattambi" departure-time="08:20"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="08:50" departure-time="08:55"/>
+        <stop code="CAL" name="Calicut" arrival-time="06:37" departure-time="06:40"/>
+        <stop code="FER" name="Ferok" departure-time="06:55"/>
+        <stop code="VAL" name="Vallikunnu" departure-time="07:03"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="07:15"/>
+        <stop code="TAN" name="Tanur" departure-time="07:23"/>
+        <stop code="TIR" name="Tirur" departure-time="07:35"/>
+        <stop code="TNVA" name="Tirunnavaya" departure-time="07:45"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="07:55"/>
+        <stop code="PAT" name="Pattambi" departure-time="08:10"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="08:40" departure-time="08:45"/>
     </stops>
 </train>

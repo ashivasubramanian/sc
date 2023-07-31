@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="16528" name="Cannanore Yeswantpur Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="19:25" departure-time="19:30"/>
-        <stop code="TIR" name="Tirur" departure-time="20:30"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="21:50" departure-time="21:55"/>
+        <stop code="CAL" name="Calicut" arrival-time="19:27" departure-time="19:30"/>
+        <stop code="TIR" name="Tirur" departure-time="20:05"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="20:20"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="21:00" departure-time="21:05"/>
     </stops>
 </train>

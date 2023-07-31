@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="16629" name="Malabar Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="04:35" departure-time="04:40"/>
-        <stop code="FER" name="Ferok" departure-time="04:00"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="03:35"/>
-        <stop code="TAN" name="Tanur" departure-time="03:25"/>
-        <stop code="TIR" name="Tirur" departure-time="03:15"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="02:50"/>
-        <stop code="PAT" name="Pattambi" departure-time="02:30"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="02:10" departure-time="02:15"/>
+        <stop code="CAL" name="Calicut" arrival-time="04:42" departure-time="04:45"/>
+        <stop code="FER" name="Ferok" departure-time="04:15"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="03:41"/>
+        <stop code="TAN" name="Tanur" departure-time="03:33"/>
+        <stop code="TIR" name="Tirur" departure-time="03:25"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="02:35" departure-time="02:40"/>
     </stops>
 </train>

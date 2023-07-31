@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="16337" name="Okha Ernakulam Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="17:45" departure-time="17:50" monsoon-arrival-time="20:30" monsoon-departure-time="20:35"/>
-        <stop code="FER" name="Ferok" departure-time="18:05" monsoon-departure-time="20:50"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="18:25" monsoon-departure-time="21:10"/>
-        <stop code="TIR" name="Tirur" departure-time="18:45"  monsoon-departure-time="21:30"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="19:05" monsoon-departure-time="21:50"/>
-        <stop code="PAT" name="Pattambi" departure-time="19:25" monsoon-departure-time="22:30"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="20:30" departure-time="20:35" monsoon-arrival-time="23:05" monsoon-departure-time="23:10"/>
+        <stop code="CAL" name="Calicut" arrival-time="21:27" departure-time="21:30" monsoon-arrival-time="20:30" monsoon-departure-time="20:35"/>
+        <stop code="FER" name="Ferok" departure-time="21:45" monsoon-departure-time="20:50"/>
+        <stop code="PAR" name="Parpanangadi" departure-time="22:02" monsoon-departure-time="21:10"/>
+        <stop code="TIR" name="Tirur" departure-time="22:25"  monsoon-departure-time="21:30"/>
+        <stop code="KUT" name="Kuttipuram" departure-time="22:40" monsoon-departure-time="21:50"/>
+        <stop code="PAT" name="Pattambi" departure-time="23:05" monsoon-departure-time="22:30"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="23:50" departure-time="23:55" monsoon-arrival-time="23:05" monsoon-departure-time="23:10"/>
     </stops>
 </train>
