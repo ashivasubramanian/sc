@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16609" name="Thrissur - Kannur Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="09:32" departure-time="09:35"/>
+        <stop code="KAL" name="Kallayi" arrival-time="09:21" departure-time="09:22"/>
+        <stop code="FER" name="Ferok" arrival-time="09:12" departure-time="09:13"/>
+        <stop code="KAD" name="Kadalundi" arrival-time="09:02" departure-time="09:03"/>
+        <stop code="VAL" name="Vallikunnu" arrival-time="08:57" departure-time="08:58"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="08:52" departure-time="08:53"/>
+        <stop code="TAN" name="Tanur" arrival-time="08:42" departure-time="08:43"/>
+        <stop code="TIR" name="Tirur" arrival-time="08:34" departure-time="08:35"/>
+        <stop code="TNVA" name="Tirunnavaya" arrival-time="08:19" departure-time="08:20"/>
+        <stop code="KUT" name="Kuttipuram" rrival-time="08:09" departure-time="08:10"/>
+        <stop code="PAL" name="Pallipuram" arrival-time="07:54" departure-time="07:55"/>
+        <stop code="PAT" name="Pattambi" arrival-time="07:45" departure-time="07:46"/>
+        <stop code="KAR" name="Karakad" arrival-time="07:38" departure-time="07:39"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="07:27" departure-time="07:30"/>
+    </stops>
+</train>

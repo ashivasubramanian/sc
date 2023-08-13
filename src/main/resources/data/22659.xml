@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22659" name="Kochuveli - Yog Nagari Rishikesh Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="13:37" departure-time="13:40"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="12:15" departure-time="12:20"/>
+    </stops></train>

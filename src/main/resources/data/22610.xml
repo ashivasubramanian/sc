@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22610" name="Coimbatore - Mangaluru Central Intercity SF Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="09:12" departure-time="09:15"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="08:44" departure-time="08:45"/>
+        <stop code="TIR" name="Tirur" arrival-time="08:27" departure-time="08:28"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="07:47" departure-time="07:50"/>
+    </stops>
+</train>

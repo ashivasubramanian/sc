@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="10216" name="Ernakulam - Madgaon Weekly Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="16:47" departure-time="16:50"/>
+        <stop code="TIR" name="Tirur" arrival-time="16:04" departure-time="16:05"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="15:20" departure-time="15:25"/>
+    </stops>
+</train>

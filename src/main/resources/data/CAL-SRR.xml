@@ -41,7 +41,7 @@
         <train number="11097" name="Poorna Express" day-of-arrival="Su" direction="AwayFromHome" section-entry-time="22:37" monsoon-section-entry-time="00:25" section-leaving-time="00:15" monsoon-section-leaving-time="03:30"/>
         <train number="16305" name="Intercity Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="08:07" section-leaving-time="09:50"/>
         <train number="16650" name="Parasuram Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="14:00" section-leaving-time="17:00"/>
-        <train number="16307" name="Alleppey Cannanore Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="19:12" section-leaving-time="21:10"/>
+        <train number="16307" name="Alappuzha - Kannur Executive Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="19:12" section-leaving-time="21:10"/>
         <train number="22637" name="West Coast Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="23:45" section-leaving-time="01:15"/>
         <train number="16629" name="Malabar Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="02:35" section-leaving-time="04:45"/>
         <train number="16604" name="Maveli Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="01:55" section-leaving-time="03:30"/>
@@ -55,5 +55,37 @@
         <train number="16603" name="Maveli Express" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="21:07" section-leaving-time="23:20"/>
         <train number="12602" name="Mangalore Chennai Mail" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="17:27" section-leaving-time="19:35"/>
         <train number="16528" name="Cannanore Yeswantpur Express" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="19:27" section-leaving-time="21:05"/>
+        <train number="12685" name="MGR Chennai Central - Mangaluru Central SF Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="01:45" section-leaving-time="03:07"/>
+        <train number="22851" name="Vivek Express" day-of-arrival="Sa" direction="TowardsHome" section-entry-time="03:05" section-leaving-time="04:27"/>
+        <train number="16355" name="Antyodaya Express" day-of-arrival="Su,F" direction="TowardsHome" section-entry-time="03:05" section-leaving-time="04:27"/>
+        <train number="16855" name="Puducherry - Manguluru Central Express" day-of-arrival="F" direction="TowardsHome" section-entry-time="03:30" section-leaving-time="04:52"/>
+        <train number="12789" name="Kacheguda - Manguluru Central Express" day-of-arrival="W,Sa" direction="TowardsHome" section-entry-time="03:30" section-leaving-time="04:52"/>
+        <train number="16347" name="Thiruvananthapuram Central - Manguluru Central Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="04:10" section-leaving-time="06:05"/>
+        <train number="16857" name="Puducherry - Manguluru Central Express" day-of-arrival="Su" direction="TowardsHome" section-entry-time="04:15" section-leaving-time="05:37"/>
+        <train number="22149" name="Ernakulam - Pune SF Express" day-of-arrival="Tu,F" direction="TowardsHome" section-entry-time="04:15" section-leaving-time="05:37"/>
+        <train number="22653" name="Thiruvananthapuram Central - Hazrat Nizamuddin Superfast Express" day-of-arrival="Sa" direction="TowardsHome" section-entry-time="04:15" section-leaving-time="05:37"/>
+        <train number="22655" name="Ernakulam - Hazrat Nizamuddin Superfast Express" day-of-arrival="W" direction="TowardsHome" section-entry-time="04:15" section-leaving-time="05:37"/>
+        <train number="22114" name="Kochuveli - Mumbai LTT Superfast Express" day-of-arrival="M,Th" direction="TowardsHome" section-entry-time="07:15" section-leaving-time="08:32"/>
+        <train number="16609" name="Thrissur - Kannur Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="07:30" section-leaving-time="09:32"/>
+        <train number="22610" name="Coimbatore - Mangaluru Central Intercity SF Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="07:50" section-leaving-time="09:12"/>
+        <train number="20634" name="Thiruvananthapuram Central - Kasaragod Vande Bharat Express" day-of-arrival="Su,M,Tu,W,F,Sa" direction="TowardsHome" section-entry-time="10:04" section-leaving-time="11:03"/>
+        <train number="16565" name="Yesvantpur - Mangaluru Central Weekly Express" day-of-arrival="M" direction="TowardsHome" section-entry-time="10:25" section-leaving-time="11:50"/>
+        <train number="16323" name="Coimbatore - Mangaluru Central Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="10:35" section-leaving-time="13:17"/>
+        <train number="12076" name="Thiruvananthapuram Central - Kozhikode Jan Shatabdi Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="11:28" section-leaving-time="12:55"/>
+        <train number="12483" name="Kochuveli - Amritsar Weekly Superfast Express" day-of-arrival="W" direction="TowardsHome" section-entry-time="12:20" section-leaving-time="13:37"/>
+        <train number="22659" name="Kochuveli - Yog Nagari Rishikesh Superfast Express" day-of-arrival="F" direction="TowardsHome" section-entry-time="12:20" section-leaving-time="13:37"/>
+        <train number="16159" name="Chennai Egmore - Mangaluru Central Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="12:35" section-leaving-time="14:40"/>
+        <train number="12202" name="Kochuveli - Mumbai LTT Garib Rath Express" day-of-arrival="Su,Th" direction="TowardsHome" section-entry-time="14:15" section-leaving-time="15:32"/>
+        <train number="22476" name="Coimbatore - Hisar AC Superfast Express" day-of-arrival="Sa" direction="TowardsHome" section-entry-time="15:00" section-leaving-time="16:27"/>
+        <train number="20909" name="Kochuveli - Porbandar Weekly Superfast Express" day-of-arrival="Su" direction="TowardsHome" section-entry-time="15:10" section-leaving-time="16:27"/>
+        <train number="19577" name="Tirunelveli - Jamnagar Express" day-of-arrival="M,Tu" direction="TowardsHome" section-entry-time="15:10" section-leaving-time="16:27"/>
+        <train number="20931" name="Kochuveli - Indore Superfast Express" day-of-arrival="F" direction="TowardsHome" section-entry-time="15:10" section-leaving-time="16:27"/>
+        <train number="20923" name="Tirunelveli - Gandhidham Humsafar Express" day-of-arrival="Th" direction="TowardsHome" section-entry-time="15:10" section-leaving-time="16:27"/>
+        <train number="10216" name="Ernakulam - Madgaon Weekly Superfast Express" day-of-arrival="M" direction="TowardsHome" section-entry-time="15:25" section-leaving-time="16:47"/>
+        <train number="16608" name="Coimbatore - Kannur Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="16:30" section-leaving-time="18:32"/>
+        <train number="22630" name="Tirunelveli - Dadar Central Superfast Express" day-of-arrival="W" direction="TowardsHome" section-entry-time="17:05" section-leaving-time="18:22"/>
+        <train number="22633" name="Thiruvananthapuram Central - Hazrat Nizamuddin Superfast Express" day-of-arrival="W" direction="TowardsHome" section-entry-time="21:00" section-leaving-time="22:17"/>
+        <train number="12082" name="Thiruvananthapuram Central - Kannur Jan Shatabdi Express" day-of-arrival="Su,M,W,Th,F" direction="TowardsHome" section-entry-time="21:15" section-leaving-time="22:37"/>
+        <train number="19259" name="Kochuveli - Bhavnagar Terminus Express" day-of-arrival="Th" direction="TowardsHome" section-entry-time="22:40" section-leaving-time="00:07"/>
     </trains>
 </section>

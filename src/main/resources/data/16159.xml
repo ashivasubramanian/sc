@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16159" name="Chennai Egmore - Mangaluru Central Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="14:40" departure-time="14:45"/>
+        <stop code="FER" name="Ferok" arrival-time="14:09" departure-time="14:10"/>
+        <stop code="KAD" name="Kadalundi" arrival-time="13:59" departure-time="14:00"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="13:49" departure-time="13:50"/>
+        <stop code="TAN" name="Tanur" arrival-time="13:39" departure-time="13:40"/>
+        <stop code="TIR" name="Tirur" arrival-time="13:28" departure-time="13:30"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="13:09" departure-time="13:10"/>
+        <stop code="PAT" name="Pattambi" arrival-time="12:49" departure-time="12:50"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="12:30" departure-time="12:35"/>
+    </stops></train>

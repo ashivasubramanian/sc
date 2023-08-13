@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16608" name="Coimbatore - Kannur Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="18:22" departure-time="18:25"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="17:02" departure-time="17:05"/>
+    </stops>
+</train>

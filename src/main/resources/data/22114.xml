@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22114" name="Kochuveli - Mumbai LTT Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="08:32" departure-time="08:35"/>
+        <stop code="TIR" name="Tirur" arrival-time="07:54" departure-time="07:55"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="07:10" departure-time="07:15"/>
+    </stops>
+</train>

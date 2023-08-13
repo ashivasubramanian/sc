@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="20634" name="Thiruvananthapuram Central - Kasaragod Vande Bharat Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="11:03" departure-time="11:05"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="10:02" departure-time="10:04"/>
+    </stops>
+</train>

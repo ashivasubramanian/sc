@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22633" name="Thiruvananthapuram Central - Hazrat Nizamuddin Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="22:17" departure-time="22:20"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="20:55" departure-time="21:00"/>
+    </stops>
+</train>

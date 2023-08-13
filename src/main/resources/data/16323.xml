@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16323" name="Coimbatore - Mangaluru Central Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="13:17" departure-time="13:20"/>
+        <stop code="KAL" name="Kallayi" arrival-time="12:49" departure-time="12:50"/>
+        <stop code="FER" name="Ferok" arrival-time="12:39" departure-time="12:40"/>
+        <stop code="KAD" name="Kadalundi" arrival-time="12:24" departure-time="12:25"/>
+        <stop code="VAL" name="Vallikunnu" arrival-time="12:16" departure-time="12:17"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="12:09" departure-time="12:10"/>
+        <stop code="TAN" name="Tanur" arrival-time="11:59" departure-time="12:00"/>
+        <stop code="TIR" name="Tirur" arrival-time="11:48" departure-time="11:50"/>
+        <stop code="TNVA" name="Tirunnavaya" arrival-time="11:39" departure-time="11:40"/>
+        <stop code="KUT" name="Kuttipuram" rrival-time="11:29" departure-time="11:30"/>
+        <stop code="PAL" name="Pallipuram" arrival-time="11:14" departure-time="11:15"/>
+        <stop code="PAT" name="Pattambi" arrival-time="10:54" departure-time="10:55"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="10:25" departure-time="10:35"/>
+    </stops>
+</train>

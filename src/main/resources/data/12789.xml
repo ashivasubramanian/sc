@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="12789" name="Kacheguda - Manguluru Central Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="04:52" departure-time="04:55"/>
+        <stop code="TIR" name="Tirur" arrival-time="04:08" departure-time="04:10"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="03:25" departure-time="03:30"/>
+    </stops>
+</train>

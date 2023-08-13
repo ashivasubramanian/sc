@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16608" name="Coimbatore - Kannur Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="18:32" departure-time="18:35"/>
+        <stop code="KAL" name="Kallayi" arrival-time="18:19" departure-time="18:20"/>
+        <stop code="FER" name="Ferok" arrival-time="18:09" departure-time="18:10"/>
+        <stop code="KAD" name="Kadalundi" arrival-time="17:59" departure-time="18:00"/>
+        <stop code="VAL" name="Vallikunnu" arrival-time="17:49" departure-time="17:50"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="17:44" departure-time="17:45"/>
+        <stop code="TAN" name="Tanur" arrival-time="17:34" departure-time="17:35"/>
+        <stop code="TIR" name="Tirur" arrival-time="17:24" departure-time="17:25"/>
+        <stop code="TNVA" name="Tirunnavaya" arrival-time="17:14" departure-time="17:15"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="17:04" departure-time="17:05"/>
+        <stop code="PAL" name="Pallipuram" arrival-time="16:52" departure-time="16:53"/>
+        <stop code="PAT" name="Pattambi" arrival-time="16:44" departure-time="16:45"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="16:27" departure-time="16:30"/>
+    </stops>
+</train>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="20923" name="Tirunelveli - Gandhidham Humsafar Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="16:27" departure-time="16:30"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="15:05" departure-time="15:10"/>
+    </stops>
+</train>
