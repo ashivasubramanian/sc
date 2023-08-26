@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16566" name="Mangaluru Central - Yesvantpur Weekly Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="23:30" departure-time="23:35"/>
+        <stop code="TIR" name="Tirur" arrival-time="00:08" departure-time="00:10"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="01:10" departure-time="01:20"/>
+    </stops>
+</train>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="12075" name="Kozhikode - Thiruvananthapuram Central Jan Shatabdi Express">
+    <stops>
+        <stop code="CAL" name="Calicut" departure-time="13:45"/>
+        <stop code="TIR" name="Tirur" arrival-time="14:19" departure-time="14:20"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="14:57" departure-time="15:00"/>
+    </stops>
+</train>

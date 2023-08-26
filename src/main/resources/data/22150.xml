@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22150" name="Pune - Ernakulam SF Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="17:07" departure-time="17:10"/>
+        <stop code="TIR" name="Tirur" arrival-time="17:49" departure-time="17:50"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="18:50" departure-time="18:55"/>
+    </stops>
+</train>

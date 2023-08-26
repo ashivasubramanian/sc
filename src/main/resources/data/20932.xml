@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="20932" name="Indore - Kochuveli Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="07:22" departure-time="07:25"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="09:30" departure-time="09:35"/>
+    </stops>
+</train>

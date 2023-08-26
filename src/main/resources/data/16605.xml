@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16605" name="Ernad Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="11:07" departure-time="11:10"/>
+        <stop code="FER" name="Ferok" arrival-time="11:24" departure-time="11:25"/>
+        <stop code="VAL" name="Vallikunnu" arrival-time="11:34" departure-time="11:35"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="11:44" departure-time="11:45"/>
+        <stop code="TAN" name="Tanur" arrival-time="11:54" departure-time="11:55"/>
+        <stop code="TIR" name="Tirur" arrival-time="12:08" departure-time="12:10"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="12:29" departure-time="12:30"/>
+        <stop code="PAT" name="Pattambi" arrival-time="12:49" departure-time="12:50"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="13:25" departure-time="13:30"/>
+    </stops>
+</train>

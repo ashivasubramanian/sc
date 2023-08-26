@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="12484" name="Amritsar - Kochuveli Weekly Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="04:32" departure-time="04:35"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="06:20" departure-time="06:25"/>
+    </stops></train>

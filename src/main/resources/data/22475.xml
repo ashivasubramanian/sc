@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22475" name="Hisar - Coimbatore AC Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="12:47" departure-time="12:50"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="14:05" departure-time="14:10"/>
+    </stops>
+</train>

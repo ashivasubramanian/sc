@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="12201" name="Mumbai LTT - Kochuveli Garib Rath Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="13:52" departure-time="13:55"/>
+        <stop code="TIR" name="Tirur" arrival-time="14:29" departure-time="14:30"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="15:30" departure-time="15:35"/>
+    </stops>
+</train>

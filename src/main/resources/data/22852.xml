@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22852" name="Vivek Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="02:20" departure-time="02:25"/>
+        <stop code="TIR" name="Tirur" arrival-time="02:58" departure-time="03:00"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="03:40" departure-time="03:45"/>
+    </stops>
+</train>

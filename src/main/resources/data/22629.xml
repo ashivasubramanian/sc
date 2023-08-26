@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="22629" name="Dadar Central - Tirunelveli Superfast Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="17:35" departure-time="17:37"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="19:23" departure-time="19:25"/>
+    </stops>
+</train>

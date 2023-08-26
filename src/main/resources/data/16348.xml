@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<train number="16348" name="Manguluru Central - Thiruvananthapuram Central Express">
+    <stops>
+        <stop code="CAL" name="Calicut" arrival-time="18:22" departure-time="18:25"/>
+        <stop code="FER" name="Ferok" arrival-time="18:39" departure-time="18:40"/>
+        <stop code="VAL" name="Vallikunnu" arrival-time="18:49" departure-time="18:50"/>
+        <stop code="PAR" name="Parappanangadi" arrival-time="18:59" departure-time="19:00"/>
+        <stop code="TAN" name="Tanur" arrival-time="19:07" departure-time="19:08"/>
+        <stop code="TIR" name="Tirur" arrival-time="19:18" departure-time="19:20"/>
+        <stop code="KUT" name="Kuttippuram" arrival-time="19:39" departure-time="19:40"/>
+        <stop code="PAT" name="Pattambi" arrival-time="19:59" departure-time="20:00"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="20:35" departure-time="20:40"/>
+    </stops>
+</train>

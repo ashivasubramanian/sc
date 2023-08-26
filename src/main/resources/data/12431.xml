@@ -4,3 +4,4 @@
         <stop code="CAL" name="Calicut" arrival-time="22:17" departure-time="22:20"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="20:55" departure-time="21:00"/>
     </stops>
+</train>
