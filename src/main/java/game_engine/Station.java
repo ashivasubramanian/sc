@@ -2,6 +2,9 @@ package game_engine;
 
 import common.models.SignalAspect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The <code>Station</code> class represents a station on the section. Any station
  * contains tracks, points and signals, which lie under the station's control.
