@@ -1,7 +1,5 @@
 package game_engine;
 
-import java.util.Vector;
-
 import common.models.SignalAspect;
 
 /**
@@ -22,27 +20,6 @@ import common.models.SignalAspect;
 public class Station {
 
     /**
-     * A constant <code>Integer</code> for the main track.
-     */
-    final Integer MAIN_TRACK = new Integer(4);
-
-    /**
-	 * A constant <code>Integer</code> for the first loop track.
-	 * Note that a station may or may not have loop tracks, but all stations shall
-	 * contain a main track. Hence the presence of this track in a station is
-	 * not guaranteed.
-     */
-    final Integer LOOP1_TRACK = new Integer(5);
-
-    /**
-	 * A constant <code>Integer</code> for the second loop track.
-	 * Note that a station may or may not have loop tracks, but all stations shall
-	 * contain a main track. Hence the presence of this track in a station is
-	 * not guaranteed.
-     */
-    final Integer LOOP2_TRACK = new Integer(6);
-
-    /**
      * The name of the station. This is initialized by the constructor and is
      * obtained using <code>getName()</code>.
      */
@@ -52,23 +29,13 @@ public class Station {
      * A collection of tracks inside the station. This is initialized by the
      * constructor.
      */
-    Vector<Integer> tracks;
+    List<Track> tracks;
 
     /**
      * A collection of points inside the station. This is initialized by the
      * constructor.
      */
-    Vector<Integer> points;
-
-    /**
-     * An array of aspects inside the station. This is
-     * initialized to STOP by the constructor. <p>At any point during the game, any
-     * aspect of the station can be changed using the
-     * <code>setAspect(int, String)</code> method. All the aspects can be retrieved
-     * using <code>getAspects()</code>. Currently, there is no way to obtain only
-     * a particular aspect.
-     */
-    SignalAspect[] aspects;
+    List<Track.TrackType> points;
 
     /**
      * The distance of the station from the home station.
@@ -87,16 +54,15 @@ public class Station {
      */
     public Station(org.w3c.dom.Element objStationData) {
         name = objStationData.getAttribute("name");
-        aspects = new SignalAspect[]{SignalAspect.STOP, SignalAspect.STOP};
 
-        points = new Vector<>();
-        points.add(MAIN_TRACK);
-        points.add(MAIN_TRACK);
+        points = new ArrayList<>();
+        points.add(Track.TrackType.MAIN_TRACK);
+        points.add(Track.TrackType.MAIN_TRACK);
 
-        tracks = new Vector<>();
-        Integer track_array[] = {MAIN_TRACK, LOOP1_TRACK, LOOP2_TRACK};
+        tracks = new ArrayList<>();
+        Track.TrackType track_array[] = {Track.TrackType.MAIN_TRACK, Track.TrackType.LOOP_TRACK, Track.TrackType.LOOP_TRACK};
         for (int i = 0; i < Integer.parseInt(objStationData.getAttribute("no-of-tracks")); i++) {
-            tracks.add(track_array[i]);
+            tracks.add(new Track(track_array[i]));
         }
 
         distance_from_home = Integer.parseInt(objStationData.getAttribute("distance-from-home"));
@@ -127,7 +93,7 @@ public class Station {
      * @return An <code>Integer</code> array that contains both aspects.
      */
     public SignalAspect[] getAspects() {
-        return aspects;
+        return tracks.get(0).getAspects();
     }
 
     /**
@@ -137,6 +103,10 @@ public class Station {
      * @param aspect The aspect to be set to <code>signal</code>
      */
     public void setAspect(int signal, SignalAspect aspect) {
-        aspects[signal] = aspect;
+        tracks.forEach(track -> track.getAspects()[signal] = aspect);
+    }
+
+    public List<Track> getTracks() {
+        return this.tracks;
     }
 }
