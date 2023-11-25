@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <train number="12686" name="Mangaluru Central - MGR Chennai Central SF Express">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="202:7" departure-time="20:30"/>
+        <stop code="CAL" name="Calicut" arrival-time="20:27" departure-time="20:30"/>
         <stop code="TIR" name="Tirur" arrival-time="21:08" departure-time="21:10"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="21:50" departure-time="21:55"/>
     </stops>
