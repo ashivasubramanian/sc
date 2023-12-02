@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 
 import common.models.SignalAspect;
 import game_engine.Game;
+import game_engine.dto.StationDto;
+
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.SwingUtilities;
 
@@ -40,13 +43,18 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	JComboBox<SignalAspect> objAspectTowardsShoranurValue;
 
 	JComboBox<SignalAspect> objAspectTowardsCalicutValue;
-    
-        private Game game;
-        
-        public StationsTab(Game game) {
-            this.game = game;
-            SwingUtilities.invokeLater(this);
-        }
+
+	private Game game;
+
+	/**
+	 * A list of <code>StationDto</code> objects which contain the latest information on stations, and which is pulled frequently from <code>Game</code>.
+	 */
+	private List<StationDto> latestStationInformation;
+
+	public StationsTab(Game game) {
+		this.game = game;
+		SwingUtilities.invokeLater(this);
+	}
 
 	/**
 	 * Initializes all the controls that are available under the Stations tab of the
@@ -166,5 +174,9 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
             this.game.setStationAspect(objStations.getSelectedItem().toString(),
 		    new SignalAspect[] { (SignalAspect) objAspectTowardsCalicutValue.getSelectedItem(),
 			    (SignalAspect) objAspectTowardsShoranurValue.getSelectedItem() });
+	}
+
+	public void setLatestStationInformation(List<StationDto> latestStationInformation) {
+		this.latestStationInformation = latestStationInformation;
 	}
 }

@@ -91,6 +91,11 @@ public class GameScreen extends JFrame implements Runnable {
     private Game game;
     private GameInfoPanel gameInfoPanel;
 
+    /**
+     * A reference to the Stations tab that can be passed to the SwingWorker threads so that station aspects can be updated.
+     */
+    private StationsTab stationsTab;
+
     public GameScreen(String username, Game game, String score) {
         this.userName = username;
         this.game = game;
@@ -112,9 +117,10 @@ public class GameScreen extends JFrame implements Runnable {
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         gameInfoPanel = new GameInfoPanel(screenSize, userName, score, game);
+        stationsTab = new StationsTab(this.game);
         new TimeWorker(gameInfoPanel, screenSize).execute();
         new TrainPositionsWorker(gameInfoPanel, game, screenSize).execute();
-        new StationAspectsWorker(gameInfoPanel, game, screenSize).execute();
+        new StationAspectsWorker(gameInfoPanel, stationsTab, game, screenSize).execute();
     }
 
     /**
@@ -134,7 +140,6 @@ public class GameScreen extends JFrame implements Runnable {
         setTitle("Section Controller");
         
         objTabPane = new JTabbedPane();
-        StationsTab stationsTab = new StationsTab(this.game);
         objTabPane.addTab("Stations", stationsTab);
         TrainsTab trainsTab = new TrainsTab(this.game);
         objTabPane.addTab("Trains", trainsTab);
