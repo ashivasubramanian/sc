@@ -79,6 +79,7 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
                     .collect(Collectors.toList())
                     .toArray(new String[0]);
 	    objStations = new JComboBox<>(stationNames);
+		objStations.addActionListener(this);
 	    objConstraints.gridx = 1;
 	    objConstraints.gridy = 0;
 	    objLayout.setConstraints(objStations, objConstraints);
@@ -165,17 +166,30 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	}
 
 	/**
-	 * Handles the click event of the Set button.
+	 * Handles click events on the Stations tab
 	 * 
 	 * @param objActionEvent
-	 *            The <code>ActionEvent</code> that represents the button click.
+	 *            The <code>ActionEvent</code> that represents the click.
 	 */
 	public void actionPerformed(ActionEvent objActionEvent) {
-            this.game.setStationAspect(objStations.getSelectedItem().toString(),
-		    new SignalAspect[] { (SignalAspect) objAspectTowardsCalicutValue.getSelectedItem(),
-			    (SignalAspect) objAspectTowardsShoranurValue.getSelectedItem() });
+		if (objActionEvent.getSource() instanceof JButton) {
+			this.game.setStationAspect(objStations.getSelectedItem().toString(),
+					new SignalAspect[]{(SignalAspect) objAspectTowardsCalicutValue.getSelectedItem(),
+							(SignalAspect) objAspectTowardsShoranurValue.getSelectedItem()});
+		} else if (objActionEvent.getSource() instanceof JComboBox) {
+			String selectedStationName = ((JComboBox<String>) objActionEvent.getSource()).getSelectedItem().toString();
+			StationDto selectedStation = latestStationInformation.stream()
+					.filter(stationDto -> stationDto.getName().equals(selectedStationName)).findFirst().get();
+			objAspectTowardsCalicutValue.setSelectedItem(selectedStation.getAspects()[0]);
+			objAspectTowardsShoranurValue.setSelectedItem(selectedStation.getAspects()[1]);
+		}
 	}
 
+	/**
+	 * Sets the latest station information into the Stations tab
+	 *
+	 * @param latestStationInformation the up-to-date information on stations passed to us by SwingWorkers.
+	 */
 	public void setLatestStationInformation(List<StationDto> latestStationInformation) {
 		this.latestStationInformation = latestStationInformation;
 	}
