@@ -53,8 +53,10 @@ public class TrainTest {
 	@Test
 	public void stationListMustBePopulatedOnInitialization() {
 		try {
-			Train someTrain = new Train("616","Poorna Express", "TowardsHome");
-			assertTrue(someTrain.stations.size() > 0, "Station list not set.");
+			Train someTrain = new Train("616","Calicut Shoranur Passenger", "AwayFromHome");
+			assertEquals(2, someTrain.stations.size());
+			assertEquals("Calicut", someTrain.stations.get(0));
+			assertEquals("Shoranur-Junction", someTrain.stations.get(1));
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
