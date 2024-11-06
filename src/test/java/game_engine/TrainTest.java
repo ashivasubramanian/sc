@@ -69,8 +69,8 @@ public class TrainTest {
 	@Test
 	public void stationListMustBeReversedForTrainsTowardsHome() {
 		try {
-			Train homeTrain = new Train("616", "Mangala Lakshadweep Express", "TowardsHome");
-			Train awayTrain = new Train("2653", "Mangala Lakshadweep Express", "AwayFromHome");
+			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome");
+			Train awayTrain = new Train("2653", "Kerala Sampark Kranti Express", "AwayFromHome");
 			assertEquals(homeTrain.stations.get(0), awayTrain.stations.get(awayTrain.stations.size() - 1),
 					"Train directions are not reversed.");
 		} catch (IOException ioe) {
