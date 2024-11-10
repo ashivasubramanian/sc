@@ -1,17 +1,16 @@
 package game_engine;
 
 import common.models.TrainDirection;
-import game_engine.Train;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TrainTest {
 	
@@ -71,7 +70,8 @@ public class TrainTest {
 		try {
 			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome");
 			Train awayTrain = new Train("2653", "Kerala Sampark Kranti Express", "AwayFromHome");
-			assertEquals(homeTrain.stations.get(0), awayTrain.stations.get(awayTrain.stations.size() - 1),
+			assertEquals(homeTrain.stations.get(0),
+					awayTrain.stations.get(awayTrain.stations.size() - 1),
 					"Train directions are not reversed.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
@@ -81,6 +81,22 @@ public class TrainTest {
 			pce.printStackTrace();
 		}
 	}
+
+	@Test
+	public void arrivalAndDepartureTimesAtStationsMustBePopulatedOnLoad() {
+		try {
+			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome");
+			assertEquals("00:00", homeTrain.arrivalTimes.get("Calicut").format(DateTimeFormatter.ofPattern("HH:mm")),
+					"Train arrival time is incorrect.");
+			assertEquals("00:05", homeTrain.departureTimes.get("Calicut").format(DateTimeFormatter.ofPattern("HH:mm")),
+					"Train departure  time is incorrect.");
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (SAXException saxe) {
+			saxe.printStackTrace();
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		}	}
 	
 	@Test
 	public void initializingTheTrainShouldStartTheTrainThread() {

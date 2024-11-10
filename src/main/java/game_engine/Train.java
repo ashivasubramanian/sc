@@ -1,18 +1,19 @@
 package game_engine;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Vector;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import common.models.TrainDirection;
+import game_engine.data_access.DataAccess;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import game_engine.data_access.DataAccess;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Vector;
 
 
 /**
@@ -62,14 +63,14 @@ public class Train extends Thread
  	 * keys of the <code>Hashtable</code> are the names of the stations where it
  	 * halts.
 	 */
-	HashMap<String,String> arrivalTimes;
+	HashMap<String,LocalDateTime> arrivalTimes;
 
 	/**
  	 * A <code>Hashtable</code> of departure times of the train at its halts.
  	 * The keys of the <code>Hashtable</code> are the names of the stations
  	 * where it halts.
 	 */
-	HashMap<String,String> departureTimes;
+	HashMap<String,LocalDateTime> departureTimes;
 
 	/**
 	 * The distance of the train from Calicut.
@@ -124,12 +125,22 @@ public class Train extends Thread
 		Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
 		if(stops.size() > 0) {
 			for (Element stop : stops) {
-				stations.add( stop.getAttribute("name"));
-				arrivalTimes.put( stop.getAttribute("name"), 
-					stop.getAttribute("arrival-time"));
-				departureTimes.put( stop.getAttribute("name"), 
-					stop.getAttribute("departure-time"));
-				
+				stations.add(stop.getAttribute("name"));
+
+				String arrivalTimeString = stop.getAttribute("arrival-time");
+				int[] arrivalTimeIntArray = Arrays.stream(arrivalTimeString.split(":"))
+						.mapToInt(Integer::valueOf).toArray();
+				arrivalTimes.put( stop.getAttribute("name"),
+						LocalDateTime.of(LocalDate.now(),
+								LocalTime.of(arrivalTimeIntArray[0], arrivalTimeIntArray[1])));
+
+				String departureTimeString = stop.getAttribute("departure-time");
+				int[] departureTimeIntArray = Arrays.stream(departureTimeString.split(":"))
+						.mapToInt(Integer::valueOf).toArray();
+				departureTimes.put( stop.getAttribute("name"),
+					LocalDateTime.of(LocalDate.now(),
+					LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1])));
+
 			}
 		}
 		//Reversing the distances if travelling towards home
@@ -154,14 +165,7 @@ public class Train extends Thread
 		String station = stations.get(0);
 		station = station.replace(' ','-');
 		String time = "";
-		if((arrivalTimes.get(station)).length() > 0)
-			time = arrivalTimes.get(station) + ":00";
-		else if((departureTimes.get(station)).length() > 0)
-			time = departureTimes.get(station) + ":00";
-		String timecomponents[] = time.split(":");
-		LocalDateTime first_station_time = LocalDateTime.now()
-				.withHour(Integer.parseInt(timecomponents[0])).withMinute(Integer.parseInt(timecomponents[1]))
-				.withSecond(Integer.parseInt(timecomponents[2]));
+		LocalDateTime first_station_time = arrivalTimes.get(station);
 		int count = 0;
 		while(true)
 		{
