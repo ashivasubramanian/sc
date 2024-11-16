@@ -6,7 +6,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,9 +52,9 @@ public class TrainTest {
 	public void stationListMustBePopulatedOnInitialization() {
 		try {
 			Train someTrain = new Train("616","Calicut Shoranur Passenger", "AwayFromHome");
-			assertEquals(2, someTrain.stations.size());
-			assertEquals("Calicut", someTrain.stations.get(0));
-			assertEquals("Shoranur-Junction", someTrain.stations.get(1));
+			assertEquals(2, someTrain.getScheduledStops().size());
+			assertEquals("CAL", someTrain.getScheduledStops().get(0).getStationCode());
+			assertEquals("SRR", someTrain.getScheduledStops().get(1).getStationCode());
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
@@ -70,8 +69,8 @@ public class TrainTest {
 		try {
 			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome");
 			Train awayTrain = new Train("2653", "Kerala Sampark Kranti Express", "AwayFromHome");
-			assertEquals(homeTrain.stations.get(0),
-					awayTrain.stations.get(awayTrain.stations.size() - 1),
+			assertEquals(homeTrain.getScheduledStops().get(0).getStationCode(),
+					awayTrain.getScheduledStops().get(awayTrain.getScheduledStops().size() - 1).getStationCode(),
 					"Train directions are not reversed.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
@@ -86,9 +85,11 @@ public class TrainTest {
 	public void arrivalAndDepartureTimesAtStationsMustBePopulatedOnLoad() {
 		try {
 			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome");
-			assertEquals("00:00", homeTrain.arrivalTimes.get("Calicut").format(DateTimeFormatter.ofPattern("HH:mm")),
+			TrainSchedule calicutStop = homeTrain.getScheduledStops().stream()
+					.filter(stop -> stop.getStationCode().equals("CAL")).findFirst().get();
+			assertEquals("00:00", calicutStop.getArrivalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
 					"Train arrival time is incorrect.");
-			assertEquals("00:05", homeTrain.departureTimes.get("Calicut").format(DateTimeFormatter.ofPattern("HH:mm")),
+			assertEquals("00:05", calicutStop.getDepartureTime().format(DateTimeFormatter.ofPattern("HH:mm")),
 					"Train departure  time is incorrect.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();

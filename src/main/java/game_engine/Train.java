@@ -11,9 +11,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.*;
 
 
 /**
@@ -47,30 +45,15 @@ public class Train extends Thread
 	int lag;
 
 	/**
-	 * A <code>String</code> collection of stations on the section where the
-	 * train will halt.
-	 */
-	Vector<String> stations;
-	
-	/**
 	 * A <code>HashMap</code> that stores the distances of stations that the
 	 * train halts.
 	 */
 	HashMap<String,Integer> distances;
 
 	/**
- 	 * A <code>Hashtable</code> of arrival times of the train at its halts. The
- 	 * keys of the <code>Hashtable</code> are the names of the stations where it
- 	 * halts.
+	 * A collection of stations where the train will stop.
 	 */
-	HashMap<String,LocalDateTime> arrivalTimes;
-
-	/**
- 	 * A <code>Hashtable</code> of departure times of the train at its halts.
- 	 * The keys of the <code>Hashtable</code> are the names of the stations
- 	 * where it halts.
-	 */
-	HashMap<String,LocalDateTime> departureTimes;
+	private List<TrainSchedule> scheduledStops;
 
 	/**
 	 * The distance of the train from Calicut.
@@ -95,9 +78,7 @@ public class Train extends Thread
 	{
 		this.no = trainNo;
 		this.name = trainName;
-		stations = new Vector<>();
-		arrivalTimes = new HashMap<>();
-		departureTimes = new HashMap<>();
+		scheduledStops = new ArrayList<>();
 		distances = new HashMap<>();
 		distance = 0;
 		lag = 0;
@@ -125,27 +106,26 @@ public class Train extends Thread
 		Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
 		if(stops.size() > 0) {
 			for (Element stop : stops) {
-				stations.add(stop.getAttribute("name"));
+				String stationCode = stop.getAttribute("code");
 
 				String arrivalTimeString = stop.getAttribute("arrival-time");
 				int[] arrivalTimeIntArray = Arrays.stream(arrivalTimeString.split(":"))
 						.mapToInt(Integer::valueOf).toArray();
-				arrivalTimes.put( stop.getAttribute("name"),
-						LocalDateTime.of(LocalDate.now(),
-								LocalTime.of(arrivalTimeIntArray[0], arrivalTimeIntArray[1])));
+				LocalDateTime arrivalTime = LocalDateTime.of(LocalDate.now(),
+								LocalTime.of(arrivalTimeIntArray[0], arrivalTimeIntArray[1]));
 
 				String departureTimeString = stop.getAttribute("departure-time");
 				int[] departureTimeIntArray = Arrays.stream(departureTimeString.split(":"))
 						.mapToInt(Integer::valueOf).toArray();
-				departureTimes.put( stop.getAttribute("name"),
-					LocalDateTime.of(LocalDate.now(),
-					LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1])));
+				LocalDateTime departureTime = LocalDateTime.of(LocalDate.now(),
+					LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
+				scheduledStops.add(new TrainSchedule(stationCode, arrivalTime, departureTime));
 
 			}
 		}
 		//Reversing the distances if travelling towards home
 		if (direction == TrainDirection.TOWARDS_HOME)
-			java.util.Collections.reverse(stations);
+			java.util.Collections.reverse(scheduledStops);
 	}
 
 	/**
@@ -162,10 +142,7 @@ public class Train extends Thread
 		between initialTime and the time at first station. Depending upon this, we
 		calculate the distance the train would have crossed as 60(the MPS) * seconds. We
 		then draw it on the screen.*/
-		String station = stations.get(0);
-		station = station.replace(' ','-');
-		String time = "";
-		LocalDateTime first_station_time = arrivalTimes.get(station);
+		LocalDateTime first_station_time = scheduledStops.get(0).getArrivalTime();
 		int count = 0;
 		while(true)
 		{
@@ -238,4 +215,8 @@ public class Train extends Thread
     public String getTrainName() {
         return this.name;
     }
+
+	public List<TrainSchedule> getScheduledStops() {
+		return this.scheduledStops;
+	}
 }
