@@ -1,6 +1,7 @@
 package game_engine;
 
 import common.models.TrainDirection;
+import common.models.TrainRunningStatus;
 import game_engine.data_access.DataAccess;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -8,6 +9,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -66,6 +68,17 @@ public class Train extends Thread
 	TrainDirection direction;
 
 	/**
+	 * Used for mocking time operations for testing purposes.
+	 * By default, it aligns to system time.
+	 */
+	private Clock systemClock;
+
+	/**
+	 * Stores the current position of the train.
+	 */
+	private TrainPosition trainPosition;
+
+	/**
 	 * Constructor that initializes the <code>Train</code>.
 	 * The constructor then starts the thread.
 	 *
@@ -74,8 +87,24 @@ public class Train extends Thread
 	 * @param direction The direction in which the train is travelling.
 	 */
 	public Train(String trainNo, String trainName, String direction)
-			throws IOException, SAXException, ParserConfigurationException
-	{
+			throws IOException, SAXException, ParserConfigurationException {
+		this(Clock.systemDefaultZone(), trainNo, trainName, direction);
+	}
+
+	/**
+	 * Constructor used for testing purposes.
+	 *
+	 * @param mockClock mock instance of <code>Clock</code> that can be used for testing purposes.
+	 * @param trainNo   The number of the train.
+	 * @param trainName The name of the train.
+	 * @param direction The direction in which the train is travelling.
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
+	public Train(Clock mockClock, String trainNo, String trainName, String direction)
+			throws IOException, ParserConfigurationException, SAXException {
+		this.systemClock = mockClock;
 		this.no = trainNo;
 		this.name = trainName;
 		scheduledStops = new ArrayList<>();
@@ -87,8 +116,10 @@ public class Train extends Thread
 		else if(direction.equals("AwayFromHome"))
 			this.direction = TrainDirection.AWAY_FROM_HOME;
 		populateTrainData();
+		determineTrainPosition();
 		start();
 	}
+
 
 	/**
 	 * Populates the train with the list of stations where the train halts,
@@ -126,6 +157,17 @@ public class Train extends Thread
 		//Reversing the distances if travelling towards home
 		if (direction == TrainDirection.TOWARDS_HOME)
 			java.util.Collections.reverse(scheduledStops);
+	}
+
+	private void determineTrainPosition() {
+		LocalDateTime currentTime = LocalDateTime.now(this.systemClock);
+		for (TrainSchedule schedule : scheduledStops) {
+			if (schedule.getArrivalTime().equals(currentTime) || schedule.getDepartureTime().equals(currentTime)
+					|| (schedule.getArrivalTime().isBefore(currentTime) && schedule.getDepartureTime().isAfter(currentTime))) {
+				trainPosition = new TrainPosition(TrainRunningStatus.SCHEDULED_STOP);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -218,5 +260,13 @@ public class Train extends Thread
 
 	public List<TrainSchedule> getScheduledStops() {
 		return this.scheduledStops;
+	}
+
+	/**
+	 * Returns the current train position.
+	 * @return the current position
+	 */
+	public TrainPosition getTrainPosition() {
+		return this.trainPosition;
 	}
 }

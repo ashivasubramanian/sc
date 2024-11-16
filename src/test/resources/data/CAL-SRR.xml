@@ -2,6 +2,7 @@
 <section mps="60" home-station="CAL">
     <stations>
         <station code="CAL" name="Calicut" distance-from-home="0" no-of-tracks="3" no-of-platforms="3"/>
+        <station code="TIR" name="Tirur" distance-from-home="41" no-of-tracks="2" no-of-platforms="1"/>
         <station code="SRR" name="Shoranur Junction" distance-from-home="86" no-of-tracks="3" no-of-platforms="3"/>
     </stations>
     <trains>

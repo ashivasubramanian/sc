@@ -1,11 +1,16 @@
 package game_engine;
 
 import common.models.TrainDirection;
+import common.models.TrainRunningStatus;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -112,6 +117,24 @@ public class TrainTest {
 			pce.printStackTrace();
 		}
 		assertEquals(Thread.State.RUNNABLE, train.getState());
+	}
+
+	@Test
+	public void shouldDetermineTrainIsAtStationOnGameLoad() throws IOException, ParserConfigurationException, SAXException {
+		LocalDateTime now = LocalDateTime.now();
+		String mockTimeStringAtIntermediateStation = String.format("%1$s-%2$s-%3$sT05:16:00Z",
+				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+		Clock mockClockAtIntermediateStation = Clock.fixed(Instant.parse(mockTimeStringAtIntermediateStation), ZoneId.of("+05:30"));
+		String mockTimeStringAtDestination = String.format("%1$s-%2$s-%3$sT05:32:00Z",
+				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+		Clock mockClockAtDestination = Clock.fixed(Instant.parse(mockTimeStringAtDestination), ZoneId.of("+05:30"));
+
+		Train trainAtIntermediateStation = new Train(mockClockAtIntermediateStation, "2653", "Mangala Lakshadweep Express", "TowardsHome");
+		assertEquals(TrainRunningStatus.SCHEDULED_STOP, trainAtIntermediateStation.getTrainPosition().getTrainRunningStatus());
+//		assertEquals(41, trainAtIntermediateStation.getDistance());
+		Train trainAtDestination = new Train(mockClockAtDestination, "2653", "Mangala Lakshadweep Express", "TowardsHome");
+		assertEquals(TrainRunningStatus.SCHEDULED_STOP, trainAtDestination.getTrainPosition().getTrainRunningStatus());
+//		assertEquals(86, trainAtDestination.getDistance());
 	}
 		
 }

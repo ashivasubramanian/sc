@@ -12,7 +12,7 @@ public class GameTest {
     @Test
     public void shouldLoadStations() throws Exception {
         Game game = new Game();
-        assertEquals(2, game.getStations().size());
+        assertEquals(3, game.getStations().size());
     }
 
     @Test

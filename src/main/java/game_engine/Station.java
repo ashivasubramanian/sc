@@ -23,6 +23,11 @@ import java.util.List;
 public class Station {
 
     /**
+     * The station code.
+     */
+    private String code;
+
+    /**
      * The name of the station. This is initialized by the constructor and is
      * obtained using <code>getName()</code>.
      */
@@ -56,6 +61,7 @@ public class Station {
      * no. of points and its distance
      */
     public Station(org.w3c.dom.Element objStationData) {
+        code = objStationData.getAttribute("code");
         name = objStationData.getAttribute("name");
 
         points = new ArrayList<>();
@@ -111,5 +117,13 @@ public class Station {
 
     public List<Track> getTracks() {
         return this.tracks;
+    }
+
+    /**
+     * Returns the station code.
+     * @return the station code
+     */
+    public String getCode() {
+        return code;
     }
 }
