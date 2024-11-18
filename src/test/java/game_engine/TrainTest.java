@@ -3,6 +3,8 @@ package game_engine;
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -119,22 +121,16 @@ public class TrainTest {
 		assertEquals(Thread.State.RUNNABLE, train.getState());
 	}
 
-	@Test
-	public void shouldDetermineTrainIsAtStationOnGameLoad() throws IOException, ParserConfigurationException, SAXException {
+	@ParameterizedTest
+	@CsvSource({"%1$s-%2$s-%3$sT05:16:00Z", "%1$s-%2$s-%3$sT05:32:00Z"})
+	public void shouldDetermineTrainIsAtStationOnGameLoad(String mockTimeStringValue) throws IOException, ParserConfigurationException, SAXException {
 		LocalDateTime now = LocalDateTime.now();
-		String mockTimeStringAtIntermediateStation = String.format("%1$s-%2$s-%3$sT05:16:00Z",
+		String mockTimeString = String.format(mockTimeStringValue,
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-		Clock mockClockAtIntermediateStation = Clock.fixed(Instant.parse(mockTimeStringAtIntermediateStation), ZoneId.of("+05:30"));
-		String mockTimeStringAtDestination = String.format("%1$s-%2$s-%3$sT05:32:00Z",
-				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-		Clock mockClockAtDestination = Clock.fixed(Instant.parse(mockTimeStringAtDestination), ZoneId.of("+05:30"));
+		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
-		Train trainAtIntermediateStation = new Train(mockClockAtIntermediateStation, "2653", "Mangala Lakshadweep Express", "TowardsHome");
-		assertEquals(TrainRunningStatus.SCHEDULED_STOP, trainAtIntermediateStation.getTrainPosition().getTrainRunningStatus());
-//		assertEquals(41, trainAtIntermediateStation.getDistance());
-		Train trainAtDestination = new Train(mockClockAtDestination, "2653", "Mangala Lakshadweep Express", "TowardsHome");
-		assertEquals(TrainRunningStatus.SCHEDULED_STOP, trainAtDestination.getTrainPosition().getTrainRunningStatus());
-//		assertEquals(86, trainAtDestination.getDistance());
+		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "TowardsHome");
+		assertEquals(TrainRunningStatus.SCHEDULED_STOP, train.getTrainPosition().getTrainRunningStatus());
+//		assertEquals(41, train.getDistance());
 	}
-		
 }
