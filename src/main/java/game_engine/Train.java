@@ -47,10 +47,9 @@ public class Train extends Thread
 	int lag;
 
 	/**
-	 * A <code>HashMap</code> that stores the distances of stations that the
-	 * train halts.
+	 * A mapping of stations on the section & their distances from the Home station.
 	 */
-	HashMap<String,Integer> distances;
+	Map<String,Float> stationDistanceMap;
 
 	/**
 	 * A collection of stations where the train will stop.
@@ -82,33 +81,35 @@ public class Train extends Thread
 	 * Constructor that initializes the <code>Train</code>.
 	 * The constructor then starts the thread.
 	 *
-	 * @param trainNo   The number of the train.
-	 * @param trainName The name of the train.
-	 * @param direction The direction in which the train is travelling.
+	 * @param trainNo            The number of the train.
+	 * @param trainName          The name of the train.
+	 * @param direction          The direction in which the train is travelling.
+	 * @param stationDistanceMap a mapping of station codes & their distances from home station
 	 */
-	public Train(String trainNo, String trainName, String direction)
+	public Train(String trainNo, String trainName, String direction, Map<String, Float> stationDistanceMap)
 			throws IOException, SAXException, ParserConfigurationException {
-		this(Clock.systemDefaultZone(), trainNo, trainName, direction);
+		this(Clock.systemDefaultZone(), trainNo, trainName, direction, stationDistanceMap);
 	}
 
 	/**
 	 * Constructor used for testing purposes.
 	 *
-	 * @param mockClock mock instance of <code>Clock</code> that can be used for testing purposes.
-	 * @param trainNo   The number of the train.
-	 * @param trainName The name of the train.
-	 * @param direction The direction in which the train is travelling.
+	 * @param mockClock          mock instance of <code>Clock</code> that can be used for testing purposes.
+	 * @param trainNo            The number of the train.
+	 * @param trainName          The name of the train.
+	 * @param direction          The direction in which the train is travelling.
+	 * @param stationDistanceMap a mapping of station codes & their distances from home station
 	 * @throws IOException
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 */
-	public Train(Clock mockClock, String trainNo, String trainName, String direction)
+	public Train(Clock mockClock, String trainNo, String trainName, String direction, Map<String, Float> stationDistanceMap)
 			throws IOException, ParserConfigurationException, SAXException {
 		this.systemClock = mockClock;
 		this.no = trainNo;
 		this.name = trainName;
-		scheduledStops = new ArrayList<>();
-		distances = new HashMap<>();
+		this.scheduledStops = new ArrayList<>();
+		this.stationDistanceMap = stationDistanceMap;
 		distance = 0;
 		lag = 0;
 		if(direction.equals("TowardsHome"))
@@ -164,7 +165,7 @@ public class Train extends Thread
 		for (TrainSchedule schedule : scheduledStops) {
 			if (schedule.getArrivalTime().equals(currentTime) || schedule.getDepartureTime().equals(currentTime)
 					|| (schedule.getArrivalTime().isBefore(currentTime) && schedule.getDepartureTime().isAfter(currentTime))) {
-				trainPosition = new TrainPosition(TrainRunningStatus.SCHEDULED_STOP);
+				trainPosition = new TrainPosition(TrainRunningStatus.SCHEDULED_STOP, stationDistanceMap.get(schedule.getStationCode()));
 				break;
 			}
 		}
@@ -194,7 +195,7 @@ public class Train extends Thread
 				float totalseconds = getTimeDifference(currentTime,first_station_time);
 				distance = 60 * (totalseconds/3600);
 				long sleepTime = 1000;
-				if (distances.entrySet().contains(distance)) {
+				if (stationDistanceMap.entrySet().contains(distance)) {
 					sleepTime = 2000;
 				}
 				try

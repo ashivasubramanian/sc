@@ -2,6 +2,7 @@ package game_engine;
 
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -14,17 +15,30 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TrainTest {
+
+	private Map<String, Float> stationDistanceMap;
+
+	@BeforeEach
+	public void setup() {
+		this.stationDistanceMap = new HashMap<>();
+		this.stationDistanceMap.put("CAL", 0f);
+		this.stationDistanceMap.put("TIR", 41f);
+		this.stationDistanceMap.put("SRR", 86f);
+
+	}
 	
 	@Test
 	public void initializingTrainWithLegalValuesShouldPass() {
 		Train train = null;
 		try {
-			train = new Train("616", "Mangala Lakshadweep Express", "TowardsHome");
+			train = new Train("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
@@ -40,8 +54,8 @@ public class TrainTest {
 		Train homeTrain = null;
 		Train awayTrain = null;
 		try {
-			homeTrain = new Train("616", "Mangala Lakshadweep Express", "TowardsHome");
-			awayTrain = new Train("2653", "Mangala Lakshadweep Express", "AwayFromHome");
+			homeTrain = new Train("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
+			awayTrain = new Train("2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
@@ -58,7 +72,7 @@ public class TrainTest {
 	@Test
 	public void stationListMustBePopulatedOnInitialization() {
 		try {
-			Train someTrain = new Train("616","Calicut Shoranur Passenger", "AwayFromHome");
+			Train someTrain = new Train("616","Calicut Shoranur Passenger", "AwayFromHome", this.stationDistanceMap);
 			assertEquals(2, someTrain.getScheduledStops().size());
 			assertEquals("CAL", someTrain.getScheduledStops().get(0).getStationCode());
 			assertEquals("SRR", someTrain.getScheduledStops().get(1).getStationCode());
@@ -74,8 +88,8 @@ public class TrainTest {
 	@Test
 	public void stationListMustBeReversedForTrainsTowardsHome() {
 		try {
-			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome");
-			Train awayTrain = new Train("2653", "Kerala Sampark Kranti Express", "AwayFromHome");
+			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome", this.stationDistanceMap);
+			Train awayTrain = new Train("2653", "Kerala Sampark Kranti Express", "AwayFromHome", this.stationDistanceMap);
 			assertEquals(homeTrain.getScheduledStops().get(0).getStationCode(),
 					awayTrain.getScheduledStops().get(awayTrain.getScheduledStops().size() - 1).getStationCode(),
 					"Train directions are not reversed.");
@@ -91,7 +105,7 @@ public class TrainTest {
 	@Test
 	public void arrivalAndDepartureTimesAtStationsMustBePopulatedOnLoad() {
 		try {
-			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome");
+			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome", this.stationDistanceMap);
 			TrainSchedule calicutStop = homeTrain.getScheduledStops().stream()
 					.filter(stop -> stop.getStationCode().equals("CAL")).findFirst().get();
 			assertEquals("00:00", calicutStop.getArrivalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
@@ -110,7 +124,7 @@ public class TrainTest {
 	public void initializingTheTrainShouldStartTheTrainThread() {
 		Train train = null;
 		try {
-			train = new Train("616", "Mangala Lakshadweep Express", "TowardsHome");
+			train = new Train("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
@@ -122,15 +136,15 @@ public class TrainTest {
 	}
 
 	@ParameterizedTest
-	@CsvSource({"%1$s-%2$s-%3$sT05:16:00Z", "%1$s-%2$s-%3$sT05:32:00Z"})
-	public void shouldDetermineTrainIsAtStationOnGameLoad(String mockTimeStringValue) throws IOException, ParserConfigurationException, SAXException {
+	@CsvSource({"%1$s-%2$s-%3$sT05:16:00Z, 41", "%1$s-%2$s-%3$sT05:32:00Z, 86"})
+	public void shouldDetermineTrainIsAtStationOnGameLoad(String mockTimeStringValue, int distance) throws IOException, ParserConfigurationException, SAXException {
 		LocalDateTime now = LocalDateTime.now();
 		String mockTimeString = String.format(mockTimeStringValue,
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
-		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "TowardsHome");
+		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
 		assertEquals(TrainRunningStatus.SCHEDULED_STOP, train.getTrainPosition().getTrainRunningStatus());
-//		assertEquals(41, train.getDistance());
+		assertEquals(distance, train.getTrainPosition().getDistanceFromHome());
 	}
 }

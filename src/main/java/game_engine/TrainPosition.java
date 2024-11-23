@@ -16,10 +16,13 @@ public class TrainPosition {
 
     /**
      * Initialize the <code>TrainPosition</code> using the given train status
+     *
      * @param trainRunningStatus the current train status
+     * @param distance distance from Home station
      */
-    public TrainPosition(TrainRunningStatus trainRunningStatus) {
+    public TrainPosition(TrainRunningStatus trainRunningStatus, float distance) {
         this.trainRunningStatus = trainRunningStatus;
+        this.distanceFromHome = distance;
     }
 
     /**
@@ -28,6 +31,14 @@ public class TrainPosition {
      */
     public TrainRunningStatus getTrainRunningStatus() {
         return this.trainRunningStatus;
+    }
+
+    /**
+     * Return the train's current distance from the home station.
+     * @return the distance from the home station
+     */
+    public float getDistanceFromHome() {
+        return this.distanceFromHome;
     }
 
 }

@@ -6,11 +6,8 @@ import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.*;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Element;
@@ -66,6 +63,9 @@ public class Game {
      *         or while reading any of the trains' XML files.
      */
     private void populateTrains() throws GameNotStartedException {
+        Map<String,Float> stationDistanceMap = new HashMap<>();
+        this.stations.stream().forEach(station -> stationDistanceMap.put(station.getCode(), station.getDistance().floatValue()));
+
         try {
             //Let's get the daily trains first
             InputStream trainsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
@@ -123,7 +123,8 @@ public class Game {
                 
                 //We are ready to compare.
                 if (currentTime.isAfter(first_station_time) && currentTime.isBefore(last_station_time)) {
-                    Train individual_train = new Train(train.getAttribute("number"), train.getAttribute("name"), train.getAttribute("direction"));
+                    Train individual_train = new Train(train.getAttribute("number"), train.getAttribute("name"),
+                            train.getAttribute("direction"), stationDistanceMap);
                     trains.add(individual_train);
                 }
             }
