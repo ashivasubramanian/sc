@@ -5,7 +5,8 @@ import common.models.TrainRunningStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.FieldSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,7 +16,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -135,8 +138,13 @@ public class TrainTest {
 		assertEquals(Thread.State.RUNNABLE, train.getState());
 	}
 
+	public static List<Arguments> argumentSetForTrainsAtStations = Arrays.asList(
+			Arguments.argumentSet("Train at final station", "%1$s-%2$s-%3$sT05:32:00Z", 86),
+			Arguments.argumentSet("Train at intermediate station", "%1$s-%2$s-%3$sT05:16:00Z", 41)
+	);
+
 	@ParameterizedTest
-	@CsvSource({"%1$s-%2$s-%3$sT05:16:00Z, 41", "%1$s-%2$s-%3$sT05:32:00Z, 86"})
+	@FieldSource("argumentSetForTrainsAtStations")
 	public void shouldDetermineTrainIsAtStationOnGameLoad(String mockTimeStringValue, int distance) throws IOException, ParserConfigurationException, SAXException {
 		LocalDateTime now = LocalDateTime.now();
 		String mockTimeString = String.format(mockTimeStringValue,
