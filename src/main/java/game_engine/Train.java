@@ -162,11 +162,19 @@ public class Train extends Thread
 
 	private void determineTrainPosition() {
 		LocalDateTime currentTime = LocalDateTime.now(this.systemClock);
-		for (TrainSchedule schedule : scheduledStops) {
+		for (int i = 0; i < scheduledStops.size(); i++) {
+			TrainSchedule schedule = scheduledStops.get(i);
 			if (schedule.getArrivalTime().equals(currentTime) || schedule.getDepartureTime().equals(currentTime)
 					|| (schedule.getArrivalTime().isBefore(currentTime) && schedule.getDepartureTime().isAfter(currentTime))) {
 				trainPosition = new TrainPosition(TrainRunningStatus.SCHEDULED_STOP, stationDistanceMap.get(schedule.getStationCode()));
 				break;
+			}
+			if ((i + 1) < (scheduledStops.size() - 1)) {
+				TrainSchedule nextStop = scheduledStops.get(i + 1);
+				if (currentTime.isAfter(schedule.getDepartureTime()) && currentTime.isBefore(nextStop.getArrivalTime())) {
+					trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN, 0);
+					break;
+				}
 			}
 		}
 	}

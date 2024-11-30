@@ -155,4 +155,17 @@ public class TrainTest {
 		assertEquals(TrainRunningStatus.SCHEDULED_STOP, train.getTrainPosition().getTrainRunningStatus());
 		assertEquals(distance, train.getTrainPosition().getDistanceFromHome());
 	}
+
+	@Test
+	public void shouldDetermineTrainIsInBetweenStationsOnGameLoad() throws Exception {
+		LocalDateTime now = LocalDateTime.now();
+		String mockTimeString = String.format("%1$s-%2$s-%3$sT05:10:00Z",
+				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
+
+		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
+		assertEquals(TrainRunningStatus.RUNNING_BETWEEN, train.getTrainPosition().getTrainRunningStatus());
+//		assertEquals(distance, train.getTrainPosition().getDistanceFromHome());
+	}
+
 }
