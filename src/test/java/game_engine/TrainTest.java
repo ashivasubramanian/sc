@@ -114,7 +114,7 @@ public class TrainTest {
 			assertEquals("00:00", calicutStop.getArrivalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
 					"Train arrival time is incorrect.");
 			assertEquals("00:05", calicutStop.getDepartureTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-					"Train departure  time is incorrect.");
+					"Train departure time is incorrect.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {

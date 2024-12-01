@@ -117,7 +117,7 @@ public class Train extends Thread
 		else if(direction.equals("AwayFromHome"))
 			this.direction = TrainDirection.AWAY_FROM_HOME;
 		populateTrainData();
-		determineTrainPosition();
+		determineTrainInitialPosition();
 		start();
 	}
 
@@ -160,7 +160,7 @@ public class Train extends Thread
 			java.util.Collections.reverse(scheduledStops);
 	}
 
-	private void determineTrainPosition() {
+	private void determineTrainInitialPosition() {
 		LocalDateTime currentTime = LocalDateTime.now(this.systemClock);
 		for (int i = 0; i < scheduledStops.size(); i++) {
 			TrainSchedule schedule = scheduledStops.get(i);
