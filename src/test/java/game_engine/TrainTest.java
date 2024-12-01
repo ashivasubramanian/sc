@@ -139,8 +139,8 @@ public class TrainTest {
 	}
 
 	public static List<Arguments> argumentSetForTrainsAtStations = Arrays.asList(
-			Arguments.argumentSet("Train at final station", "%1$s-%2$s-%3$sT05:32:00Z", 86),
-			Arguments.argumentSet("Train at intermediate station", "%1$s-%2$s-%3$sT05:16:00Z", 41)
+			Arguments.argumentSet("Train at final station", "%1$04d-%2$02d-%3$02dT06:02:00Z", 86),
+			Arguments.argumentSet("Train at intermediate station", "%1$04d-%2$02d-%3$02dT05:50:00Z", 41)
 	);
 
 	@ParameterizedTest
@@ -159,7 +159,7 @@ public class TrainTest {
 	@Test
 	public void shouldDetermineTrainIsInBetweenStationsOnGameLoad() throws Exception {
 		LocalDateTime now = LocalDateTime.now();
-		String mockTimeString = String.format("%1$s-%2$s-%3$sT05:10:00Z",
+		String mockTimeString = String.format("%1$04d-%2$02d-%3$02dT05:10:00Z",
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
