@@ -26,14 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TrainTest {
 
-	private Map<String, Float> stationDistanceMap;
+	private Map<String, Integer> stationDistanceMap;
 
 	@BeforeEach
 	public void setup() {
 		this.stationDistanceMap = new HashMap<>();
-		this.stationDistanceMap.put("CAL", 0f);
-		this.stationDistanceMap.put("TIR", 41f);
-		this.stationDistanceMap.put("SRR", 86f);
+		this.stationDistanceMap.put("CAL", 0);
+		this.stationDistanceMap.put("TIR", 41);
+		this.stationDistanceMap.put("SRR", 86);
 
 	}
 	

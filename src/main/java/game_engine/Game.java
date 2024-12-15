@@ -63,8 +63,8 @@ public class Game {
      *         or while reading any of the trains' XML files.
      */
     private void populateTrains() throws GameNotStartedException {
-        Map<String,Float> stationDistanceMap = new HashMap<>();
-        this.stations.stream().forEach(station -> stationDistanceMap.put(station.getCode(), station.getDistance().floatValue()));
+        Map<String,Integer> stationDistanceMap = new HashMap<>();
+        this.stations.stream().forEach(station -> stationDistanceMap.put(station.getCode(), station.getDistance()));
 
         try {
             //Let's get the daily trains first

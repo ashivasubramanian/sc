@@ -49,7 +49,7 @@ public class Train extends Thread
 	/**
 	 * A mapping of stations on the section & their distances from the Home station.
 	 */
-	Map<String,Float> stationDistanceMap;
+	Map<String,Integer> stationDistanceMap;
 
 	/**
 	 * A collection of stations where the train will stop.
@@ -86,7 +86,7 @@ public class Train extends Thread
 	 * @param direction          The direction in which the train is travelling.
 	 * @param stationDistanceMap a mapping of station codes & their distances from home station
 	 */
-	public Train(String trainNo, String trainName, String direction, Map<String, Float> stationDistanceMap)
+	public Train(String trainNo, String trainName, String direction, Map<String, Integer> stationDistanceMap)
 			throws IOException, SAXException, ParserConfigurationException {
 		this(Clock.systemDefaultZone(), trainNo, trainName, direction, stationDistanceMap);
 	}
@@ -103,7 +103,7 @@ public class Train extends Thread
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 */
-	public Train(Clock mockClock, String trainNo, String trainName, String direction, Map<String, Float> stationDistanceMap)
+	public Train(Clock mockClock, String trainNo, String trainName, String direction, Map<String, Integer> stationDistanceMap)
 			throws IOException, ParserConfigurationException, SAXException {
 		this.systemClock = mockClock;
 		this.no = trainNo;
@@ -160,6 +160,9 @@ public class Train extends Thread
 			java.util.Collections.reverse(scheduledStops);
 	}
 
+	/**
+	 * Determines the position of the train on game load.
+	 */
 	private void determineTrainInitialPosition() {
 		LocalDateTime currentTime = LocalDateTime.now(this.systemClock);
 		for (int i = 0; i < scheduledStops.size(); i++) {
