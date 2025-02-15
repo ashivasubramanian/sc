@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This train is used to test happy path scenarios, such as a train proceeding from Home in the Away direction. -->
 <train number="2653" name="Kerala Sampark Kranti Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="10:30" departure-time="10:35"/>
-        <stop code="TIR" name="Tirur" arrival-time="10:45" departure-time="10:46"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="11:00" departure-time="11:05"/>
+        <stop code="TIR" name="Tirur" arrival-time="11:20" departure-time="11:21"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="11:30" departure-time="11:35"/>
     </stops>
 </train>

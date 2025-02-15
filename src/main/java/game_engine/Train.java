@@ -13,6 +13,8 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.*;
 
 
@@ -175,11 +177,24 @@ public class Train extends Thread
 			if ((i + 1) < (scheduledStops.size() - 1)) {
 				TrainSchedule nextStop = scheduledStops.get(i + 1);
 				if (currentTime.isAfter(schedule.getDepartureTime()) && currentTime.isBefore(nextStop.getArrivalTime())) {
-					trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN, 0);
+					trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
+							determineInitialDistanceFromHome(schedule, nextStop));
 					break;
 				}
 			}
 		}
+	}
+
+	private float determineInitialDistanceFromHome(TrainSchedule crossedStation, TrainSchedule upcomingStation) {
+		int distanceBetweenStations = Math.abs(stationDistanceMap.get(crossedStation.getStationCode())
+                        - stationDistanceMap.get(upcomingStation.getStationCode()));
+		float timeAsPerScheduleInHours = crossedStation.getDepartureTime()
+                .until(upcomingStation.getArrivalTime(), ChronoUnit.MINUTES) / 60f;
+		float expectedSpeedOfTrain = distanceBetweenStations / timeAsPerScheduleInHours;
+
+		float timeSinceLastCrossedStation = crossedStation.getDepartureTime()
+				.until(LocalDateTime.now(this.systemClock), ChronoUnit.MINUTES) / 60f;
+        return expectedSpeedOfTrain * timeSinceLastCrossedStation;
 	}
 
 	/**

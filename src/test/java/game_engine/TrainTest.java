@@ -139,8 +139,8 @@ public class TrainTest {
 	}
 
 	public static List<Arguments> argumentSetForTrainsAtStations = Arrays.asList(
-			Arguments.argumentSet("Train at final station", "%1$04d-%2$02d-%3$02dT06:02:00Z", 86),
-			Arguments.argumentSet("Train at intermediate station", "%1$04d-%2$02d-%3$02dT05:50:00Z", 41)
+		Arguments.argumentSet("AwayFromHomeTrain at final station", "%1$04d-%2$02d-%3$02dT06:02:00Z", 86),
+		Arguments.argumentSet("AwayFromHomeTrain at intermediate station", "%1$04d-%2$02d-%3$02dT05:50:00Z", 41)
 	);
 
 	@ParameterizedTest
@@ -151,21 +151,25 @@ public class TrainTest {
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
-		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
+		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
 		assertEquals(TrainRunningStatus.SCHEDULED_STOP, train.getTrainPosition().getTrainRunningStatus());
 		assertEquals(distance, train.getTrainPosition().getDistanceFromHome());
 	}
 
-	@Test
-	public void shouldDetermineTrainIsInBetweenStationsOnGameLoad() throws Exception {
+   public static List<Arguments> argumentSetForTrainPositionTest = Arrays.asList(
+	   Arguments.argumentSet("AwayFromHomeTrainIsOnTheSectionBetweenStations", "%1$04d-%2$02d-%3$02dT05:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 4.555556f)
+   );
+
+	@ParameterizedTest
+	@FieldSource("argumentSetForTrainPositionTest")
+	public void shouldDetermineTrainPositionIsCorrectlySetAndDistanceIsCorrectlyCalculated(String currentTime,
+				   TrainRunningStatus expectedStatus, float expectedDistance) throws Exception {
 		LocalDateTime now = LocalDateTime.now();
-		String mockTimeString = String.format("%1$04d-%2$02d-%3$02dT05:10:00Z",
-				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+		String mockTimeString = String.format(currentTime, now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
 		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
-		assertEquals(TrainRunningStatus.RUNNING_BETWEEN, train.getTrainPosition().getTrainRunningStatus());
-//		assertEquals(distance, train.getTrainPosition().getDistanceFromHome());
+		assertEquals(expectedStatus, train.getTrainPosition().getTrainRunningStatus());
+		assertEquals(expectedDistance, train.getTrainPosition().getDistanceFromHome());
 	}
-
 }
