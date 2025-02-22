@@ -174,12 +174,14 @@ public class Train extends Thread
 		if (currentTime.isBefore(firstScheduledStop.getArrivalTime())) {
 			trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
 					60 * (currentTime.until(firstScheduledStop.getArrivalTime(), ChronoUnit.MINUTES) / 60f));
+			return;
 		}
 		// Has the train exited the section?
 		TrainSchedule lastScheduledStop = scheduledStops.get(scheduledStops.size() - 1);
 		if (currentTime.isAfter(lastScheduledStop.getDepartureTime())) {
 			trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
 					60 * (lastScheduledStop.getDepartureTime().until(currentTime, ChronoUnit.MINUTES) / 60f));
+			return;
 		}
 		ListIterator<TrainSchedule> scheduledStopsIterator = scheduledStops.listIterator();
 		while (scheduledStopsIterator.hasNext()) {

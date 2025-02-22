@@ -76,9 +76,10 @@ public class TrainTest {
 	public void stationListMustBePopulatedOnInitialization() {
 		try {
 			Train someTrain = new Train("616","Calicut Shoranur Passenger", "AwayFromHome", this.stationDistanceMap);
-			assertEquals(2, someTrain.getScheduledStops().size());
+			assertEquals(3, someTrain.getScheduledStops().size());
 			assertEquals("CAL", someTrain.getScheduledStops().get(0).getStationCode());
-			assertEquals("SRR", someTrain.getScheduledStops().get(1).getStationCode());
+			assertEquals("TIR", someTrain.getScheduledStops().get(1).getStationCode());
+			assertEquals("SRR", someTrain.getScheduledStops().get(2).getStationCode());
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (SAXException saxe) {
@@ -139,19 +140,21 @@ public class TrainTest {
 	}
 
 	public static List<Arguments> argumentSetForTrainsAtStations = Arrays.asList(
-		Arguments.argumentSet("AwayFromHomeTrain at final station", "%1$04d-%2$02d-%3$02dT06:02:00Z", 86),
-		Arguments.argumentSet("AwayFromHomeTrain at intermediate station", "%1$04d-%2$02d-%3$02dT05:50:00Z", 41)
+		Arguments.argumentSet("AwayFromHomeTrain at final station", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT06:02:00Z", 86),
+		Arguments.argumentSet("AwayFromHomeTrain at intermediate station", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT05:50:00Z", 41),
+		Arguments.argumentSet("TowardsHomeTrain at final station", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:35:00Z", 0),
+		Arguments.argumentSet("TowardsHomeTrain at intermediate station", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:05:00Z", 41)
 	);
 
 	@ParameterizedTest
 	@FieldSource("argumentSetForTrainsAtStations")
-	public void shouldDetermineTrainIsAtStationOnGameLoad(String mockTimeStringValue, int distance) throws IOException, ParserConfigurationException, SAXException {
+	public void shouldDetermineTrainIsAtStationOnGameLoad(String trainNo, String direction, String mockTimeStringValue, int distance) throws IOException, ParserConfigurationException, SAXException {
 		LocalDateTime now = LocalDateTime.now();
 		String mockTimeString = String.format(mockTimeStringValue,
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
-		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
+		Train train = new Train(mockClock, trainNo, "Dummy name", direction, this.stationDistanceMap);
 		assertEquals(TrainRunningStatus.SCHEDULED_STOP, train.getTrainPosition().getTrainRunningStatus());
 		assertEquals(distance, train.getTrainPosition().getDistanceFromHome());
 	}
@@ -160,7 +163,7 @@ public class TrainTest {
 	   Arguments.argumentSet("AwayFromHomeTrainIsOnTheSectionBetweenStations", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT05:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 4.555556f),
 	   Arguments.argumentSet("AwayFromHomeTrainIsEnteringSection", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT04:50:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10),
 	   Arguments.argumentSet("AwayFromHomeTrainIsExitingSection", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT06:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 5),
-	   Arguments.argumentSet("TowardsHomeTrainIsOnTheSectionBetweenStations", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT12:40:00Z", TrainRunningStatus.RUNNING_BETWEEN, 78.181816f),
+	   Arguments.argumentSet("TowardsHomeTrainIsOnTheSectionBetweenStations", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT12:40:00Z", TrainRunningStatus.RUNNING_BETWEEN, 77f),
 	   Arguments.argumentSet("TowardsHomeTrainIsEnteringSection", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT12:20:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10f),
 	   Arguments.argumentSet("TowardsHomeTrainIsExitingSection", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:45:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10f)
    );
