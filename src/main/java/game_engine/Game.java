@@ -6,6 +6,7 @@ import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Clock;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import org.xml.sax.SAXException;
  */
 public class Game {
 
+
     /**
      * A collection of stations in the game currently being played.
      */
@@ -31,10 +33,24 @@ public class Game {
     private List<Train> trains;
 
     /**
+     * Used for mocking time operations for testing purposes.
+     * By default, it aligns to system time.
+     */
+    private Clock systemClock;
+
+    /**
      * Initializes the game instance.
      * @throws GameNotStartedException if there were some problems while starting the game
      */
     public Game() throws GameNotStartedException {
+        this(Clock.systemDefaultZone());
+    }
+
+    /**
+     * Constructor for testing purposes. This is useful for passing in a mock clock for setting the time for testing.
+     */
+    public Game(Clock mockClock) throws GameNotStartedException {
+        this.systemClock = mockClock;
         this.stations = new ArrayList<>();
         this.trains = new ArrayList<>();
         populateStations();
@@ -73,7 +89,7 @@ public class Game {
             
             String day = "";
             //Let's now find out what day it is, and then get the corresponding trains.
-            switch (LocalDateTime.now().getDayOfWeek()) {
+            switch (LocalDateTime.now(this.systemClock).getDayOfWeek()) {
                 case SUNDAY:
                     day = "Su";
                     break;
@@ -104,16 +120,16 @@ public class Game {
                 /*All trains for the day have been loaded. But we need only the trains that will
                 start from the first station in the next hour. So we check if the current time
                 falls within the train's first and last station times.*/
-                LocalDateTime currentTime = LocalDateTime.now();
+                LocalDateTime currentTime = LocalDateTime.now(this.systemClock);
                 String fs_time = "", ls_time = "";
                 //get the first station time
                 fs_time = train.getAttribute("section-entry-time");
                 ls_time = train.getAttribute("section-leaving-time");
                 //We have got the times; let us convert them into LocalDateTime instances.
                 String[] time1 = fs_time.split(":");
-                LocalDateTime first_station_time = LocalDateTime.now().withHour(Integer.parseInt(time1[0])).withMinute(Integer.parseInt(time1[1]));
+                LocalDateTime first_station_time = LocalDateTime.now(this.systemClock).withHour(Integer.parseInt(time1[0])).withMinute(Integer.parseInt(time1[1]));
                 String[] time2 = ls_time.split(":");
-                LocalDateTime last_station_time = LocalDateTime.now().withHour(Integer.parseInt(time2[0])).withMinute(Integer.parseInt(time2[1]));
+                LocalDateTime last_station_time = LocalDateTime.now(this.systemClock).withHour(Integer.parseInt(time2[0])).withMinute(Integer.parseInt(time2[1]));
 
                 if (first_station_time.getHour() >= 20) {
                     if (last_station_time.getHour() >= 0 && last_station_time.getHour() <= 6) {

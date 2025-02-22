@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This train is used to test happy path scenarios, such as a train proceeding towards Home. -->
 <train number="616" name="Calicut Shoranur Passenger">
     <stops>
-        <stop code="CAL" name="Calicut" arrival-time="00:00" departure-time="00:05"/>
-        <stop code="SRR" name="Shoranur-Junction" arrival-time="23:30" departure-time="23:31"/>
+        <stop code="CAL" name="Calicut" arrival-time="19:00" departure-time="19:05"/>
+        <stop code="SRR" name="Shoranur-Junction" arrival-time="18:00" departure-time="18:05"/>
    </stops>
 </train>

@@ -5,6 +5,12 @@ import common.models.TrainDirection;
 import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
 import org.junit.jupiter.api.Test;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
@@ -17,7 +23,12 @@ public class GameTest {
 
     @Test
     public void shouldLoadTrains() throws Exception {
-        Game game = new Game();
+        LocalDateTime now = LocalDateTime.now();
+        String mockClockString = String.format("%1$04d-%2$02d-%3$02dT13:10:00Z",
+                now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+        Clock mockClock = Clock.fixed(Instant.parse(mockClockString), ZoneId.of("+05:30"));
+
+        Game game = new Game(mockClock);
         assertEquals(2, game.getTrains().size());
     }
     

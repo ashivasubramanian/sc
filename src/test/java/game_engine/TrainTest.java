@@ -111,9 +111,9 @@ public class TrainTest {
 			Train homeTrain = new Train("616", "Calicut Shoranur Passenger", "TowardsHome", this.stationDistanceMap);
 			TrainSchedule calicutStop = homeTrain.getScheduledStops().stream()
 					.filter(stop -> stop.getStationCode().equals("CAL")).findFirst().get();
-			assertEquals("00:00", calicutStop.getArrivalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+			assertEquals("19:00", calicutStop.getArrivalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
 					"Train arrival time is incorrect.");
-			assertEquals("00:05", calicutStop.getDepartureTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+			assertEquals("19:05", calicutStop.getDepartureTime().format(DateTimeFormatter.ofPattern("HH:mm")),
 					"Train departure time is incorrect.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
