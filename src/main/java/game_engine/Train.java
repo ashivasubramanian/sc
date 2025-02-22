@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
 
 
@@ -163,34 +162,43 @@ public class Train extends Thread
 	}
 
 	/**
-	 * Determines the position of the train on game load.
+	 * Determines the position of the train on game load. This has 3 scenarios:
+	 * # Is the train beyond the section (either not yet entered or has exit already)?78.181854
+	 * # Is the train stopped at a station on the section?
+	 * # Is the train running between stations?
 	 */
 	private void determineTrainInitialPosition() {
+		// Has the train not yet entered the section?
 		LocalDateTime currentTime = LocalDateTime.now(this.systemClock);
 		TrainSchedule firstScheduledStop = scheduledStops.get(0);
 		if (currentTime.isBefore(firstScheduledStop.getArrivalTime())) {
 			trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
 					60 * (currentTime.until(firstScheduledStop.getArrivalTime(), ChronoUnit.MINUTES) / 60f));
 		}
+		// Has the train exited the section?
 		TrainSchedule lastScheduledStop = scheduledStops.get(scheduledStops.size() - 1);
 		if (currentTime.isAfter(lastScheduledStop.getDepartureTime())) {
 			trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
 					60 * (lastScheduledStop.getDepartureTime().until(currentTime, ChronoUnit.MINUTES) / 60f));
 		}
-		for (int i = 0; i < scheduledStops.size(); i++) {
-			TrainSchedule schedule = scheduledStops.get(i);
+		ListIterator<TrainSchedule> scheduledStopsIterator = scheduledStops.listIterator();
+		while (scheduledStopsIterator.hasNext()) {
+			//Is the train stopped at a station on the section?
+			TrainSchedule schedule = scheduledStopsIterator.next();
 			if (schedule.getArrivalTime().equals(currentTime) || schedule.getDepartureTime().equals(currentTime)
 					|| (schedule.getArrivalTime().isBefore(currentTime) && schedule.getDepartureTime().isAfter(currentTime))) {
 				trainPosition = new TrainPosition(TrainRunningStatus.SCHEDULED_STOP, stationDistanceMap.get(schedule.getStationCode()));
 				break;
 			}
-			if ((i + 1) < (scheduledStops.size() - 1)) {
-				TrainSchedule nextStop = scheduledStops.get(i + 1);
+			// Is the train running between stations?
+			if (scheduledStopsIterator.hasNext()) {
+				TrainSchedule nextStop = scheduledStopsIterator.next();
 				if (currentTime.isAfter(schedule.getDepartureTime()) && currentTime.isBefore(nextStop.getArrivalTime())) {
 					trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
 							determineInitialDistanceFromHome(schedule, nextStop));
 					break;
 				}
+				scheduledStopsIterator.previous();
 			}
 		}
 	}
@@ -204,7 +212,10 @@ public class Train extends Thread
 
 		float timeSinceLastCrossedStation = crossedStation.getDepartureTime()
 				.until(LocalDateTime.now(this.systemClock), ChronoUnit.MINUTES) / 60f;
-        return expectedSpeedOfTrain * timeSinceLastCrossedStation;
+		if (direction == TrainDirection.AWAY_FROM_HOME)
+			return expectedSpeedOfTrain * timeSinceLastCrossedStation;
+		else
+			return 86 - (expectedSpeedOfTrain * timeSinceLastCrossedStation);
 	}
 
 	/**

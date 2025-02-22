@@ -157,20 +157,21 @@ public class TrainTest {
 	}
 
    public static List<Arguments> argumentSetForTrainPositionTest = Arrays.asList(
-	   Arguments.argumentSet("AwayFromHomeTrainIsOnTheSectionBetweenStations", "%1$04d-%2$02d-%3$02dT05:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 4.555556f),
-	   Arguments.argumentSet("AwayFromHomeTrainIsEnteringSection", "%1$04d-%2$02d-%3$02dT04:50:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10),
-	   Arguments.argumentSet("AwayFromHomeTrainIsExitingSection", "%1$04d-%2$02d-%3$02dT06:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 5)
+	   Arguments.argumentSet("AwayFromHomeTrainIsOnTheSectionBetweenStations", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT05:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 4.555556f),
+	   Arguments.argumentSet("AwayFromHomeTrainIsEnteringSection", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT04:50:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10),
+	   Arguments.argumentSet("AwayFromHomeTrainIsExitingSection", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT06:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 5),
+	   Arguments.argumentSet("TowardsHomeTrainIsOnTheSectionBetweenStations", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT12:40:00Z", TrainRunningStatus.RUNNING_BETWEEN, 78.181816f)
    );
 
 	@ParameterizedTest
 	@FieldSource("argumentSetForTrainPositionTest")
-	public void shouldDetermineTrainPositionIsCorrectlySetAndDistanceIsCorrectlyCalculated(String currentTime,
-				   TrainRunningStatus expectedStatus, float expectedDistance) throws Exception {
+	public void shouldDetermineTrainPositionIsCorrectlySetAndDistanceIsCorrectlyCalculated(String trainNo, String direction,
+		   String currentTime, TrainRunningStatus expectedStatus, float expectedDistance) throws Exception {
 		LocalDateTime now = LocalDateTime.now();
 		String mockTimeString = String.format(currentTime, now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
-		Train train = new Train(mockClock, "2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
+		Train train = new Train(mockClock, trainNo, "Dummy name", direction, this.stationDistanceMap);
 		assertEquals(expectedStatus, train.getTrainPosition().getTrainRunningStatus());
 		assertEquals(expectedDistance, train.getTrainPosition().getDistanceFromHome());
 	}
