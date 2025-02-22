@@ -157,7 +157,9 @@ public class TrainTest {
 	}
 
    public static List<Arguments> argumentSetForTrainPositionTest = Arrays.asList(
-	   Arguments.argumentSet("AwayFromHomeTrainIsOnTheSectionBetweenStations", "%1$04d-%2$02d-%3$02dT05:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 4.555556f)
+	   Arguments.argumentSet("AwayFromHomeTrainIsOnTheSectionBetweenStations", "%1$04d-%2$02d-%3$02dT05:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 4.555556f),
+	   Arguments.argumentSet("AwayFromHomeTrainIsEnteringSection", "%1$04d-%2$02d-%3$02dT04:50:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10),
+	   Arguments.argumentSet("AwayFromHomeTrainIsExitingSection", "%1$04d-%2$02d-%3$02dT06:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 5)
    );
 
 	@ParameterizedTest
