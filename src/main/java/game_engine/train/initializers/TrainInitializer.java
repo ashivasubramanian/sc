@@ -34,8 +34,9 @@ public class TrainInitializer {
      */
     private void populateTrainData(Train train)
             throws IOException, SAXException, ParserConfigurationException {
-        System.out.println( "Loading data for " + train.getNumber());
-		InputStream trainXMLStream = getClass().getResourceAsStream("/data/" + train.getNumber() + ".xml");
+        System.out.printf( "Loading data for %1$s\n", train.getNumber());
+        String filePath = String.format("/data/%1$s.xml", train.getNumber());
+        InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
 		Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
         if(stops.size() > 0) {
             for (Element stop : stops) {
