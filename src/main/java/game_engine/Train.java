@@ -1,15 +1,8 @@
 package game_engine;
 
 import common.models.TrainDirection;
-import common.models.TrainRunningStatus;
-import game_engine.train.initializers.TrainInitializer;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -64,12 +57,6 @@ public class Train extends Thread
 	TrainDirection direction;
 
 	/**
-	 * Used for mocking time operations for testing purposes.
-	 * By default, it aligns to system time.
-	 */
-	private Clock systemClock;
-
-	/**
 	 * Stores the current position of the train.
 	 */
 	private TrainPosition trainPosition;
@@ -78,42 +65,17 @@ public class Train extends Thread
 	 * Constructor that initializes the <code>Train</code>.
 	 * The constructor then starts the thread.
 	 *
-	 * @param trainNo            The number of the train.
-	 * @param trainName          The name of the train.
-	 * @param direction          The direction in which the train is travelling.
-	 * @param stationDistanceMap a mapping of station codes & their distances from home station
+	 * @param trainNumber            The number of the train.
+	 * @param name                   The name of the train.
+	 * @param direction              The direction in which the train is travelling.
+	 * @param initialTrainPosition   The position of the train on game load.
 	 */
-	public Train(String trainNo, String trainName, String direction, Map<String, Integer> stationDistanceMap)
-			throws IOException, SAXException, ParserConfigurationException {
-		this(Clock.systemDefaultZone(), trainNo, trainName, direction, stationDistanceMap);
-	}
-
-	/**
-	 * Constructor used for testing purposes.
-	 *
-	 * @param mockClock          mock instance of <code>Clock</code> that can be used for testing purposes.
-	 * @param trainNo            The number of the train.
-	 * @param trainName          The name of the train.
-	 * @param direction          The direction in which the train is travelling.
-	 * @param stationDistanceMap a mapping of station codes & their distances from home station
-	 * @throws IOException
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 */
-	public Train(Clock mockClock, String trainNo, String trainName, String direction, Map<String, Integer> stationDistanceMap)
-			throws IOException, ParserConfigurationException, SAXException {
-		this.systemClock = mockClock;
-		this.no = trainNo;
-		this.name = trainName;
-		this.scheduledStops = new ArrayList<>();
-		this.stationDistanceMap = stationDistanceMap;
-		distance = 0;
-		lag = 0;
-		if(direction.equals("TowardsHome"))
-			this.direction = TrainDirection.TOWARDS_HOME;
-		else if(direction.equals("AwayFromHome"))
-			this.direction = TrainDirection.AWAY_FROM_HOME;
-		new TrainInitializer().initialize(this, mockClock, stationDistanceMap);
+	public Train(String trainNumber, String name, TrainDirection direction, List<TrainSchedule> scheduledStops, TrainPosition initialTrainPosition) {
+		this.no = trainNumber;
+		this.name = name;
+		this.direction = direction;
+		this.scheduledStops = scheduledStops;
+		this.trainPosition = initialTrainPosition;
 		start();
 	}
 
@@ -140,10 +102,7 @@ public class Train extends Thread
 				//The train is already in the section.
 				float totalseconds = getTimeDifference(currentTime,first_station_time);
 				distance = 60 * (totalseconds/3600);
-				long sleepTime = 1000;
-				if (stationDistanceMap.entrySet().contains(distance)) {
-					sleepTime = 2000;
-				}
+				long sleepTime = 2000;
 				try
 				{
 					System.out.println("sleeping..." + count++);
@@ -217,7 +176,4 @@ public class Train extends Thread
 		return this.trainPosition;
 	}
 
-	public void setTrainPosition(TrainPosition trainPosition) {
-        this.trainPosition = trainPosition;
-    }
 }

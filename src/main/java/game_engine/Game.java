@@ -11,6 +11,8 @@ import java.util.*;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
+
+import game_engine.train.initializers.TrainFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -139,7 +141,7 @@ public class Game {
                 
                 //We are ready to compare.
                 if (currentTime.isAfter(first_station_time) && currentTime.isBefore(last_station_time)) {
-                    Train individual_train = new Train(train.getAttribute("number"), train.getAttribute("name"),
+                    Train individual_train = new TrainFactory().create(train.getAttribute("number"), train.getAttribute("name"),
                             train.getAttribute("direction"), stationDistanceMap);
                     trains.add(individual_train);
                 }
