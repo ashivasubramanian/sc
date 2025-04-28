@@ -5,17 +5,12 @@ import common.models.TrainRunningStatus;
 import game_engine.Train;
 import game_engine.TrainPosition;
 import game_engine.TrainSchedule;
-import game_engine.data_access.DataAccess;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.Clock;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -50,31 +45,8 @@ public class TrainFactory {
     private List<TrainSchedule> populateTrainData(String trainNumber, TrainDirection direction, Map<String, Integer> stationDistanceMap)
             throws IOException, SAXException, ParserConfigurationException {
         System.out.printf( "Loading data for %1$s\n", trainNumber);
-        String filePath = String.format("/data/%1$s.xml", trainNumber);
-        InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
-		Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
-        List<TrainSchedule> scheduledStops = new ArrayList<>();
-        if(stops.size() > 0) {
-            for (Element stop : stops) {
-                String stationCode = stop.getAttribute("code");
-
-                String arrivalTimeString = stop.getAttribute("arrival-time");
-                int[] arrivalTimeIntArray = Arrays.stream(arrivalTimeString.split(":"))
-                        .mapToInt(Integer::valueOf).toArray();
-                LocalDateTime arrivalTime = LocalDateTime.of(LocalDate.now(),
-                        LocalTime.of(arrivalTimeIntArray[0], arrivalTimeIntArray[1]));
-
-                String departureTimeString = stop.getAttribute("departure-time");
-                int[] departureTimeIntArray = Arrays.stream(departureTimeString.split(":"))
-                        .mapToInt(Integer::valueOf).toArray();
-                LocalDateTime departureTime = LocalDateTime.of(LocalDate.now(),
-                        LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
-                scheduledStops.add(new TrainSchedule(stationCode, arrivalTime, departureTime, stationDistanceMap.get(stationCode)));
-            }
-        }
-        //Reversing the distances if travelling towards home
-        if (direction == TrainDirection.TOWARDS_HOME)
-            java.util.Collections.reverse(scheduledStops);
+        List<TrainSchedule> scheduledStops = new OvernightTravelDecorator(
+                new TrainScheduleInitializer(trainNumber, direction, stationDistanceMap)).populateTrainData();
         return scheduledStops;
     }
 

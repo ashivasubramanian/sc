@@ -8,5 +8,6 @@
     <trains>
         <train number="2653" name="Kerala Sampark Kranti Express" day-of-arrival="Daily" direction="TowardsHome" section-entry-time="00:00" section-leaving-time="23:59"/>
         <train number="616" name="Calicut Shoranur Passenger" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="18:00" section-leaving-time="19:05"/>
+        <train number="16356" name="Antyodaya Express" day-of-arrival="Daily" direction="AwayFromHome" section-entry-time="23:15" section-leaving-time="01:20"/>
     </trains>
 </section>

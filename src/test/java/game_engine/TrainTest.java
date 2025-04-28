@@ -4,6 +4,7 @@ import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
 import game_engine.train.initializers.TrainFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,10 +13,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -141,7 +139,8 @@ public class TrainTest {
 		Arguments.argumentSet("AwayFromHomeTrain at final station", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT06:02:00Z", 86),
 		Arguments.argumentSet("AwayFromHomeTrain at intermediate station", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT05:50:00Z", 41),
 		Arguments.argumentSet("TowardsHomeTrain at final station", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:35:00Z", 0),
-		Arguments.argumentSet("TowardsHomeTrain at intermediate station", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:05:00Z", 41)
+		Arguments.argumentSet("TowardsHomeTrain at intermediate station", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:05:00Z", 41),
+		Arguments.argumentSet("Overnight train at station", "16356", "AwayFromHome", "%1$04d-%2$02d-%3$02dT18:31:00Z", 41)
 	);
 
 	@ParameterizedTest
@@ -163,7 +162,8 @@ public class TrainTest {
 	   Arguments.argumentSet("AwayFromHomeTrainIsExitingSection", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT06:10:00Z", TrainRunningStatus.RUNNING_BETWEEN, 5),
 	   Arguments.argumentSet("TowardsHomeTrainIsOnTheSectionBetweenStations", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT12:40:00Z", TrainRunningStatus.RUNNING_BETWEEN, 77f),
 	   Arguments.argumentSet("TowardsHomeTrainIsEnteringSection", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT12:20:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10f),
-	   Arguments.argumentSet("TowardsHomeTrainIsExitingSection", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:45:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10f)
+	   Arguments.argumentSet("TowardsHomeTrainIsExitingSection", "616", "TowardsHome", "%1$04d-%2$02d-%3$02dT13:45:00Z", TrainRunningStatus.RUNNING_BETWEEN, 10f),
+	   Arguments.argumentSet("OvernightTrainOnSection", "22637", "TowardsHome", "%1$04d-%2$02d-%3$02dT18:35:00Z", TrainRunningStatus.RUNNING_BETWEEN, 61f)
    );
 
 	@ParameterizedTest
@@ -177,5 +177,58 @@ public class TrainTest {
 		Train train = new TrainFactory().createWithMockTime(trainNo, "Dummy name", direction, this.stationDistanceMap, mockClock);
 		assertEquals(expectedStatus, train.getTrainPosition().getTrainRunningStatus());
 		assertEquals(expectedDistance, train.getTrainPosition().getDistanceFromHome());
+	}
+
+	@Nested
+	class OvernightTrains {
+		@Test
+		public void overnightTrainsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException {
+			LocalDateTime now = LocalDateTime.now();
+			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
+			Train overnightTrain = new TrainFactory().create("22637", "Dummy name", "TowardsHome", stationDistanceMap);
+
+			TrainSchedule beforeMidnightStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
+			TrainSchedule afterMidnightStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
+			TrainSchedule laterStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("CAL")).findFirst().get();
+			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getArrivalTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getDepartureTime().getDayOfMonth());
+			assertEquals(nextDay.getDayOfMonth(), afterMidnightStop.getArrivalTime().getDayOfMonth());
+			assertEquals(nextDay.getDayOfMonth(), afterMidnightStop.getDepartureTime().getDayOfMonth());
+			assertEquals(nextDay.getDayOfMonth(), laterStop.getArrivalTime().getDayOfMonth());
+			assertEquals(nextDay.getDayOfMonth(), laterStop.getDepartureTime().getDayOfMonth());
+		}
+
+		@Test
+		public void overnightStopsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException {
+			LocalDateTime now = LocalDateTime.now();
+			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
+			Train overnightStopTrain = new TrainFactory().create("16356", "DummyTrain", "AwayFromHome", stationDistanceMap);
+
+			TrainSchedule beforeMidnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("CAL")).findFirst().get();
+			TrainSchedule overnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
+			TrainSchedule afterMidnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
+			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getArrivalTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getDepartureTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), overnightStop.getArrivalTime().getDayOfMonth());
+			assertEquals(nextDay.getDayOfMonth(), overnightStop.getDepartureTime().getDayOfMonth());
+			assertEquals(nextDay.getDayOfMonth(), afterMidnightStop.getArrivalTime().getDayOfMonth());
+			assertEquals(nextDay.getDayOfMonth(), afterMidnightStop.getDepartureTime().getDayOfMonth());
+		}
+
+		@Test
+		public void normalTrainsHaveNoDateChanges() throws IOException, ParserConfigurationException, SAXException {
+			LocalDateTime now = LocalDateTime.now();
+			Train overnightStopTrain = new TrainFactory().create("616", "DummyTrain", "TowardsHome", stationDistanceMap);
+
+			TrainSchedule firstStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
+			TrainSchedule secondStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
+			TrainSchedule thirdStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("CAL")).findFirst().get();
+			assertEquals(now.getDayOfMonth(), firstStop.getArrivalTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), firstStop.getDepartureTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), secondStop.getArrivalTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), secondStop.getDepartureTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), thirdStop.getArrivalTime().getDayOfMonth());
+			assertEquals(now.getDayOfMonth(), thirdStop.getDepartureTime().getDayOfMonth());
+		}
 	}
 }
