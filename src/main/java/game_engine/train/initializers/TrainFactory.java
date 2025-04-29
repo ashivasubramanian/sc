@@ -14,13 +14,46 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+/**
+ * Factory class to create <code>Train</code> objects.
+ * The reason to have a factory is to avoid <code>Train</code> having state unrelated to its needs,
+ * and also to have a common class for creating <code>Train</code>s for testing and real use.
+ */
 public class TrainFactory {
 
+    /**
+     * Create <code>Train</code> instances with the train running on current system time.
+     *
+     * @param trainNumber                   the train's number
+     * @param name                          the train's name
+     * @param direction                     the direction of travel. It can only be one of "TowardsHome" or "AwayFromHome"
+     * @param stationDistanceMap            a mapping of stations to their distances
+     * @return                              the <code>Train</code> instance
+     * @throws IOException                  if any exception occurs during train XML I/O
+     * @throws ParserConfigurationException if any exception occurs while parsing train XML content
+     * @throws SAXException                 if any exception occurs while parsing train XML content
+     */
     public Train create(String trainNumber, String name, String direction, Map<String, Integer> stationDistanceMap)
             throws IOException, ParserConfigurationException, SAXException {
         return createWithMockTime(trainNumber, name, direction, stationDistanceMap, Clock.systemDefaultZone());
     }
 
+    /**
+     * Create <code>Train</code> instances with the train running on mock time.
+     * The mock time will be specified using the <code>systemClock</code> parameter,
+     * and the train will load assuming the current time is the time in <code>systemClock</code>.
+     * <br><br> It is expected this method will only be used for testing purposes.
+     *
+     * @param trainNumber                   the train's number
+     * @param name                          the train's name
+     * @param direction                     the direction of travel. It can only be one of "TowardsHome" or "AwayFromHome"
+     * @param stationDistanceMap            a mapping of stations to their distances
+     * @param systemClock                   the <code>Clock</code> that the train assumes is current time.
+     * @return                              the <code>Train</code> instance
+     * @throws IOException                  if any exception occurs during train XML I/O
+     * @throws ParserConfigurationException if any exception occurs while parsing train XML I/O
+     * @throws SAXException                 if any exception occurs while parsing train XML I/O
+     */
     public Train createWithMockTime(String trainNumber, String name, String direction, Map<String, Integer> stationDistanceMap, Clock systemClock)
             throws IOException, ParserConfigurationException, SAXException {
         TrainDirection directionEnum = null;
@@ -34,13 +67,21 @@ public class TrainFactory {
     }
 
     /**
-     * Populates the train with the list of stations where the train halts,
-     * their distances and the arrival and departure times at those stations.
-     * The order of the stations corresponds to the direction of the train.
-     * For example, if the train travels from Calicut to Shoranur, then the list
-     * of stations starts from Calicut and ends at Shoranur. If the train
-     * travels from Shoranur to Calicut, then the list of stations starts from
-     * Shoranur and ends at Calicut.
+     * Populates the train with the list of stations where the train has scheduled stops,
+     * the distances of those stations, and the arrival and departure times at those stations.
+     * <br><br>The order of the stations corresponds to the direction of the train.
+     * For example, if the train travels from home station to its final station, then the list
+     * of stations starts from the home station and ends at the final station. If the train
+     * travels from the final station to home, then the list is reversed.
+     * <br><br>This method also takes care to ensure overnight trains have their dates adjusted correctly.
+     *
+     * @param trainNumber                   the train's number
+     * @param direction                     the direction of travel
+     * @param stationDistanceMap            a mapping of stations to their distances
+     * @return                              a list of scheduled stops.
+     * @throws IOException                  if any exception occurs during train XML I/O
+     * @throws ParserConfigurationException if any exception occurs while parsing train XML I/O
+     * @throws SAXException                 if any exception occurs while parsing train XML I/O
      */
     private List<TrainSchedule> populateTrainData(String trainNumber, TrainDirection direction, Map<String, Integer> stationDistanceMap)
             throws IOException, SAXException, ParserConfigurationException {
@@ -51,12 +92,17 @@ public class TrainFactory {
     }
 
     /**
-     * Determines the position of the train on game load. This has 3 scenarios:
-     * # Is the train beyond the section (either not yet entered or has exit already)?78.181854
-     * # Is the train stopped at a station on the section?
-     * # Is the train running between stations?
+     * Determines the position of the train on game load.<br>This has 3 scenarios:
+     * <ol>
+     * <li>Is the train beyond the section (either not yet entered or has exit already)?</li>
+     * <li>Is the train stopped at a station on the section?</li>
+     * <li>Is the train running between stations?</li>
+     * </ol>
      *
-     * @return
+     * @param direction      the current direction of the train
+     * @param scheduledStops the stops for the train, as per its timetable
+     * @param systemClock    the current time
+     * @return               the current position of the train
      */
     private TrainPosition determineTrainInitialPosition(TrainDirection direction, List<TrainSchedule> scheduledStops, Clock systemClock) {
         // Has the train not yet entered the section?
@@ -97,6 +143,19 @@ public class TrainFactory {
         return null;
     }
 
+    /**
+     * Determines, on game load, the distance of the train from the Home station.
+     * The method assumes the train is on the section and is currently between two stations,
+     * <code>crossedStation</code> and <code>upcomingStation</code>. Based on the schedules at those stations, the method
+     * calculates the speed the train should have in order to reach <code>upcomingStation</code> on-time. Based on this
+     * speed, it returns the distance the train has covered until now.
+     *
+     * @param crossedStation  the station that was just crossed
+     * @param upcomingStation the station that is upcoming
+     * @param direction       the direction of the train
+     * @param systemClock     the current time
+     * @return                the current distance from Home station
+     */
     private float determineInitialDistanceFromHome(TrainSchedule crossedStation, TrainSchedule upcomingStation,
             TrainDirection direction, Clock systemClock) {
         int distanceBetweenStations = Math.abs(crossedStation.getDistance() - upcomingStation.getDistance());
