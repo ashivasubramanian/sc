@@ -41,12 +41,8 @@ public class TrainTest {
 		Train train = null;
 		try {
 			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (SAXException saxe) {
-			saxe.printStackTrace();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			e.printStackTrace();
 		}
 		assertNotNull(train);
 	}
@@ -58,12 +54,8 @@ public class TrainTest {
 		try {
 			homeTrain = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
 			awayTrain = new TrainFactory().create("2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (SAXException saxe) {
-			saxe.printStackTrace();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			e.printStackTrace();
 		}
 		assertEquals(TrainDirection.TOWARDS_HOME,
 				homeTrain.getDirection(), "Train1 direction was not set properly.");
@@ -79,12 +71,8 @@ public class TrainTest {
 			assertEquals("CAL", someTrain.getScheduledStops().get(0).getStationCode());
 			assertEquals("TIR", someTrain.getScheduledStops().get(1).getStationCode());
 			assertEquals("SRR", someTrain.getScheduledStops().get(2).getStationCode());
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (SAXException saxe) {
-			saxe.printStackTrace();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -96,12 +84,8 @@ public class TrainTest {
 			assertEquals(homeTrain.getScheduledStops().get(0).getStationCode(),
 					awayTrain.getScheduledStops().get(awayTrain.getScheduledStops().size() - 1).getStationCode(),
 					"Train directions are not reversed.");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (SAXException saxe) {
-			saxe.printStackTrace();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -125,12 +109,8 @@ public class TrainTest {
 		Train train = null;
 		try {
 			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (SAXException saxe) {
-			saxe.printStackTrace();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			e.printStackTrace();
 		}
 		assertEquals(Thread.State.RUNNABLE, train.getState());
 	}
