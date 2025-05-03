@@ -160,7 +160,7 @@ public class TrainTest {
 	}
 
 	@Nested
-	class OvernightTrains {
+	public class OvernightTrains {
 		@Test
 		public void overnightTrainsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException {
 			LocalDateTime now = LocalDateTime.now();
