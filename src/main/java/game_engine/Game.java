@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 
-import game_engine.train.initializers.TrainFactory;
+import game_engine.initializers.TrainFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 

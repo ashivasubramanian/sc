@@ -2,7 +2,7 @@ package game_engine;
 
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
-import game_engine.train.initializers.TrainFactory;
+import game_engine.initializers.TrainFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

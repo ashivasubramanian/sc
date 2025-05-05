@@ -1,4 +1,4 @@
-package game_engine.train.initializers;
+package game_engine.initializers;
 
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;

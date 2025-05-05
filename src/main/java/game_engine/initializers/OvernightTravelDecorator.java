@@ -1,4 +1,4 @@
-package game_engine.train.initializers;
+package game_engine.initializers;
 
 import game_engine.TrainSchedule;
 import org.xml.sax.SAXException;
