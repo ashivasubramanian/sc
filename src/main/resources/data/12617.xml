@@ -2,11 +2,11 @@
 <train number="12617" name="Mangala Lakshadweep Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="14:42" departure-time="14:45" monsoon-arrival-time="15:35" monsoon-departure-time="15:40"/>
-        <stop code="FER" name="Ferok" departure-time="14:25" monsoon-departure-time="14:55"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="14:05" monsoon-departure-time="14:35"/>
+        <stop code="FER" name="Ferok" arrival-time="14:24" departure-time="14:25" monsoon-departure-time="14:55"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="14:04" departure-time="14:05" monsoon-departure-time="14:35"/>
         <stop code="TIR" name="Tirur" arrival-time="13:48" departure-time="13:50" monsoon-arrival-time="14:10" monsoon-departure-time="14:15"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="13:35" monsoon-departure-time="13:50"/>
-        <stop code="PAT" name="Pattambi" departure-time="13:15" monsoon-departure-time="13:15"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="13:34" departure-time="13:35" monsoon-departure-time="13:50"/>
+        <stop code="PAT" name="Pattambi" arrival-time="13:14" departure-time="13:15" monsoon-departure-time="13:15"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="12:55" departure-time="13:00" monsoon-arrival-time="13:10" monsoon-departure-time="13:15"/>
     </stops>
 </train>

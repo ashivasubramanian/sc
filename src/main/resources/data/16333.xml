@@ -2,11 +2,11 @@
 <train number="16333" name="Veraval Trivandrum Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="21:27" departure-time="21:30" monsoon-arrival-time="20:30" monsoon-departure-time="20:35"/>
-        <stop code="FER" name="Ferok" departure-time="21:45" monsoon-departure-time="20:50"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="22:02" monsoon-departure-time="21:10"/>
-        <stop code="TIR" name="Tirur" departure-time="22:25" monsoon-departure-time="21:30"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="22:40" monsoon-departure-time="21:50"/>
-        <stop code="PAT" name="Pattambi" departure-time="23:05" monsoon-departure-time="22:30"/>
+        <stop code="FER" name="Ferok" arrival-time="21:44" departure-time="21:45" monsoon-departure-time="20:50"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="22:01" departure-time="22:02" monsoon-departure-time="21:10"/>
+        <stop code="TIR" name="Tirur" arrival-time="22:24" departure-time="22:25" monsoon-departure-time="21:30"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="22:39" departure-time="22:40" monsoon-departure-time="21:50"/>
+        <stop code="PAT" name="Pattambi" arrival-time="23:04" departure-time="23:05" monsoon-departure-time="22:30"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="23:50" departure-time="23:55" monsoon-arrival-time="23:05" monsoon-departure-time="23:10"/>
     </stops>
 </train>

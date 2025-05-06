@@ -2,9 +2,9 @@
 <train number="16345" name="Netravati Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="09:42" departure-time="09:45" monsoon-arrival-time="11:40" monsoon-departure-time="11:45"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="10:10" monsoon-departure-time="12:20"/>
-        <stop code="TIR" name="Tirur" departure-time="10:30" monsoon-departure-time="12:40"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="10:50" monsoon-departure-time="13:00"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="10:09" departure-time="10:10" monsoon-departure-time="12:20"/>
+        <stop code="TIR" name="Tirur" arrival-time="10:29" departure-time="10:30" monsoon-departure-time="12:40"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="10:49" departure-time="10:50" monsoon-departure-time="13:00"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="12:00" departure-time="12:05" monsoon-arrival-time="14:50" monsoon-departure-time="14:55"/>
     </stops>
 </train>

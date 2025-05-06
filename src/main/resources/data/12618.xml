@@ -2,8 +2,8 @@
 <train number="12618" name="Mangala Lakshadweep Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="03:32" departure-time="03:35" monsoon-arrival-time="08:20" monsoon-departure-time="08:25"/>
-        <stop code="TIR" name="Tirur" departure-time="04:30" monsoon-departure-time="09:25"/>
-        <stop code="PAT" name="Pattambi" departure-time="05:00" monsoon-departure-time="10:10"/>
+        <stop code="TIR" name="Tirur" arrival-time="04:29" departure-time="04:30" monsoon-departure-time="09:25"/>
+        <stop code="PAT" name="Pattambi" arrival-time="04:59" departure-time="05:00" monsoon-departure-time="10:10"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="05:25" departure-time="05:30" monsoon-arrival-time="10:55" monsoon-departure-time="11:00"/>
     </stops>
 </train>

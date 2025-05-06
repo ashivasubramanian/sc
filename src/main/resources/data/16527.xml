@@ -2,8 +2,8 @@
 <train number="16527" name="Yeswantpur Cannanore Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="07:37" departure-time="07:40"/>
-        <stop code="TIR" name="Tirur" departure-time="06:50"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="06:30"/>
+        <stop code="TIR" name="Tirur" arrival-time="06:49" departure-time="06:50"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="06:29" departure-time="06:30"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="05:55" departure-time="06:00"/>
     </stops>
 </train>

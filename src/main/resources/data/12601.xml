@@ -2,12 +2,12 @@
 <train number="12601" name="Chennai Mangalore Mail">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="07:27" departure-time="07:30"/>
-        <stop code="FER" name="Ferok" departure-time="07:10"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="06:50"/>
-        <stop code="TAN" name="Tanur" departure-time="06:40"/>
-        <stop code="TIR" name="Tirur" departure-time="06:30"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="06:15"/>
-        <stop code="PAT" name="Pattambi" departure-time="05:55"/>
+        <stop code="FER" name="Ferok" arrival-time="07:09" departure-time="07:10"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="06:49" departure-time="06:50"/>
+        <stop code="TAN" name="Tanur" arrival-time="06:39" departure-time="06:40"/>
+        <stop code="TIR" name="Tirur" arrival-time="06:29" departure-time="06:30"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="06:14" departure-time="06:15"/>
+        <stop code="PAT" name="Pattambi" arrival-time="05:54" departure-time="05:55"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="05:35" departure-time="05:40"/>
     </stops>
 </train>

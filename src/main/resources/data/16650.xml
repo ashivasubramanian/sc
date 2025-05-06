@@ -2,12 +2,12 @@
 <train number="16650" name="Parasuram Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="16:25" departure-time="17:00"/>
-        <stop code="FER" name="Ferok" departure-time="15:32"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="15:12"/>
-        <stop code="TAN" name="Tanur" departure-time="15:05"/>
-        <stop code="TIR" name="Tirur" departure-time="14:57"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="14:42"/>
-        <stop code="PAT" name="Pattambi" departure-time="14:24"/>
+        <stop code="FER" name="Ferok" arrival-time="15:31" departure-time="15:32"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="15:11" departure-time="15:12"/>
+        <stop code="TAN" name="Tanur" arrival-time="15:04" departure-time="15:05"/>
+        <stop code="TIR" name="Tirur" arrival-time="14:56" departure-time="14:57"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="14:41" departure-time="14:42"/>
+        <stop code="PAT" name="Pattambi" arrival-time="14:23" departure-time="14:24"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="14:00" departure-time="14:05"/>
     </stops>
 </train>

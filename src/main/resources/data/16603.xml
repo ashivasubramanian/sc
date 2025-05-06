@@ -3,8 +3,8 @@
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="21:07" departure-time="21:10"/>
         <stop code="FER" name="Ferok" arrival-time="21:24" departure-time="21:25"/>
-        <stop code="TIR" name="Tirur" departure-time="21:55"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="22:15"/>
+        <stop code="TIR" name="Tirur" arrival-time="21:54" departure-time="21:55"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="22:14" departure-time="22:15"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="23:15" departure-time="23:20"/>
     </stops>
 </train>

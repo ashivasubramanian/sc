@@ -2,10 +2,10 @@
 <train number="16306" name="Intercity Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="16:07" departure-time="16:10"/>
-        <stop code="PAR" name="Parpanangadi" departure-time="16:35"/>
-        <stop code="TAN" name="Tanur" departure-time="16:43"/>
-        <stop code="TIR" name="Tirur" departure-time="16:51"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="17:06"/>
+        <stop code="PAR" name="Parpanangadi" arrival-time="16:34" departure-time="16:35"/>
+        <stop code="TAN" name="Tanur" arrival-time="16:42" departure-time="16:43"/>
+        <stop code="TIR" name="Tirur" arrival-time="16:50" departure-time="16:51"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="17:05" departure-time="17:06"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="17:50" departure-time="17:55"/>
     </stops>
 </train>

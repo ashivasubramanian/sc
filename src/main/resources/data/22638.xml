@@ -4,7 +4,7 @@
         <stop code="CAL" name="Calicut" arrival-time="03:00" departure-time="03:05"/>
         <stop code="PAR" name="Parpanangadi" arrival-time="03:29" departure-time="03:30"/>
         <stop code="TIR" name="Tirur" arrival-time="03:43" departure-time="03:45"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="04:00"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="03:59" departure-time="04:00"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="04:40" departure-time="04:50"/>
     </stops>
 </train>

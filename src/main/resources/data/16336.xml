@@ -2,10 +2,10 @@
 <train number="16336" name="Nagercoil Gandhidham Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="00:07" departure-time="00:10"/>
-        <stop code="FER" name="Ferok" departure-time="23:55"/>
-        <stop code="TIR" name="Tirur" departure-time="23:25"/>
-        <stop code="KUT" name="Kuttipuram" departure-time="23:10"/>
-        <stop code="PAT" name="Pattambi" departure-time="22:55"/>
+        <stop code="FER" name="Ferok" arrival-time="23:54" departure-time="23:55"/>
+        <stop code="TIR" name="Tirur" arrival-time="23:24" departure-time="23:25"/>
+        <stop code="KUT" name="Kuttipuram" arrival-time="23:09" departure-time="23:10"/>
+        <stop code="PAT" name="Pattambi" arrival-time="22:54" departure-time="22:55"/>
         <stop code="SRR" name="Shoranur-Junction" arrival-time="22:35" departure-time="22:40"/>
     </stops>
 </train>
