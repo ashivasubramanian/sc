@@ -47,11 +47,6 @@ public class Train extends Thread
 	private List<TrainSchedule> scheduledStops;
 
 	/**
-	 * The distance of the train from Calicut.
-	 */
-	float distance;
-
-	/**
 	 * The direction in which the train is travelling.
 	 */
 	TrainDirection direction;
@@ -101,7 +96,7 @@ public class Train extends Thread
 			if(first_station_time.isBefore(currentTime)) {
 				//The train is already in the section.
 				float totalseconds = getTimeDifference(currentTime,first_station_time);
-				distance = 60 * (totalseconds/3600);
+				trainPosition.setDistanceFromHome(60 * (totalseconds/3600));
 				long sleepTime = 2000;
 				try
 				{
@@ -143,7 +138,7 @@ public class Train extends Thread
 	 */
 	public float getDistance()
 	{
-		return distance;
+		return this.trainPosition.getDistanceFromHome();
 	}
 
 	/**
