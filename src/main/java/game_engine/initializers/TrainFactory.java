@@ -120,16 +120,20 @@ public class TrainFactory {
                     60 * (lastScheduledStop.getDepartureTime().until(currentTime, ChronoUnit.MINUTES) / 60f));
             return trainPosition;
         }
+
+        //Is the train stopped at a station on the section?
+        Optional<TrainPosition> trainPositionAtStation = scheduledStops.stream()
+                .filter(sch -> sch.getArrivalTime().equals(currentTime) || sch.getDepartureTime().equals(currentTime)
+                        || (sch.getArrivalTime().isBefore(currentTime) && sch.getDepartureTime().isAfter(currentTime)))
+                .map(sch -> new TrainPosition(TrainRunningStatus.SCHEDULED_STOP, sch.getDistance()))
+                .findFirst();
+        if (trainPositionAtStation.isPresent()) return trainPositionAtStation.get();
+
+        // Is the train running between stations?
         ListIterator<TrainSchedule> scheduledStopsIterator = scheduledStops.listIterator();
         while (scheduledStopsIterator.hasNext()) {
-            //Is the train stopped at a station on the section?
             TrainSchedule schedule = scheduledStopsIterator.next();
-            if (schedule.getArrivalTime().equals(currentTime) || schedule.getDepartureTime().equals(currentTime)
-                    || (schedule.getArrivalTime().isBefore(currentTime) && schedule.getDepartureTime().isAfter(currentTime))) {
-                TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.SCHEDULED_STOP, schedule.getDistance());
-                return trainPosition;
-            }
-            // Is the train running between stations?
+
             if (scheduledStopsIterator.hasNext()) {
                 TrainSchedule nextStop = scheduledStopsIterator.next();
                 if (currentTime.isAfter(schedule.getDepartureTime()) && currentTime.isBefore(nextStop.getArrivalTime())) {
