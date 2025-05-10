@@ -36,13 +36,13 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	 */
 	JButton objSet;
 
-	JComboBox<String> objPointFacingCalicutValue;
+	JComboBox<String> pointTowardsHomeStationValue;
 
-	JComboBox<String> objPointFacingShoranurValue;
+	JComboBox<String> pointTowardsAwayStationValue;
 
-	JComboBox<SignalAspect> objAspectTowardsShoranurValue;
+	JComboBox<SignalAspect> aspectTowardsAwayStationValue;
 
-	JComboBox<SignalAspect> objAspectTowardsCalicutValue;
+	JComboBox<SignalAspect> aspectTowardsHomeStationValue;
 
 	private Game game;
 
@@ -95,52 +95,52 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	    objConstraints.gridy = 1;
 	    objLayout.setConstraints(objTracks, objConstraints);
 
-	    JLabel objPointFacingCalicut = new JLabel("Point facing Calicut:");
+	    JLabel pointTowardsHomeStation = new JLabel("Point towards home station:");
 	    objConstraints.gridx = 0;
 	    objConstraints.gridy = 2;
-	    objLayout.setConstraints(objPointFacingCalicut, objConstraints);
+	    objLayout.setConstraints(pointTowardsHomeStation, objConstraints);
 
-	    objPointFacingCalicutValue = new JComboBox<>(new String[] { "Main", "Loop(pf)" });
-	    objPointFacingCalicutValue.setFont(objNormalFont);
+	    pointTowardsHomeStationValue = new JComboBox<>(new String[] { "Main", "Loop(pf)" });
+	    pointTowardsHomeStationValue.setFont(objNormalFont);
 	    objConstraints.gridx = 1;
 	    objConstraints.gridy = 2;
-	    objLayout.setConstraints(objPointFacingCalicutValue, objConstraints);
+	    objLayout.setConstraints(pointTowardsHomeStationValue, objConstraints);
 
-	    JLabel objPointFacingShoranur = new JLabel("Point facing Shoranur:");
+	    JLabel pointTowardsAwayStation = new JLabel("Point towards away station:");
 	    objConstraints.gridx = 0;
 	    objConstraints.gridy = 3;
-	    objLayout.setConstraints(objPointFacingShoranur, objConstraints);
+	    objLayout.setConstraints(pointTowardsAwayStation, objConstraints);
 
-	    objPointFacingShoranurValue = new JComboBox<>(new String[] { "Main", "Loop(pf)" });
-	    objPointFacingShoranurValue.setFont(objNormalFont);
+	    pointTowardsAwayStationValue = new JComboBox<>(new String[] { "Main", "Loop(pf)" });
+	    pointTowardsAwayStationValue.setFont(objNormalFont);
 	    objConstraints.gridx = 1;
 	    objConstraints.gridy = 3;
-	    objLayout.setConstraints(objPointFacingShoranurValue, objConstraints);
+	    objLayout.setConstraints(pointTowardsAwayStationValue, objConstraints);
 
 	    // Aspects
-	    JLabel objAspectTowardsCalicut = new JLabel("Aspect facing Calicut:");
-	    objAspectTowardsCalicut.setFont(objBoldFont);
+	    JLabel aspectTowardsHomeStation = new JLabel("Aspect towards home station:");
+	    aspectTowardsHomeStation.setFont(objBoldFont);
 	    objConstraints.gridx = 0;
 	    objConstraints.gridy = 4;
-	    objLayout.setConstraints(objAspectTowardsCalicut, objConstraints);
+	    objLayout.setConstraints(aspectTowardsHomeStation, objConstraints);
 
-	    objAspectTowardsCalicutValue = new JComboBox<>(SignalAspect.values());
-	    objAspectTowardsCalicutValue.setFont(objNormalFont);
+	    aspectTowardsHomeStationValue = new JComboBox<>(SignalAspect.values());
+	    aspectTowardsHomeStationValue.setFont(objNormalFont);
 	    objConstraints.gridx = 1;
 	    objConstraints.gridy = 4;
-	    objLayout.setConstraints(objAspectTowardsCalicutValue, objConstraints);
+	    objLayout.setConstraints(aspectTowardsHomeStationValue, objConstraints);
 
-	    JLabel objAspectTowardsShoranur = new JLabel("Aspect facing Shoranur:");
-	    objAspectTowardsShoranur.setFont(objBoldFont);
+	    JLabel aspectTowardsAwayStation = new JLabel("Aspect towards away station:");
+	    aspectTowardsAwayStation.setFont(objBoldFont);
 	    objConstraints.gridx = 0;
 	    objConstraints.gridy = 5;
-	    objLayout.setConstraints(objAspectTowardsShoranur, objConstraints);
+	    objLayout.setConstraints(aspectTowardsAwayStation, objConstraints);
 
-	    objAspectTowardsShoranurValue = new JComboBox<>(SignalAspect.values());
-	    objAspectTowardsShoranurValue.setFont(objNormalFont);
+	    aspectTowardsAwayStationValue = new JComboBox<>(SignalAspect.values());
+	    aspectTowardsAwayStationValue.setFont(objNormalFont);
 	    objConstraints.gridx = 1;
 	    objConstraints.gridy = 5;
-	    objLayout.setConstraints(objAspectTowardsShoranurValue, objConstraints);
+	    objLayout.setConstraints(aspectTowardsAwayStationValue, objConstraints);
 
 	    objSet = new JButton("Set");
 	    objSet.addActionListener(this);
@@ -153,14 +153,14 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	    add(objStations);
 	    add(objTrack);
 	    add(objTracks);
-	    add(objPointFacingCalicut);
-	    add(objPointFacingCalicutValue);
-	    add(objPointFacingShoranur);
-	    add(objPointFacingShoranurValue);
-	    add(objAspectTowardsCalicut);
-	    add(objAspectTowardsCalicutValue);
-	    add(objAspectTowardsShoranur);
-	    add(objAspectTowardsShoranurValue);
+	    add(pointTowardsHomeStation);
+	    add(pointTowardsHomeStationValue);
+	    add(pointTowardsAwayStation);
+	    add(pointTowardsAwayStationValue);
+	    add(aspectTowardsHomeStation);
+	    add(aspectTowardsHomeStationValue);
+	    add(aspectTowardsAwayStation);
+	    add(aspectTowardsAwayStationValue);
 	    add(objSet);
 	    setLayout(objLayout);
 	}
@@ -174,14 +174,14 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	public void actionPerformed(ActionEvent objActionEvent) {
 		if (objActionEvent.getSource() instanceof JButton) {
 			this.game.setStationAspect(objStations.getSelectedItem().toString(),
-					new SignalAspect[]{(SignalAspect) objAspectTowardsCalicutValue.getSelectedItem(),
-							(SignalAspect) objAspectTowardsShoranurValue.getSelectedItem()});
+					new SignalAspect[]{(SignalAspect) aspectTowardsHomeStationValue.getSelectedItem(),
+							(SignalAspect) aspectTowardsAwayStationValue.getSelectedItem()});
 		} else if (objActionEvent.getSource() instanceof JComboBox) {
 			String selectedStationName = ((JComboBox<String>) objActionEvent.getSource()).getSelectedItem().toString();
 			StationDto selectedStation = latestStationInformation.stream()
 					.filter(stationDto -> stationDto.getName().equals(selectedStationName)).findFirst().get();
-			objAspectTowardsCalicutValue.setSelectedItem(selectedStation.getAspects()[0]);
-			objAspectTowardsShoranurValue.setSelectedItem(selectedStation.getAspects()[1]);
+			aspectTowardsHomeStationValue.setSelectedItem(selectedStation.getAspects()[0]);
+			aspectTowardsAwayStationValue.setSelectedItem(selectedStation.getAspects()[1]);
 		}
 	}
 
