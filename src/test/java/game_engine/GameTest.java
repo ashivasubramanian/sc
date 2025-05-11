@@ -54,8 +54,12 @@ public class GameTest {
                 .findFirst().get();
         SignalAspect[] defaultSignalAspects = new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP};
         assertArrayEquals(defaultSignalAspects, calicutStationDto.getAspects());
+
         SignalAspect[] newSignalAspects = new SignalAspect[]{SignalAspect.PROCEED, SignalAspect.PROCEED};
-        game.setStationAspect("Calicut", newSignalAspects);
+        game.setStationAspect("Calicut", newSignalAspects[0], newSignalAspects[1]);
+        calicutStationDto = game.getStations().stream()
+                .filter(station -> station.getName().equals("Calicut"))
+                .findFirst().get();
         assertArrayEquals(newSignalAspects, calicutStationDto.getAspects());
     }
 }

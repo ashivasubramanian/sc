@@ -1,6 +1,7 @@
 package game_engine;
 
 import common.models.SignalAspect;
+import common.models.TrainDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ public class Station {
      * @return An <code>Integer</code> array that contains both aspects.
      */
     public SignalAspect[] getAspects() {
-        return tracks.get(0).getAspects();
+        return new SignalAspect[] {tracks.get(0).getTowardsHomeAspect(), tracks.get(0).getAwayFromHomeAspect()};
     }
 
     /**
@@ -111,8 +112,11 @@ public class Station {
      * @param signal The signal to which <code>aspect</code> is to be set
      * @param aspect The aspect to be set to <code>signal</code>
      */
-    public void setAspect(int signal, SignalAspect aspect) {
-        tracks.forEach(track -> track.getAspects()[signal] = aspect);
+    public void setAspect(TrainDirection signal, SignalAspect aspect) {
+        if (signal == TrainDirection.TOWARDS_HOME)
+            tracks.forEach(track -> track.setTowardsHomeAspect(aspect));
+        else
+            tracks.forEach(track -> track.setAwayFromHomeAspect(aspect));
     }
 
     public List<Track> getTracks() {

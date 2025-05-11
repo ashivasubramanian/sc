@@ -174,8 +174,8 @@ public class StationsTab extends JPanel implements ActionListener, Runnable
 	public void actionPerformed(ActionEvent objActionEvent) {
 		if (objActionEvent.getSource() instanceof JButton) {
 			this.game.setStationAspect(objStations.getSelectedItem().toString(),
-					new SignalAspect[]{(SignalAspect) aspectTowardsHomeStationValue.getSelectedItem(),
-							(SignalAspect) aspectTowardsAwayStationValue.getSelectedItem()});
+					(SignalAspect) aspectTowardsHomeStationValue.getSelectedItem(),
+					(SignalAspect) aspectTowardsAwayStationValue.getSelectedItem());
 		} else if (objActionEvent.getSource() instanceof JComboBox) {
 			String selectedStationName = ((JComboBox<String>) objActionEvent.getSource()).getSelectedItem().toString();
 			StationDto selectedStation = latestStationInformation.stream()

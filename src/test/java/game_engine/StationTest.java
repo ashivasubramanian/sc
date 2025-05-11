@@ -1,5 +1,6 @@
 package game_engine;
 
+import common.models.TrainDirection;
 import game_engine.Station;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,10 +73,10 @@ public class StationTest {
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
 		Station station = new Station(data);
-		station.setAspect(1, SignalAspect.CAUTION);
+		station.setAspect(TrainDirection.AWAY_FROM_HOME, SignalAspect.CAUTION);
 		assertArrayEquals(new SignalAspect[] {SignalAspect.STOP, SignalAspect.CAUTION},
 				station.getAspects(), "Second signal not set to Amber.");
-		station.setAspect(0, SignalAspect.PROCEED);
+		station.setAspect(TrainDirection.TOWARDS_HOME, SignalAspect.PROCEED);
 		assertArrayEquals(new SignalAspect[] {SignalAspect.PROCEED, SignalAspect.CAUTION},
 				station.getAspects(), "First signal not set to Green.");
 	}

@@ -24,26 +24,25 @@ public class Track {
 
     private final TrackType trackType;
 
-    /**
-     * An array of aspects inside the station. This is
-     * initialized to STOP by the constructor. <p>At any point during the game, any
-     * aspect of the station can be changed using the
-     * <code>setAspect(int, String)</code> method. All the aspects can be retrieved
-     * using <code>getAspects()</code>. Currently, there is no way to obtain only
-     * a particular aspect.
-     */
-    SignalAspect[] aspects;
+    private SignalAspect towardsHome;
+
+    private SignalAspect awayFromHome;
 
     public Track(TrackType typeOfTrack) {
         this.trackType = typeOfTrack;
-        aspects = new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP};
+        this.towardsHome = SignalAspect.STOP;
+        this.awayFromHome = SignalAspect.STOP;
     }
 
     public TrackType getTrackType() {
         return this.trackType;
     }
 
-    public SignalAspect[] getAspects() {
-        return aspects;
-    }
+    public void setTowardsHomeAspect(SignalAspect aspect) { this.towardsHome = aspect; }
+
+    public void setAwayFromHomeAspect(SignalAspect aspect) { this.awayFromHome = aspect; }
+
+    SignalAspect getTowardsHomeAspect() { return towardsHome; }
+
+    SignalAspect getAwayFromHomeAspect() { return awayFromHome; }
 }
