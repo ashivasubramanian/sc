@@ -69,7 +69,14 @@ public class Game {
         InputStream stationsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
         try {
             Vector<Element> stationsFromXMLFile = DataAccess.getInstance().extractData(stationsXMLStream, "station");
-            this.stations = stationsFromXMLFile.stream().map(element -> new Station(element))
+            this.stations = stationsFromXMLFile.stream()
+                    .map(element -> {
+                        String code = element.getAttribute("code");
+                        String name = element.getAttribute("name");
+                        int noOfTracks = Integer.parseInt(element.getAttribute("no-of-tracks"));
+                        int distanceFromHome = Integer.parseInt(element.getAttribute("distance-from-home"));
+                        return new Station(code, name, noOfTracks, distanceFromHome);
+                    })
                     .collect(Collectors.toList());
         } catch (IOException | SAXException | ParserConfigurationException ex) {
             throw new GameNotStartedException(ex);

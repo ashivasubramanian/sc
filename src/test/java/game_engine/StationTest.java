@@ -1,7 +1,7 @@
 package game_engine;
 
 import common.models.TrainDirection;
-import game_engine.Station;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,7 +22,7 @@ public class StationTest {
 		when(data.getAttribute("no-of-tracks")).thenReturn("3");
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
-		Station station = new Station(data);
+		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertNotNull(station);
 	}
 	
@@ -33,7 +33,7 @@ public class StationTest {
 		when(data.getAttribute("no-of-tracks")).thenReturn("3");
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
-		Station station = new Station(data);
+		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertArrayEquals(new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP},
 				station.getAspects(), "Station aspects not set to STOP.");
 	}
@@ -45,7 +45,7 @@ public class StationTest {
 		when(data.getAttribute("no-of-tracks")).thenReturn("3");
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
 		
-		Station station = new Station(data);
+		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertEquals(2, station.getPoints().size());
 		assertEquals(Track.TrackType.MAIN_TRACK, station.getPoints().get(0));
 		assertEquals(Track.TrackType.MAIN_TRACK, station.getPoints().get(1));
@@ -57,8 +57,8 @@ public class StationTest {
 		when(data.getAttribute("name")).thenReturn("Calicut");
 		when(data.getAttribute("no-of-tracks")).thenReturn("3");
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
-		
-		Station station = new Station(data);
+
+		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertEquals(3, station.getTracks().size());
 		assertEquals(Track.TrackType.MAIN_TRACK, station.getTracks().get(0).getTrackType());
 		assertEquals(Track.TrackType.LOOP_TRACK, station.getTracks().get(1).getTrackType());
@@ -72,7 +72,7 @@ public class StationTest {
 		when(data.getAttribute("no-of-tracks")).thenReturn("3");
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
 
-		Station station = new Station(data);
+		Station station = new Station("CAL", "Calicut", 3,47);
 		station.setAspect(TrainDirection.AWAY_FROM_HOME, SignalAspect.CAUTION);
 		assertArrayEquals(new SignalAspect[] {SignalAspect.STOP, SignalAspect.CAUTION},
 				station.getAspects(), "Second signal not set to Amber.");

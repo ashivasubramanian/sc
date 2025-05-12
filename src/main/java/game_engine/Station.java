@@ -52,30 +52,29 @@ public class Station {
     private int distance_from_home;
 
     /**
-     * Uses the data present in <code>objStationData</code> to set the station
-     * name, its aspects, points and tracks as well as the distance of the
-     * station from the home station. Note that the constructor does not expect
-     * aspect data in <code>objStationData</code> and that it automatically sets
-     * the aspects to STOP.
+     * Constructs a <code>Station</code> object.
+     * <br><br>Note that the constructor sets all the aspects of the station to STOP as default.
      *
-     * @param objStationData Contains station data such as name, no. of tracks,
-     * no. of points and its distance
+     * @param code             the station code
+     * @param name             the name of the station
+     * @param numberOfTracks   the number of tracks in the station
+     * @param distanceFromHome the distance of the station from the home station
      */
-    public Station(org.w3c.dom.Element objStationData) {
-        code = objStationData.getAttribute("code");
-        name = objStationData.getAttribute("name");
+    public Station(String code, String name, int numberOfTracks, int distanceFromHome) {
+        this.code = code;
+        this.name = name;
 
         points = new ArrayList<>();
         points.add(Track.TrackType.MAIN_TRACK);
         points.add(Track.TrackType.MAIN_TRACK);
 
         tracks = new ArrayList<>();
-        Track.TrackType track_array[] = {Track.TrackType.MAIN_TRACK, Track.TrackType.LOOP_TRACK, Track.TrackType.LOOP_TRACK};
-        for (int i = 0; i < Integer.parseInt(objStationData.getAttribute("no-of-tracks")); i++) {
+        Track.TrackType[] track_array = {Track.TrackType.MAIN_TRACK, Track.TrackType.LOOP_TRACK, Track.TrackType.LOOP_TRACK};
+        for (int i = 0; i < numberOfTracks; i++) {
             tracks.add(new Track(track_array[i]));
         }
 
-        distance_from_home = Integer.parseInt(objStationData.getAttribute("distance-from-home"));
+        this.distance_from_home = distanceFromHome;
     }
 
     /**
