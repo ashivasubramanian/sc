@@ -32,24 +32,24 @@ public class Station {
      * The name of the station. This is initialized by the constructor and is
      * obtained using <code>getName()</code>.
      */
-    String name;
+    private String name;
 
     /**
      * A collection of tracks inside the station. This is initialized by the
      * constructor.
      */
-    List<Track> tracks;
+    private List<Track> tracks;
 
     /**
      * A collection of points inside the station. This is initialized by the
      * constructor.
      */
-    List<Track.TrackType> points;
+    private List<Track.TrackType> points;
 
     /**
      * The distance of the station from the home station.
      */
-    int distance_from_home;
+    private int distance_from_home;
 
     /**
      * Uses the data present in <code>objStationData</code> to set the station
@@ -119,8 +119,12 @@ public class Station {
             tracks.forEach(track -> track.setAwayFromHomeAspect(aspect));
     }
 
-    public List<Track> getTracks() {
+    List<Track> getTracks() {
         return this.tracks;
+    }
+
+    List<Track.TrackType> getPoints() {
+        return this.points;
     }
 
     /**

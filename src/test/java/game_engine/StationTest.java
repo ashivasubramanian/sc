@@ -46,9 +46,9 @@ public class StationTest {
 		when(data.getAttribute("distance-from-home")).thenReturn("47");
 		
 		Station station = new Station(data);
-		assertEquals(2, station.points.size());
-		assertEquals(Track.TrackType.MAIN_TRACK, station.points.get(0));
-		assertEquals(Track.TrackType.MAIN_TRACK, station.points.get(1));
+		assertEquals(2, station.getPoints().size());
+		assertEquals(Track.TrackType.MAIN_TRACK, station.getPoints().get(0));
+		assertEquals(Track.TrackType.MAIN_TRACK, station.getPoints().get(1));
 	}
 	
 	@Test
