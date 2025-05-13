@@ -22,24 +22,24 @@ public class Train extends Thread
 	 * This is of <code>String</code> datatype, rather than <code>int</code>,
 	 * because some train numbers can contain alphabets, for example, 4021A.
 	 */
-	String no;
+	private String no;
 
 	/**
 	 * The name of the train.
 	 */
-	String name;
+	private String name;
 
 	/**
 	 * The current lag of the train.
 	 * The default lag is 0. When a train is late, the lag time increases. When
 	 * a train is early, its lag time moves into negative.
 	 */
-	int lag;
+	private int lag;
 
 	/**
 	 * A mapping of stations on the section & their distances from the Home station.
 	 */
-	Map<String,Integer> stationDistanceMap;
+	private Map<String,Integer> stationDistanceMap;
 
 	/**
 	 * A collection of stations where the train will stop.
@@ -49,7 +49,7 @@ public class Train extends Thread
 	/**
 	 * The direction in which the train is travelling.
 	 */
-	TrainDirection direction;
+	private TrainDirection direction;
 
 	/**
 	 * Stores the current position of the train.

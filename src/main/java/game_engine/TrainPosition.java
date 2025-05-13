@@ -6,7 +6,7 @@ public class TrainPosition {
     /**
      * The distance of the train from the home station.
      */
-    float distanceFromHome;
+    private float distanceFromHome;
 
     /**
      * Holds info about whether the train is running or not, and if not,
