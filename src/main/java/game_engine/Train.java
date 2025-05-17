@@ -2,6 +2,8 @@ package game_engine;
 
 import common.models.TrainDirection;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -15,8 +17,7 @@ import java.util.*;
  * rendering of data on-screen, the data held by an instance of <code>Train</code> is
  * always accurate.
  */
-public class Train extends Thread
-{
+public class Train extends Thread implements PropertyChangeListener {
 	/**
 	 * The unique number of the train.
 	 * This is of <code>String</code> datatype, rather than <code>int</code>,
@@ -171,4 +172,8 @@ public class Train extends Thread
 		return this.trainPosition;
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println("received event...");
+	}
 }

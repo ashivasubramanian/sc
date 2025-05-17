@@ -3,6 +3,7 @@ package game_engine;
 import common.models.SignalAspect;
 import common.models.TrainDirection;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,11 @@ public class Station {
     private int distance_from_home;
 
     /**
+     * Java Beans class to help monitor observers for the station's signals.
+     */
+    private PropertyChangeSupport pcs;
+
+    /**
      * Constructs a <code>Station</code> object.
      * <br><br>Note that the constructor sets all the aspects of the station to STOP as default.
      *
@@ -74,6 +80,7 @@ public class Station {
             tracks.add(new Track(track_array[i]));
         }
 
+        pcs = new PropertyChangeSupport(this);
         this.distance_from_home = distanceFromHome;
     }
 
@@ -107,15 +114,22 @@ public class Station {
 
     /**
      * Sets the specified aspect to the specified signal.
+     * Once the signal has been changed, any <code>Train</code>s currently observing the signal are notified.
      *
      * @param signal The signal to which <code>aspect</code> is to be set
      * @param aspect The aspect to be set to <code>signal</code>
      */
     public void setAspect(TrainDirection signal, SignalAspect aspect) {
-        if (signal == TrainDirection.TOWARDS_HOME)
+        if (signal == TrainDirection.TOWARDS_HOME) {
+            SignalAspect oldAspect = tracks.get(0).getTowardsHomeAspect();
             tracks.forEach(track -> track.setTowardsHomeAspect(aspect));
-        else
+            pcs.firePropertyChange("towardsHomeAspect", oldAspect, aspect);
+        }
+        else {
+            SignalAspect oldAspect = tracks.get(0).getAwayFromHomeAspect();
             tracks.forEach(track -> track.setAwayFromHomeAspect(aspect));
+            pcs.firePropertyChange("awayFromHomeAspect", oldAspect, aspect);
+        }
     }
 
     List<Track> getTracks() {
@@ -132,5 +146,37 @@ public class Station {
      */
     public String getCode() {
         return code;
+    }
+
+    /**
+     * Adds a Train as an observer for the station's signal.
+     * Since a station has 2 signals on either side, <code>direction</code> is used to determine the correct
+     * signal to observe.
+     *
+     * @param train     the train that wants to observe the signal
+     * @param direction the signal the train wants to observe
+     */
+    public void addObserverForSignal(Train train, TrainDirection direction) {
+        if (direction == TrainDirection.TOWARDS_HOME) {
+            pcs.addPropertyChangeListener("towardsHomeAspect", train);
+        } else if (direction == TrainDirection.AWAY_FROM_HOME) {
+            pcs.addPropertyChangeListener("awayFromHomeAspect", train);
+        }
+    }
+
+    /**
+     * Removes a Train as an observer for the station's signal.
+     * Since a station has 2 signals on either side, <code>direction</code> is used to determine the correct
+     * signal to observe.
+     *
+     * @param train     the train that wants to stop observing signals
+     * @param direction the signal the train wants to stop observing
+     */
+    public void removeObserverForSignal(Train train, TrainDirection direction) {
+        if (direction == TrainDirection.TOWARDS_HOME) {
+            pcs.removePropertyChangeListener("towardsHomeAspect", train);
+        } else if (direction == TrainDirection.AWAY_FROM_HOME) {
+            pcs.removePropertyChangeListener("awayFromHomeAspect", train);
+        }
     }
 }
