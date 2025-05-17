@@ -21,7 +21,7 @@ public class Train extends Thread implements PropertyChangeListener {
 	/**
 	 * The unique number of the train.
 	 * This is of <code>String</code> datatype, rather than <code>int</code>,
-	 * because some train numbers can contain alphabets, for example, 4021A.
+	 * because some train numbers can contain alphabets or leading zeros, for example, 4021A or 03064.
 	 */
 	private String no;
 

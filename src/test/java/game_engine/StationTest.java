@@ -15,22 +15,12 @@ public class StationTest {
 	
 	@Test
 	public void initializingStationWithLegalValuesShouldPass() {
-		Element data = mock(Element.class);
-		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("no-of-tracks")).thenReturn("3");
-		when(data.getAttribute("distance-from-home")).thenReturn("47");
-
 		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertNotNull(station);
 	}
 	
 	@Test
 	public void stationShouldBeInitializedWithSTOPAspect() {
-		Element data = mock(Element.class);
-		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("no-of-tracks")).thenReturn("3");
-		when(data.getAttribute("distance-from-home")).thenReturn("47");
-
 		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertArrayEquals(new SignalAspect[] {SignalAspect.STOP, SignalAspect.STOP},
 				station.getAspects(), "Station aspects not set to STOP.");
@@ -38,11 +28,6 @@ public class StationTest {
 	
 	@Test
 	public void stationShouldBeInitializedWithTwoPoints() {
-		Element data = mock(Element.class);
-		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("no-of-tracks")).thenReturn("3");
-		when(data.getAttribute("distance-from-home")).thenReturn("47");
-		
 		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertEquals(2, station.getPoints().size());
 		assertEquals(Track.TrackType.MAIN_TRACK, station.getPoints().get(0));
@@ -51,11 +36,6 @@ public class StationTest {
 	
 	@Test
 	public void stationShouldBeInitializedWithThreeTracks() {
-		Element data = mock(Element.class);
-		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("no-of-tracks")).thenReturn("3");
-		when(data.getAttribute("distance-from-home")).thenReturn("47");
-
 		Station station = new Station("CAL", "Calicut", 3, 47);
 		assertEquals(3, station.getTracks().size());
 		assertEquals(Track.TrackType.MAIN_TRACK, station.getTracks().get(0).getTrackType());
@@ -65,11 +45,6 @@ public class StationTest {
 	
 	@Test
 	public void changingAspectForASignalShouldPass() {
-		Element data = mock(Element.class);
-		when(data.getAttribute("name")).thenReturn("Calicut");
-		when(data.getAttribute("no-of-tracks")).thenReturn("3");
-		when(data.getAttribute("distance-from-home")).thenReturn("47");
-
 		Station station = new Station("CAL", "Calicut", 3,47);
 		station.setAspect(TrainDirection.AWAY_FROM_HOME, SignalAspect.CAUTION);
 		assertArrayEquals(new SignalAspect[] {SignalAspect.STOP, SignalAspect.CAUTION},
