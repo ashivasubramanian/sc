@@ -50,7 +50,7 @@ public class Station {
     /**
      * The distance of the station from the home station.
      */
-    private int distance_from_home;
+    private int distanceFromHome;
 
     /**
      * Java Beans class to help monitor observers for the station's signals.
@@ -81,7 +81,7 @@ public class Station {
         }
 
         pcs = new PropertyChangeSupport(this);
-        this.distance_from_home = distanceFromHome;
+        this.distanceFromHome = distanceFromHome;
     }
 
     /**
@@ -90,7 +90,7 @@ public class Station {
      * @return the distance of the station
      */
     public Integer getDistance() {
-        return new Integer(distance_from_home);
+        return new Integer(distanceFromHome);
     }
 
     /**
