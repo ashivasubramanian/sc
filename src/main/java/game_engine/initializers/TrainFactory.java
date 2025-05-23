@@ -2,6 +2,7 @@ package game_engine.initializers;
 
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
+import game_engine.Station;
 import game_engine.Train;
 import game_engine.TrainPosition;
 import game_engine.TrainSchedule;
@@ -27,15 +28,15 @@ public class TrainFactory {
      * @param trainNumber                   the train's number
      * @param name                          the train's name
      * @param direction                     the direction of travel. It can only be one of "TowardsHome" or "AwayFromHome"
-     * @param stationDistanceMap            a mapping of stations to their distances
+     * @param stations                      a list of stations on the section
      * @return                              the <code>Train</code> instance
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML content
      * @throws SAXException                 if any exception occurs while parsing train XML content
      */
-    public Train create(String trainNumber, String name, String direction, Map<String, Integer> stationDistanceMap)
+    public Train create(String trainNumber, String name, String direction, List<Station> stations)
             throws IOException, ParserConfigurationException, SAXException {
-        return createWithMockTime(trainNumber, name, direction, stationDistanceMap, Clock.systemDefaultZone());
+        return createWithMockTime(trainNumber, name, direction, stations, Clock.systemDefaultZone());
     }
 
     /**
@@ -47,21 +48,21 @@ public class TrainFactory {
      * @param trainNumber                   the train's number
      * @param name                          the train's name
      * @param direction                     the direction of travel. It can only be one of "TowardsHome" or "AwayFromHome"
-     * @param stationDistanceMap            a mapping of stations to their distances
+     * @param stations                      a list of stations on the section
      * @param systemClock                   the <code>Clock</code> that the train assumes is current time.
      * @return                              the <code>Train</code> instance
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML I/O
      * @throws SAXException                 if any exception occurs while parsing train XML I/O
      */
-    public Train createWithMockTime(String trainNumber, String name, String direction, Map<String, Integer> stationDistanceMap, Clock systemClock)
+    public Train createWithMockTime(String trainNumber, String name, String direction, List<Station> stations, Clock systemClock)
             throws IOException, ParserConfigurationException, SAXException {
         TrainDirection directionEnum = null;
         if(direction.equals("TowardsHome"))
             directionEnum = TrainDirection.TOWARDS_HOME;
         else if(direction.equals("AwayFromHome"))
             directionEnum = TrainDirection.AWAY_FROM_HOME;
-        List<TrainSchedule> scheduledStops = populateTrainData(trainNumber, directionEnum, stationDistanceMap);
+        List<TrainSchedule> scheduledStops = populateTrainData(trainNumber, directionEnum, stations);
         TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, scheduledStops, systemClock);
         return new Train(trainNumber, name, directionEnum, scheduledStops, initialTrainPosition);
     }
@@ -77,17 +78,17 @@ public class TrainFactory {
      *
      * @param trainNumber                   the train's number
      * @param direction                     the direction of travel
-     * @param stationDistanceMap            a mapping of stations to their distances
+     * @param stations                      a list of stations on the section.
      * @return                              a list of scheduled stops.
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML I/O
      * @throws SAXException                 if any exception occurs while parsing train XML I/O
      */
-    private List<TrainSchedule> populateTrainData(String trainNumber, TrainDirection direction, Map<String, Integer> stationDistanceMap)
+    private List<TrainSchedule> populateTrainData(String trainNumber, TrainDirection direction, List<Station> stations)
             throws IOException, SAXException, ParserConfigurationException {
         System.out.printf( "Loading data for %1$s\n", trainNumber);
         List<TrainSchedule> scheduledStops = new OvernightTravelDecorator(
-                new TrainScheduleInitializer(trainNumber, direction, stationDistanceMap)).populateTrainData();
+                new TrainScheduleInitializer(trainNumber, direction, stations)).populateTrainData();
         return scheduledStops;
     }
 

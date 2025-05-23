@@ -15,24 +15,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TrainTest {
 
-	private Map<String, Integer> stationDistanceMap;
+	private List<Station> stations;
 
 	@BeforeEach
 	public void setup() {
-		this.stationDistanceMap = new HashMap<>();
-		this.stationDistanceMap.put("CAL", 0);
-		this.stationDistanceMap.put("TIR", 41);
-		this.stationDistanceMap.put("SRR", 86);
+		this.stations = new ArrayList<>();
+		this.stations.add(new Station("CAL", "", 0, 0));
+		this.stations.add(new Station("TIR", "", 0, 41));
+		this.stations.add(new Station("SRR", "", 0, 86));
 
 	}
 	
@@ -40,7 +37,7 @@ public class TrainTest {
 	public void initializingTrainWithLegalValuesShouldPass() {
 		Train train = null;
 		try {
-			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
+			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stations);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -52,8 +49,8 @@ public class TrainTest {
 		Train homeTrain = null;
 		Train awayTrain = null;
 		try {
-			homeTrain = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
-			awayTrain = new TrainFactory().create("2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stationDistanceMap);
+			homeTrain = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stations);
+			awayTrain = new TrainFactory().create("2653", "Mangala Lakshadweep Express", "AwayFromHome", this.stations);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -66,7 +63,7 @@ public class TrainTest {
 	@Test
 	public void stationListMustBePopulatedOnInitialization() {
 		try {
-			Train someTrain = new TrainFactory().create("616","Calicut Shoranur Passenger", "AwayFromHome", this.stationDistanceMap);
+			Train someTrain = new TrainFactory().create("616","Calicut Shoranur Passenger", "AwayFromHome", this.stations);
 			assertEquals(3, someTrain.getScheduledStops().size());
 			assertEquals("CAL", someTrain.getScheduledStops().get(0).getStationCode());
 			assertEquals("TIR", someTrain.getScheduledStops().get(1).getStationCode());
@@ -79,8 +76,8 @@ public class TrainTest {
 	@Test
 	public void stationListMustBeReversedForTrainsTowardsHome() {
 		try {
-			Train homeTrain = new TrainFactory().create("616", "Calicut Shoranur Passenger", "TowardsHome", this.stationDistanceMap);
-			Train awayTrain = new TrainFactory().create("2653", "Kerala Sampark Kranti Express", "AwayFromHome", this.stationDistanceMap);
+			Train homeTrain = new TrainFactory().create("616", "Calicut Shoranur Passenger", "TowardsHome", this.stations);
+			Train awayTrain = new TrainFactory().create("2653", "Kerala Sampark Kranti Express", "AwayFromHome", this.stations);
 			assertEquals(homeTrain.getScheduledStops().get(0).getStationCode(),
 					awayTrain.getScheduledStops().get(awayTrain.getScheduledStops().size() - 1).getStationCode(),
 					"Train directions are not reversed.");
@@ -92,7 +89,7 @@ public class TrainTest {
 	@Test
 	public void arrivalAndDepartureTimesAtStationsMustBePopulatedOnLoad() {
 		try {
-			Train homeTrain = new TrainFactory().create("616", "Calicut Shoranur Passenger", "TowardsHome", this.stationDistanceMap);
+			Train homeTrain = new TrainFactory().create("616", "Calicut Shoranur Passenger", "TowardsHome", this.stations);
 			TrainSchedule calicutStop = homeTrain.getScheduledStops().stream()
 					.filter(stop -> stop.getStationCode().equals("CAL")).findFirst().get();
 			assertEquals("19:00", calicutStop.getArrivalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
@@ -108,7 +105,7 @@ public class TrainTest {
 	public void initializingTheTrainShouldStartTheTrainThread() {
 		Train train = null;
 		try {
-			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stationDistanceMap);
+			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stations);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -131,7 +128,7 @@ public class TrainTest {
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
-		Train train = new TrainFactory().createWithMockTime(trainNo, "Dummy name", direction, this.stationDistanceMap, mockClock);
+		Train train = new TrainFactory().createWithMockTime(trainNo, "Dummy name", direction, this.stations, mockClock);
 		assertEquals(TrainRunningStatus.SCHEDULED_STOP, train.getTrainPosition().getTrainRunningStatus());
 		assertEquals(distance, train.getTrainPosition().getDistanceFromHome());
 	}
@@ -154,7 +151,7 @@ public class TrainTest {
 		String mockTimeString = String.format(currentTime, now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		Clock mockClock = Clock.fixed(Instant.parse(mockTimeString), ZoneId.of("+05:30"));
 
-		Train train = new TrainFactory().createWithMockTime(trainNo, "Dummy name", direction, this.stationDistanceMap, mockClock);
+		Train train = new TrainFactory().createWithMockTime(trainNo, "Dummy name", direction, this.stations, mockClock);
 		assertEquals(expectedStatus, train.getTrainPosition().getTrainRunningStatus());
 		assertEquals(expectedDistance, train.getTrainPosition().getDistanceFromHome());
 	}
@@ -165,7 +162,7 @@ public class TrainTest {
 		public void overnightTrainsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException {
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
-			Train overnightTrain = new TrainFactory().create("22637", "Dummy name", "TowardsHome", stationDistanceMap);
+			Train overnightTrain = new TrainFactory().create("22637", "Dummy name", "TowardsHome", stations);
 
 			TrainSchedule beforeMidnightStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
 			TrainSchedule afterMidnightStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
@@ -182,7 +179,7 @@ public class TrainTest {
 		public void overnightStopsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException {
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
-			Train overnightStopTrain = new TrainFactory().create("16356", "DummyTrain", "AwayFromHome", stationDistanceMap);
+			Train overnightStopTrain = new TrainFactory().create("16356", "DummyTrain", "AwayFromHome", stations);
 
 			TrainSchedule beforeMidnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("CAL")).findFirst().get();
 			TrainSchedule overnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
@@ -198,7 +195,7 @@ public class TrainTest {
 		@Test
 		public void normalTrainsHaveNoDateChanges() throws IOException, ParserConfigurationException, SAXException {
 			LocalDateTime now = LocalDateTime.now();
-			Train overnightStopTrain = new TrainFactory().create("616", "DummyTrain", "TowardsHome", stationDistanceMap);
+			Train overnightStopTrain = new TrainFactory().create("616", "DummyTrain", "TowardsHome", stations);
 
 			TrainSchedule firstStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
 			TrainSchedule secondStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();

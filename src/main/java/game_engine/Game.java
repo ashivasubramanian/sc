@@ -150,7 +150,7 @@ public class Game {
                 //We are ready to compare.
                 if (currentTime.isAfter(first_station_time) && currentTime.isBefore(last_station_time)) {
                     Train individual_train = new TrainFactory().create(train.getAttribute("number"), train.getAttribute("name"),
-                            train.getAttribute("direction"), stationDistanceMap);
+                            train.getAttribute("direction"), this.stations);
                     trains.add(individual_train);
                 }
             }

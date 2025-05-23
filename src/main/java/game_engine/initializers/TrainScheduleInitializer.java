@@ -1,6 +1,7 @@
 package game_engine.initializers;
 
 import common.models.TrainDirection;
+import game_engine.Station;
 import game_engine.TrainSchedule;
 import game_engine.data_access.DataAccess;
 import org.w3c.dom.Element;
@@ -25,19 +26,19 @@ class TrainScheduleInitializer {
 
     private final String trainNumber;
     private final TrainDirection direction;
-    private final Map<String, Integer> stationDistanceMap;
+    private final List<Station> stations;
 
     /**
      * Creates an instance of this class.
      *
-     * @param trainNumber        the train's number
-     * @param direction          the direction of travel
-     * @param stationDistanceMap a mapping of stations to their distances
+     * @param trainNumber the train's number
+     * @param direction   the direction of travel
+     * @param stations    a list of stations on the section
      */
-    public TrainScheduleInitializer(String trainNumber, TrainDirection direction, Map<String, Integer> stationDistanceMap) {
+    public TrainScheduleInitializer(String trainNumber, TrainDirection direction, List<Station> stations) {
         this.trainNumber = trainNumber;
         this.direction = direction;
-        this.stationDistanceMap = stationDistanceMap;
+        this.stations = stations;
     }
 
     /**
@@ -73,7 +74,9 @@ class TrainScheduleInitializer {
                     .mapToInt(Integer::valueOf).toArray();
             LocalDateTime departureTime = LocalDateTime.of(LocalDate.now(),
                     LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
-            scheduledStops.add(new TrainSchedule(stationCode, arrivalTime, departureTime, stationDistanceMap.get(stationCode)));
+
+            Station station = this.stations.stream().filter(s -> s.getCode().equalsIgnoreCase(stationCode)).findFirst().get();
+            scheduledStops.add(new TrainSchedule(stationCode, arrivalTime, departureTime, station.getDistance()));
         }
         //Reversing the distances if travelling towards home
         if (direction == TrainDirection.TOWARDS_HOME)
