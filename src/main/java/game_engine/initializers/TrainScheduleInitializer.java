@@ -2,6 +2,7 @@ package game_engine.initializers;
 
 import common.models.TrainDirection;
 import game_engine.Station;
+import game_engine.Timetable;
 import game_engine.TrainSchedule;
 import game_engine.data_access.DataAccess;
 import org.w3c.dom.Element;
@@ -49,17 +50,17 @@ class TrainScheduleInitializer {
      * That is the job of <code>OvernightTravelDecorator</code>. Hence, this method must be called via
      * <code>OvernightTravelDecorator</code> only.
      *
-     * @return                              the train's scheduled stops.
+     * @return                              the train's timetable.
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML content
      * @throws SAXException                 if any exception occurs while parsing train XML content
      */
-    public List<TrainSchedule> populateTrainData()
+    public Timetable populateTrainData()
             throws IOException, ParserConfigurationException, SAXException {
         String filePath = String.format("/data/%1$s.xml", trainNumber);
         InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
         Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
-        List<TrainSchedule> scheduledStops = new LinkedList<>();
+        Timetable timetable = new Timetable();
         for (Element stop : stops) {
             String stationCode = stop.getAttribute("code");
 
@@ -76,11 +77,11 @@ class TrainScheduleInitializer {
                     LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
 
             Station station = this.stations.stream().filter(s -> s.getCode().equalsIgnoreCase(stationCode)).findFirst().get();
-            scheduledStops.add(new TrainSchedule(stationCode, arrivalTime, departureTime, station.getDistance()));
+            timetable.add(station, new TrainSchedule(stationCode, arrivalTime, departureTime, station.getDistance()));
         }
         //Reversing the distances if travelling towards home
         if (direction == TrainDirection.TOWARDS_HOME)
-            java.util.Collections.reverse(scheduledStops);
-        return scheduledStops;
+            timetable.sortTowardsHome();
+        return timetable;
     }
 }

@@ -1,5 +1,6 @@
 package game_engine.initializers;
 
+import game_engine.Timetable;
 import game_engine.TrainSchedule;
 import org.xml.sax.SAXException;
 
@@ -45,7 +46,8 @@ class OvernightTravelDecorator {
      * @throws SAXException                 if any exception occurs while parsing train XML content
      */
     public List<TrainSchedule> populateTrainData() throws IOException, ParserConfigurationException, SAXException {
-        List<TrainSchedule> schedules = trainScheduleInitializer.populateTrainData();
+        Timetable timetable = trainScheduleInitializer.populateTrainData();
+        List<TrainSchedule> schedules = timetable.getSchedules();
         if (schedules.get(0).getArrivalTime().isBefore(schedules.get(schedules.size() - 1).getDepartureTime()))
             return schedules;
 
