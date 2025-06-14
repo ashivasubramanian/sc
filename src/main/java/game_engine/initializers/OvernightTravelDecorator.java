@@ -47,7 +47,10 @@ class OvernightTravelDecorator {
      */
     public List<TrainSchedule> populateTrainData() throws IOException, ParserConfigurationException, SAXException {
         Timetable timetable = trainScheduleInitializer.populateTrainData();
-        List<TrainSchedule> schedules = timetable.getSchedules();
+        List<TrainSchedule> schedules = timetable.getEntries().stream()
+                .filter(entry -> entry.getSchedule().isPresent())
+                .map(entry -> entry.getSchedule().get())
+                .collect(Collectors.toList());
         if (schedules.get(0).getArrivalTime().isBefore(schedules.get(schedules.size() - 1).getDepartureTime()))
             return schedules;
 

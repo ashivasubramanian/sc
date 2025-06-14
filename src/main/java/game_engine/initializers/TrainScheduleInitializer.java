@@ -60,7 +60,7 @@ class TrainScheduleInitializer {
         String filePath = String.format("/data/%1$s.xml", trainNumber);
         InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
         Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
-        Timetable timetable = new Timetable();
+        Timetable timetable = new Timetable(this.stations, this.direction);
         for (Element stop : stops) {
             String stationCode = stop.getAttribute("code");
 

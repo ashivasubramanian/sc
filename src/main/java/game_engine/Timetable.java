@@ -1,10 +1,8 @@
 package game_engine;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import common.models.TrainDirection;
+
+import java.util.*;
 
 /**
  * The <code>Timetable</code> class represents the timetable of a train.
@@ -41,9 +39,9 @@ public class Timetable {
          * @param station  the station where the train stops or passes through.
          * @param schedule the schedule of the train.
          */
-        public Entry(Station station, TrainSchedule schedule) {
+        public Entry(Station station, Optional<TrainSchedule> schedule) {
             this.station = station;
-            this.schedule = Optional.of(schedule);
+            this.schedule = schedule;
         }
 
         @Override
@@ -52,15 +50,24 @@ public class Timetable {
         }
 
         //TODO: This is a temporary method used only for the refactoring to Timetable. Remove once done.
-        public TrainSchedule getSchedule() {
-            return this.schedule.get();
+        public Optional<TrainSchedule> getSchedule() {
+            return this.schedule;
         }
-    }
 
+        Station getStation() { return this.station; }
+    }
     /**
      * A collection of <code>Entry</code> instances that represent the train's timetable.
      */
     private List<Entry> timetableEntries = new ArrayList<>();
+
+    public Timetable(List<Station> stationsOnSection, TrainDirection direction) {
+        if (direction == TrainDirection.TOWARDS_HOME)
+            stationsOnSection.sort(Comparator.reverseOrder());
+        else
+            stationsOnSection.sort(Comparator.naturalOrder());
+        stationsOnSection.stream().forEach(s -> timetableEntries.add(new Entry(s, Optional.empty())));
+    }
 
     /**
      * Adds the station & its schedule to the timetable.
@@ -68,7 +75,7 @@ public class Timetable {
      * @param trainSchedule the schedule of the train
      */
     public void add(Station station, TrainSchedule trainSchedule) {
-        this.timetableEntries.add(new Entry(station, trainSchedule));
+        this.timetableEntries.add(new Entry(station, Optional.of(trainSchedule)));
     }
 
     /**
@@ -80,7 +87,7 @@ public class Timetable {
     }
 
     //TODO: This is a temporary method used only for the refactoring to Timetable. Remove once done.
-    public List<TrainSchedule> getSchedules() {
-        return this.timetableEntries.stream().map(Entry::getSchedule).collect(Collectors.toList());
+    public List<Entry> getEntries() {
+        return this.timetableEntries;
     }
 }

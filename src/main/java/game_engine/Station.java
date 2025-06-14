@@ -22,7 +22,7 @@ import java.util.List;
  * it was designed only for the Calicut - Shoranur section, which fits the above
  * conditions.
  */
-public class Station {
+public class Station implements Comparable<Station> {
 
     /**
      * The station code.
@@ -178,5 +178,10 @@ public class Station {
         } else if (direction == TrainDirection.AWAY_FROM_HOME) {
             pcs.removePropertyChangeListener("awayFromHomeAspect", train);
         }
+    }
+
+    @Override
+    public int compareTo(Station other) {
+        return this.getDistance().compareTo(other.getDistance());
     }
 }
