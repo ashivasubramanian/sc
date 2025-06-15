@@ -4,6 +4,7 @@ import common.models.TrainDirection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,12 +15,21 @@ public class TimetableTest {
 
     private List<Station> stationsOnSection;
 
+    private Station calicut;
+
+    private Station tirur;
+
+    private Station shoranur;
+
     @BeforeEach
     public void initializeSection() {
         stationsOnSection = new ArrayList<>();
-        stationsOnSection.add(new Station("CAL", "Calicut", 3, 0));
-        stationsOnSection.add(new Station("TIR", "Tirur", 2, 41));
-        stationsOnSection.add(new Station("SRR", "Shoranur Junction", 3, 86));
+        calicut = new Station("CAL", "Calicut", 3, 0);
+        tirur = new Station("TIR", "Tirur", 2, 41);
+        shoranur = new Station("SRR", "Shoranur Junction", 3, 86);
+        stationsOnSection.add(calicut);
+        stationsOnSection.add(tirur);
+        stationsOnSection.add(shoranur);
     }
 
     @Test
@@ -34,9 +44,6 @@ public class TimetableTest {
     @Test
     public void shouldArrangeStationsAsPerDistance() {
         stationsOnSection.clear();
-        Station tirur = new Station("TIR", "Tirur", 2, 41);
-        Station shoranur = new Station("SRR", "Shoranur Junction", 3, 86);
-        Station calicut = new Station("CAL", "Calicut", 3, 0);
         stationsOnSection.add(tirur);
         stationsOnSection.add(shoranur);
         stationsOnSection.add(calicut);
@@ -49,5 +56,24 @@ public class TimetableTest {
         assertEquals(shoranur, timetableTowardsHome.getEntries().get(0).getStation());
         assertEquals(tirur, timetableTowardsHome.getEntries().get(1).getStation());
         assertEquals(calicut, timetableTowardsHome.getEntries().get(2).getStation());
+    }
+
+    @Test
+    public void shouldUpdateTimetableWithSchedule() {
+        LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 23, 5);
+        LocalDateTime departureTime = LocalDateTime.of(2020, 5, 23, 0, 5);
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        Timetable.Entry tirurEntry = timetable.getEntries().stream()
+                .filter(e -> e.getStation().getCode().equalsIgnoreCase("TIR"))
+                .findFirst().get();
+        assertFalse(tirurEntry.getSchedule().isPresent());
+        assertFalse(tirurEntry.getSchedule().isPresent());
+
+        timetable.update(tirur, arrivalTime, departureTime);
+        tirurEntry = timetable.getEntries().stream()
+                .filter(e -> e.getStation().getCode().equalsIgnoreCase("TIR"))
+                .findFirst().get();
+        assertEquals(arrivalTime, tirurEntry.getSchedule().get().getArrivalTime());
+        assertEquals(departureTime, tirurEntry.getSchedule().get().getDepartureTime());
     }
 }

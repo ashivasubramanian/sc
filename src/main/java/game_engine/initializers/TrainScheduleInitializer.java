@@ -77,7 +77,7 @@ class TrainScheduleInitializer {
                     LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
 
             Station station = this.stations.stream().filter(s -> s.getCode().equalsIgnoreCase(stationCode)).findFirst().get();
-            timetable.add(station, new TrainSchedule(stationCode, arrivalTime, departureTime, station.getDistance()));
+            timetable.update(station, arrivalTime, departureTime);
         }
         //Reversing the distances if travelling towards home
         if (direction == TrainDirection.TOWARDS_HOME)

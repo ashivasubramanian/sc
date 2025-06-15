@@ -2,6 +2,7 @@ package game_engine;
 
 import common.models.TrainDirection;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -70,12 +71,19 @@ public class Timetable {
     }
 
     /**
-     * Adds the station & its schedule to the timetable.
+     * Updates the station in the timetable with the arrival & departure time.
      * @param station       the station where the train has a stop.
-     * @param trainSchedule the schedule of the train
+     * @param arrivalTime   the arrival time of the train at the station
+     * @param departureTime the departure time of the train from the station
      */
-    public void add(Station station, TrainSchedule trainSchedule) {
-        this.timetableEntries.add(new Entry(station, Optional.of(trainSchedule)));
+    public void update(Station station, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+        TrainSchedule trainSchedule = new TrainSchedule(station.getCode(), arrivalTime, departureTime, station.getDistance());
+        Entry entry = this.timetableEntries.stream()
+                .filter(e -> e.getStation().getCode().equalsIgnoreCase(station.getCode()))
+                .findFirst().get();
+        this.timetableEntries.set(
+                this.timetableEntries.indexOf(entry),
+                new Entry(station, Optional.of(trainSchedule)));
     }
 
     /**
