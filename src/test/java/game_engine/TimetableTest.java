@@ -61,7 +61,7 @@ public class TimetableTest {
     @Test
     public void shouldUpdateTimetableWithSchedule() {
         LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 23, 5);
-        LocalDateTime departureTime = LocalDateTime.of(2020, 5, 23, 0, 5);
+        LocalDateTime departureTime = LocalDateTime.of(2020, 5, 23, 23, 35);
         Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
         Timetable.Entry tirurEntry = timetable.getEntries().stream()
                 .filter(e -> e.getStation().getCode().equalsIgnoreCase("TIR"))
@@ -75,5 +75,19 @@ public class TimetableTest {
                 .findFirst().get();
         assertEquals(arrivalTime, tirurEntry.getSchedule().get().getArrivalTime());
         assertEquals(departureTime, tirurEntry.getSchedule().get().getDepartureTime());
+    }
+
+    @Test
+    public void shouldIncrementDepartureDateIfOvernightStop() {
+        LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 23, 55);
+        LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 0, 5);
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+
+        timetable.update(tirur, arrivalTime, departureTime);
+        Timetable.Entry tirurEntry = timetable.getEntries().stream()
+                .filter(e -> e.getStation().getCode().equalsIgnoreCase("TIR"))
+                .findFirst().get();
+        assertEquals(22, tirurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
+        assertEquals(23, tirurEntry.getSchedule().get().getDepartureTime().getDayOfMonth());
     }
 }

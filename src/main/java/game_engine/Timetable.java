@@ -77,6 +77,8 @@ public class Timetable {
      * @param departureTime the departure time of the train from the station
      */
     public void update(Station station, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+        if (departureTime.isBefore(arrivalTime))
+            departureTime = departureTime.plusDays(1);
         TrainSchedule trainSchedule = new TrainSchedule(station.getCode(), arrivalTime, departureTime, station.getDistance());
         Entry entry = this.timetableEntries.stream()
                 .filter(e -> e.getStation().getCode().equalsIgnoreCase(station.getCode()))
