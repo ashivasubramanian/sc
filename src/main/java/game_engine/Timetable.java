@@ -72,6 +72,17 @@ public class Timetable {
 
     /**
      * Updates the station in the timetable with the arrival & departure time.
+     * <br><br>
+     * This method performs certain modifications to the passed in times:
+     * <ol>
+     * <li> If <code>departureTime</code> is before <code>arrivalTime</code>, then the method increments <code>departureTime</code>'s
+     * date by 1 day.</li>
+     * <li> If <code>arrivalTime</code> is before the departure time of the previous station that had a <code>TrainSchedule</code>,
+     * then the method increments the date of both <code>arrivalTime</code> and <code>departureTime</code> by 1 day.</li>
+     * </ol>
+     * <br>The method does these as it assumes that these scenarios are due to an overnight train's schedules
+     * crossing into the next day.
+     *
      * @param station       the station where the train has a stop.
      * @param arrivalTime   the arrival time of the train at the station
      * @param departureTime the departure time of the train from the station
@@ -79,12 +90,21 @@ public class Timetable {
     public void update(Station station, LocalDateTime arrivalTime, LocalDateTime departureTime) {
         if (departureTime.isBefore(arrivalTime))
             departureTime = departureTime.plusDays(1);
-        TrainSchedule trainSchedule = new TrainSchedule(station.getCode(), arrivalTime, departureTime, station.getDistance());
         Entry entry = this.timetableEntries.stream()
                 .filter(e -> e.getStation().getCode().equalsIgnoreCase(station.getCode()))
                 .findFirst().get();
+        int index = this.timetableEntries.indexOf(entry);
+        Entry previousStop = this.timetableEntries.subList(0, index).stream()
+                .filter(e -> e.getSchedule().isPresent())
+                .sorted(Comparator.reverseOrder())
+                .findFirst().orElseGet(() -> new Entry(station, Optional.empty()));
+        if (previousStop.getSchedule().isPresent() && previousStop.getSchedule().get().getDepartureTime().isAfter(arrivalTime)) {
+            arrivalTime = arrivalTime.plusDays(1);
+            departureTime = departureTime.plusDays(1);
+        }
+        TrainSchedule trainSchedule = new TrainSchedule(station.getCode(), arrivalTime, departureTime, station.getDistance());
         this.timetableEntries.set(
-                this.timetableEntries.indexOf(entry),
+                index,
                 new Entry(station, Optional.of(trainSchedule)));
     }
 

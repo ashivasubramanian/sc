@@ -90,4 +90,35 @@ public class TimetableTest {
         assertEquals(22, tirurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
         assertEquals(23, tirurEntry.getSchedule().get().getDepartureTime().getDayOfMonth());
     }
+
+    @Test
+    public void shouldIncrementArrivalAndDepartureDateIfTimeHasCrossedMidnight() {
+        LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 23, 45);
+        LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 23, 55);
+        LocalDateTime arrivalTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 5);
+        LocalDateTime departureTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 15);
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+
+        timetable.update(tirur, arrivalTime, departureTime);
+        timetable.update(shoranur, arrivalTimeAfterMidnight, departureTimeAfterMidnight);
+        Timetable.Entry shoranurEntry = timetable.getEntries().stream()
+                .filter(e -> e.getStation().getCode().equalsIgnoreCase("SRR"))
+                .findFirst().get();
+        assertEquals(23, shoranurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
+        assertEquals(23, shoranurEntry.getSchedule().get().getDepartureTime().getDayOfMonth());
+    }
+
+    @Test
+    public void shouldNotIncrementArrivalAndDepartureDateIfThereAreNoPreviousStopsToCompareAgainst() {
+        LocalDateTime arrivalTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 5);
+        LocalDateTime departureTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 15);
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+
+        timetable.update(shoranur, arrivalTimeAfterMidnight, departureTimeAfterMidnight);
+        Timetable.Entry shoranurEntry = timetable.getEntries().stream()
+                .filter(e -> e.getStation().getCode().equalsIgnoreCase("SRR"))
+                .findFirst().get();
+        assertEquals(22, shoranurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
+        assertEquals(22, shoranurEntry.getSchedule().get().getDepartureTime().getDayOfMonth());
+    }
 }
