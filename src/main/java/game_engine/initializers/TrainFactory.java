@@ -2,10 +2,7 @@ package game_engine.initializers;
 
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
-import game_engine.Station;
-import game_engine.Train;
-import game_engine.TrainPosition;
-import game_engine.TrainSchedule;
+import game_engine.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,6 +11,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Factory class to create <code>Train</code> objects.
@@ -62,34 +60,37 @@ public class TrainFactory {
             directionEnum = TrainDirection.TOWARDS_HOME;
         else if(direction.equals("AwayFromHome"))
             directionEnum = TrainDirection.AWAY_FROM_HOME;
-        List<TrainSchedule> scheduledStops = populateTrainData(trainNumber, directionEnum, stations);
+        Timetable timetable = populateTrainData(trainNumber, directionEnum, stations);
+        List<TrainSchedule> scheduledStops = timetable.getEntries().stream()
+                .filter(entry -> entry.getSchedule().isPresent())
+                .map(entry -> entry.getSchedule().get())
+                .collect(Collectors.toList());
         TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, scheduledStops, systemClock);
         return new Train(trainNumber, name, directionEnum, scheduledStops, initialTrainPosition);
     }
 
     /**
-     * Populates the train with the list of stations where the train has scheduled stops,
+     * Populates the train with a timetable of stations,
      * the distances of those stations, and the arrival and departure times at those stations.
      * <br><br>The order of the stations corresponds to the direction of the train.
-     * For example, if the train travels from home station to its final station, then the list
-     * of stations starts from the home station and ends at the final station. If the train
+     * For example, if the train travels from home station to its final station, then the timetable will have a list
+     * of stations, starting from the home station and ends at the final station. If the train
      * travels from the final station to home, then the list is reversed.
      * <br><br>This method also takes care to ensure overnight trains have their dates adjusted correctly.
      *
      * @param trainNumber                   the train's number
      * @param direction                     the direction of travel
      * @param stations                      a list of stations on the section.
-     * @return                              a list of scheduled stops.
+     * @return                              a timetable.
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML I/O
      * @throws SAXException                 if any exception occurs while parsing train XML I/O
      */
-    private List<TrainSchedule> populateTrainData(String trainNumber, TrainDirection direction, List<Station> stations)
+    private Timetable populateTrainData(String trainNumber, TrainDirection direction, List<Station> stations)
             throws IOException, SAXException, ParserConfigurationException {
         System.out.printf( "Loading data for %1$s\n", trainNumber);
-        List<TrainSchedule> scheduledStops = new OvernightTravelDecorator(
-                new TrainScheduleInitializer(trainNumber, direction, stations)).populateTrainData();
-        return scheduledStops;
+        Timetable timetable = new TrainScheduleInitializer(trainNumber, direction, stations).populateTrainData();
+        return timetable;
     }
 
     /**

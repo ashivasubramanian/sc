@@ -20,8 +20,6 @@ import java.util.*;
  * Loads the train's schedules from the train's XML file.<br>
  * This class is package-scoped as anyone looking for train schedules must use the <code>Train</code> object
  * created via the <code>TrainFactory</code>.<br>
- * This class is part of a Decorator pattern, with <code>OvernightTravelDecorator</code> intended to be a decorator for
- * this class.
  */
 class TrainScheduleInitializer {
 
@@ -43,12 +41,7 @@ class TrainScheduleInitializer {
     }
 
     /**
-     * Reads the train's XML file and creates a <code>List</code> of the train's scheduled stops.
-     * The method will always return the stops in the order in which the train travels.
-     * <br>Note that the method will return the stops with today's date set - if a train is travelling overnight, then
-     * the method will return all the stops, but will not adjust the dates accordingly for the after-midnight stops.
-     * That is the job of <code>OvernightTravelDecorator</code>. Hence, this method must be called via
-     * <code>OvernightTravelDecorator</code> only.
+     * Reads the train's XML file and creates a <code>Timetable</code> updated with the train's scheduled stops.
      *
      * @return                              the train's timetable.
      * @throws IOException                  if any exception occurs during train XML I/O
@@ -61,6 +54,8 @@ class TrainScheduleInitializer {
         InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
         Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
         Timetable timetable = new Timetable(this.stations, this.direction);
+        if (this.direction == TrainDirection.TOWARDS_HOME)
+            Collections.reverse(stops);
         for (Element stop : stops) {
             String stationCode = stop.getAttribute("code");
 
@@ -79,9 +74,6 @@ class TrainScheduleInitializer {
             Station station = this.stations.stream().filter(s -> s.getCode().equalsIgnoreCase(stationCode)).findFirst().get();
             timetable.update(station, arrivalTime, departureTime);
         }
-        //Reversing the distances if travelling towards home
-        if (direction == TrainDirection.TOWARDS_HOME)
-            timetable.sortTowardsHome();
         return timetable;
     }
 }

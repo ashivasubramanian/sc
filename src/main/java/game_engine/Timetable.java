@@ -82,6 +82,10 @@ public class Timetable {
      * </ol>
      * <br>The method does these as it assumes that these scenarios are due to an overnight train's schedules
      * crossing into the next day.
+     * <br>
+     * NOTE: The implication of the 2nd modification is that calls to this method must only be made in the order of the
+     * stations that the train will encounter. Otherwise, the 2nd modification will not be performed and the timetable
+     * will have invalid times.
      *
      * @param station       the station where the train has a stop.
      * @param arrivalTime   the arrival time of the train at the station
