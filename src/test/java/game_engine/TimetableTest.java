@@ -121,4 +121,116 @@ public class TimetableTest {
         assertEquals(22, shoranurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
         assertEquals(22, shoranurEntry.getSchedule().get().getDepartureTime().getDayOfMonth());
     }
+
+    @Test
+    public void shouldReturnFirstStationArrivalTime() {
+        LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 0, 5);
+        LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 0, 15);
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        timetable.update(calicut, arrivalTime, departureTime);
+        assertEquals(arrivalTime, timetable.getSectionEntryTime());
+
+        Timetable timetableTowardsHome = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        timetableTowardsHome.update(shoranur, arrivalTime, departureTime);
+        assertEquals(arrivalTime, timetableTowardsHome.getSectionEntryTime());
+    }
+
+    @Test
+    public void shouldReturnLastStationDepartureTime() {
+        LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 0, 5);
+        LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 0, 15);
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        timetable.update(shoranur, arrivalTime, departureTime);
+        assertEquals(departureTime, timetable.getSectionExitTime());
+
+        Timetable timetableTowardsHome = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        timetableTowardsHome.update(calicut, arrivalTime, departureTime);
+        assertEquals(departureTime, timetableTowardsHome.getSectionExitTime());
+    }
+
+    @Test
+    public void shouldReturnTheStationIfTrainIsAtStation() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue();
+        int day = currentDate.getDayOfMonth();
+        LocalDateTime mockTime = LocalDateTime.of(year, month, day, 15, 32);
+        LocalDateTime arrivalTime = LocalDateTime.of(year, month, day, 15, 30);
+        LocalDateTime departureTime = LocalDateTime.of(year, month, day, 15, 35);
+
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        timetable.update(tirur, arrivalTime, departureTime);
+
+        assertEquals(tirur, timetable.getStationHaltedAt(mockTime).get());
+    }
+
+    @Test
+    public void shouldReturnEmptyIfTrainIsNotAtAnyStation() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue();
+        int day = currentDate.getDayOfMonth();
+        LocalDateTime mockTime = LocalDateTime.of(year, month, day, 15, 40);
+        LocalDateTime arrivalTime = LocalDateTime.of(year, month, day, 15, 30);
+        LocalDateTime departureTime = LocalDateTime.of(year, month, day, 15, 35);
+
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        timetable.update(tirur, arrivalTime, departureTime);
+
+        assertEquals(Optional.empty(), timetable.getStationHaltedAt(mockTime));
+    }
+
+    @Test
+    public void shouldReturnTheStationsTheTrainIsRunningBetween() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue();
+        int day = currentDate.getDayOfMonth();
+
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        timetable.update(shoranur, LocalDateTime.of(year, month, day, 20, 5), LocalDateTime.of(year, month, day, 20, 10));
+        timetable.update(tirur, LocalDateTime.of(year, month, day, 20, 25), LocalDateTime.of(year, month, day, 20, 26));
+        timetable.update(calicut, LocalDateTime.of(year, month, day, 20, 55), LocalDateTime.of(year, month, day, 21, 0));
+
+        LocalDateTime mockTime = LocalDateTime.of(year, month, day, 20, 15);
+        Optional<Station>[] stations = timetable.getStationsTravellingBetween(mockTime);
+        assertEquals(2, stations.length);
+        assertEquals(shoranur, stations[0].get());
+        assertEquals(tirur, stations[1].get());
+    }
+
+    @Test
+    public void shouldReturnAnEmptyArrayIfTheTrainIsNotRunningBetweenAnyStationsOnTheSection() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue();
+        int day = currentDate.getDayOfMonth();
+
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        timetable.update(shoranur, LocalDateTime.of(year, month, day, 20, 5), LocalDateTime.of(year, month, day, 20, 10));
+        timetable.update(tirur, LocalDateTime.of(year, month, day, 20, 25), LocalDateTime.of(year, month, day, 20, 26));
+        timetable.update(calicut, LocalDateTime.of(year, month, day, 20, 55), LocalDateTime.of(year, month, day, 21, 0));
+
+        LocalDateTime mockTime = LocalDateTime.of(year, month, day, 21, 15);
+        Optional<Station>[] stations = timetable.getStationsTravellingBetween(mockTime);
+        assertEquals(2, stations.length);
+        assertEquals(Optional.empty(), stations[0]);
+        assertEquals(Optional.empty(), stations[1]);
+    }
+
+    @Test
+    public void shouldReturnScheduleForStation() {
+        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        LocalDateTime currentDate = LocalDateTime.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue();
+        int day = currentDate.getDayOfMonth();
+        LocalDateTime arrivalTime = LocalDateTime.of(year, month, day, 20, 5);
+        LocalDateTime departureTime = LocalDateTime.of(year, month, day, 20, 10);
+        timetable.update(shoranur, arrivalTime, departureTime);
+
+        assertEquals(Optional.empty(), timetable.getSchedule(tirur));
+        assertEquals(arrivalTime, timetable.getSchedule(shoranur).get().getArrivalTime());
+        assertEquals(departureTime, timetable.getSchedule(shoranur).get().getDepartureTime());
+    }
 }

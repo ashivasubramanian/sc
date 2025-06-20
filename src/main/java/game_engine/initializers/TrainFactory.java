@@ -65,7 +65,7 @@ public class TrainFactory {
                 .filter(entry -> entry.getSchedule().isPresent())
                 .map(entry -> entry.getSchedule().get())
                 .collect(Collectors.toList());
-        TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, scheduledStops, systemClock);
+        TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, scheduledStops, timetable, systemClock);
         return new Train(trainNumber, name, directionEnum, scheduledStops, initialTrainPosition);
     }
 
@@ -103,48 +103,39 @@ public class TrainFactory {
      *
      * @param direction      the current direction of the train
      * @param scheduledStops the stops for the train, as per its timetable
+     * @param timetable      the train's timetable
      * @param systemClock    the current time
-     * @return               the current position of the train
+     * @return the current position of the train
      */
-    private TrainPosition determineTrainInitialPosition(TrainDirection direction, List<TrainSchedule> scheduledStops, Clock systemClock) {
+    private TrainPosition determineTrainInitialPosition(TrainDirection direction, List<TrainSchedule> scheduledStops, Timetable timetable, Clock systemClock) {
         // Has the train not yet entered the section?
         LocalDateTime currentTime = LocalDateTime.now(systemClock);
-        TrainSchedule firstScheduledStop = scheduledStops.get(0);
-        if (currentTime.isBefore(firstScheduledStop.getArrivalTime())) {
+        if (currentTime.isBefore(timetable.getSectionEntryTime())) {
             TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
-                    60 * (currentTime.until(firstScheduledStop.getArrivalTime(), ChronoUnit.MINUTES) / 60f));
+                    60 * (currentTime.until(timetable.getSectionEntryTime(), ChronoUnit.MINUTES) / 60f));
             return trainPosition;
         }
         // Has the train exited the section?
-        TrainSchedule lastScheduledStop = scheduledStops.get(scheduledStops.size() - 1);
-        if (currentTime.isAfter(lastScheduledStop.getDepartureTime())) {
+        if (currentTime.isAfter(timetable.getSectionExitTime())) {
             TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
-                    60 * (lastScheduledStop.getDepartureTime().until(currentTime, ChronoUnit.MINUTES) / 60f));
+                    60 * (timetable.getSectionExitTime().until(currentTime, ChronoUnit.MINUTES) / 60f));
             return trainPosition;
         }
 
         //Is the train stopped at a station on the section?
-        Optional<TrainPosition> trainPositionAtStation = scheduledStops.stream()
-                .filter(sch -> sch.getArrivalTime().equals(currentTime) || sch.getDepartureTime().equals(currentTime)
-                        || (sch.getArrivalTime().isBefore(currentTime) && sch.getDepartureTime().isAfter(currentTime)))
-                .map(sch -> new TrainPosition(TrainRunningStatus.SCHEDULED_STOP, sch.getDistance()))
-                .findFirst();
+        Optional<TrainPosition> trainPositionAtStation = timetable.getStationHaltedAt(currentTime)
+                .map(s -> new TrainPosition(TrainRunningStatus.SCHEDULED_STOP, s.getDistance()));
         if (trainPositionAtStation.isPresent()) return trainPositionAtStation.get();
 
         // Is the train running between stations?
-        ListIterator<TrainSchedule> scheduledStopsIterator = scheduledStops.listIterator();
-        while (scheduledStopsIterator.hasNext()) {
-            TrainSchedule schedule = scheduledStopsIterator.next();
-
-            if (scheduledStopsIterator.hasNext()) {
-                TrainSchedule nextStop = scheduledStopsIterator.next();
-                if (currentTime.isAfter(schedule.getDepartureTime()) && currentTime.isBefore(nextStop.getArrivalTime())) {
-                    TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
-                            determineInitialDistanceFromHome(schedule, nextStop, direction, systemClock));
-                    return trainPosition;
-                }
-                scheduledStopsIterator.previous();
-            }
+        Optional<Station>[] stationsTravellingBetween = timetable.getStationsTravellingBetween(currentTime);
+        if (stationsTravellingBetween[0].isPresent() && stationsTravellingBetween[1].isPresent()) {
+            TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
+                    determineInitialDistanceFromHome(
+                            timetable.getSchedule(stationsTravellingBetween[0].get()).get(),
+                            timetable.getSchedule(stationsTravellingBetween[1].get()).get(),
+                            direction, systemClock));
+            return trainPosition;
         }
         return null;
     }
