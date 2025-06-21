@@ -112,14 +112,6 @@ public class Timetable {
     }
 
     /**
-     * Arranges the stations of the timetable in the order a train moving towards home will encounter.
-     * There is no equivalent methods for trains moving away from home as this is taken care automatically.
-     */
-    public void sortTowardsHome() {
-        this.timetableEntries.sort(Comparator.reverseOrder());
-    }
-
-    /**
      * Returns the time the train entered the section. This is typically the arrival time at the first station.
      * @return the section entry time.
      */

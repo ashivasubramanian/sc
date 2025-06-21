@@ -65,7 +65,7 @@ public class TrainFactory {
                 .filter(entry -> entry.getSchedule().isPresent())
                 .map(entry -> entry.getSchedule().get())
                 .collect(Collectors.toList());
-        TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, scheduledStops, timetable, systemClock);
+        TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, timetable, systemClock);
         return new Train(trainNumber, name, directionEnum, scheduledStops, initialTrainPosition);
     }
 
@@ -101,13 +101,12 @@ public class TrainFactory {
      * <li>Is the train running between stations?</li>
      * </ol>
      *
-     * @param direction      the current direction of the train
-     * @param scheduledStops the stops for the train, as per its timetable
-     * @param timetable      the train's timetable
-     * @param systemClock    the current time
+     * @param direction   the current direction of the train
+     * @param timetable   the train's timetable
+     * @param systemClock the current time
      * @return the current position of the train
      */
-    private TrainPosition determineTrainInitialPosition(TrainDirection direction, List<TrainSchedule> scheduledStops, Timetable timetable, Clock systemClock) {
+    private TrainPosition determineTrainInitialPosition(TrainDirection direction, Timetable timetable, Clock systemClock) {
         // Has the train not yet entered the section?
         LocalDateTime currentTime = LocalDateTime.now(systemClock);
         if (currentTime.isBefore(timetable.getSectionEntryTime())) {
