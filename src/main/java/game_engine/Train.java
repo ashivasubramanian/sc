@@ -5,7 +5,6 @@ import common.models.TrainDirection;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
-import java.util.*;
 
 
 /**
@@ -36,11 +35,6 @@ public class Train extends Thread implements PropertyChangeListener {
 	 * a train is early, its lag time moves into negative.
 	 */
 	private int lag;
-
-	/**
-	 * A mapping of stations on the section & their distances from the Home station.
-	 */
-	private Map<String,Integer> stationDistanceMap;
 
 	/**
 	 * The train's timetable.

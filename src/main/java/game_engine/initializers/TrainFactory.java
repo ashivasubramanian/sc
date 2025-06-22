@@ -11,7 +11,6 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Factory class to create <code>Train</code> objects.
@@ -61,10 +60,6 @@ public class TrainFactory {
         else if(direction.equals("AwayFromHome"))
             directionEnum = TrainDirection.AWAY_FROM_HOME;
         Timetable timetable = populateTrainData(trainNumber, directionEnum, stations);
-        List<TrainSchedule> scheduledStops = timetable.getEntries().stream()
-                .filter(entry -> entry.getSchedule().isPresent())
-                .map(entry -> entry.getSchedule().get())
-                .collect(Collectors.toList());
         TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, timetable, systemClock);
         return new Train(trainNumber, name, directionEnum, timetable, initialTrainPosition);
     }
