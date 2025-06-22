@@ -43,9 +43,9 @@ public class Train extends Thread implements PropertyChangeListener {
 	private Map<String,Integer> stationDistanceMap;
 
 	/**
-	 * A collection of stations where the train will stop.
+	 * The train's timetable.
 	 */
-	private List<TrainSchedule> scheduledStops;
+	private Timetable timetable;
 
 	/**
 	 * The direction in which the train is travelling.
@@ -61,16 +61,17 @@ public class Train extends Thread implements PropertyChangeListener {
 	 * Constructor that initializes the <code>Train</code>.
 	 * The constructor then starts the thread.
 	 *
-	 * @param trainNumber            The number of the train.
-	 * @param name                   The name of the train.
-	 * @param direction              The direction in which the train is travelling.
-	 * @param initialTrainPosition   The position of the train on game load.
+	 * @param trainNumber          The number of the train.
+	 * @param name                 The name of the train.
+	 * @param direction            The direction in which the train is travelling.
+	 * @param timetable            The train's timetable.
+	 * @param initialTrainPosition The position of the train on game load.
 	 */
-	public Train(String trainNumber, String name, TrainDirection direction, List<TrainSchedule> scheduledStops, TrainPosition initialTrainPosition) {
+	public Train(String trainNumber, String name, TrainDirection direction, Timetable timetable, TrainPosition initialTrainPosition) {
 		this.no = trainNumber;
 		this.name = name;
 		this.direction = direction;
-		this.scheduledStops = scheduledStops;
+		this.timetable = timetable;
 		this.trainPosition = initialTrainPosition;
 		start();
 	}
@@ -89,7 +90,7 @@ public class Train extends Thread implements PropertyChangeListener {
 		between initialTime and the time at first station. Depending upon this, we
 		calculate the distance the train would have crossed as 60(the MPS) * seconds. We
 		then draw it on the screen.*/
-		LocalDateTime first_station_time = scheduledStops.get(0).getArrivalTime();
+		LocalDateTime first_station_time = this.timetable.getSectionEntryTime();
 		int count = 0;
 		while(true)
 		{
@@ -160,8 +161,15 @@ public class Train extends Thread implements PropertyChangeListener {
         return this.name;
     }
 
-	public List<TrainSchedule> getScheduledStops() {
-		return this.scheduledStops;
+	/**
+	 * Returns the timetable for the train.
+	 * <br>
+	 * This method is package-scoped as it's meant to be used only for tests.
+	 *
+	 * @return the timetable.
+	 */
+	Timetable getTimetable() {
+		return this.timetable;
 	}
 
 	/**

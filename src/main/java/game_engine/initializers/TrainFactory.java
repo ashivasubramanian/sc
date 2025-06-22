@@ -66,7 +66,7 @@ public class TrainFactory {
                 .map(entry -> entry.getSchedule().get())
                 .collect(Collectors.toList());
         TrainPosition initialTrainPosition = determineTrainInitialPosition(directionEnum, timetable, systemClock);
-        return new Train(trainNumber, name, directionEnum, scheduledStops, initialTrainPosition);
+        return new Train(trainNumber, name, directionEnum, timetable, initialTrainPosition);
     }
 
     /**

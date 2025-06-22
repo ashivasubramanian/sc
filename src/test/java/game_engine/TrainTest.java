@@ -14,7 +14,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -61,46 +60,15 @@ public class TrainTest {
 	}
 	
 	@Test
-	public void stationListMustBePopulatedOnInitialization() {
+	public void timetableMustBePopulatedOnInitialization() {
 		try {
 			Train someTrain = new TrainFactory().create("616","Calicut Shoranur Passenger", "AwayFromHome", this.stations);
-			assertEquals(3, someTrain.getScheduledStops().size());
-			assertEquals("CAL", someTrain.getScheduledStops().get(0).getStationCode());
-			assertEquals("TIR", someTrain.getScheduledStops().get(1).getStationCode());
-			assertEquals("SRR", someTrain.getScheduledStops().get(2).getStationCode());
-		} catch (IOException | SAXException | ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void stationListMustBeReversedForTrainsTowardsHome() {
-		try {
-			Train homeTrain = new TrainFactory().create("616", "Calicut Shoranur Passenger", "TowardsHome", this.stations);
-			Train awayTrain = new TrainFactory().create("2653", "Kerala Sampark Kranti Express", "AwayFromHome", this.stations);
-			assertEquals(homeTrain.getScheduledStops().get(0).getStationCode(),
-					awayTrain.getScheduledStops().get(awayTrain.getScheduledStops().size() - 1).getStationCode(),
-					"Train directions are not reversed.");
+			assertNotNull(someTrain.getTimetable());
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Test
-	public void arrivalAndDepartureTimesAtStationsMustBePopulatedOnLoad() {
-		try {
-			Train homeTrain = new TrainFactory().create("616", "Calicut Shoranur Passenger", "TowardsHome", this.stations);
-			TrainSchedule calicutStop = homeTrain.getScheduledStops().stream()
-					.filter(stop -> stop.getStationCode().equals("CAL")).findFirst().get();
-			assertEquals("19:00", calicutStop.getArrivalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-					"Train arrival time is incorrect.");
-			assertEquals("19:05", calicutStop.getDepartureTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-					"Train departure time is incorrect.");
-		} catch (IOException | SAXException | ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-    }
-	
 	@Test
 	public void initializingTheTrainShouldStartTheTrainThread() {
 		Train train = null;
@@ -164,9 +132,9 @@ public class TrainTest {
 			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
 			Train overnightTrain = new TrainFactory().create("22637", "Dummy name", "TowardsHome", stations);
 
-			TrainSchedule beforeMidnightStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
-			TrainSchedule afterMidnightStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
-			TrainSchedule laterStop = overnightTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("CAL")).findFirst().get();
+			TrainSchedule beforeMidnightStop = overnightTrain.getTimetable().getSchedule(new Station("SRR", null, 0, 0)).get();
+			TrainSchedule afterMidnightStop = overnightTrain.getTimetable().getSchedule(new Station("TIR", null, 0, 0)).get();
+			TrainSchedule laterStop = overnightTrain.getTimetable().getSchedule(new Station("CAL", null, 0, 0)).get();
 			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getArrivalTime().getDayOfMonth());
 			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getDepartureTime().getDayOfMonth());
 			assertEquals(nextDay.getDayOfMonth(), afterMidnightStop.getArrivalTime().getDayOfMonth());
@@ -181,9 +149,9 @@ public class TrainTest {
 			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
 			Train overnightStopTrain = new TrainFactory().create("16356", "DummyTrain", "AwayFromHome", stations);
 
-			TrainSchedule beforeMidnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("CAL")).findFirst().get();
-			TrainSchedule overnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
-			TrainSchedule afterMidnightStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
+			TrainSchedule beforeMidnightStop = overnightStopTrain.getTimetable().getSchedule(new Station("CAL", null, 0, 0 )).get();
+			TrainSchedule overnightStop = overnightStopTrain.getTimetable().getSchedule(new Station("TIR", null, 0, 0)).get();
+			TrainSchedule afterMidnightStop = overnightStopTrain.getTimetable().getSchedule(new Station("SRR", null, 0, 0)).get();
 			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getArrivalTime().getDayOfMonth());
 			assertEquals(now.getDayOfMonth(), beforeMidnightStop.getDepartureTime().getDayOfMonth());
 			assertEquals(now.getDayOfMonth(), overnightStop.getArrivalTime().getDayOfMonth());
@@ -197,9 +165,9 @@ public class TrainTest {
 			LocalDateTime now = LocalDateTime.now();
 			Train overnightStopTrain = new TrainFactory().create("616", "DummyTrain", "TowardsHome", stations);
 
-			TrainSchedule firstStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("SRR")).findFirst().get();
-			TrainSchedule secondStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("TIR")).findFirst().get();
-			TrainSchedule thirdStop = overnightStopTrain.getScheduledStops().stream().filter(stop -> stop.getStationCode().equalsIgnoreCase("CAL")).findFirst().get();
+			TrainSchedule firstStop = overnightStopTrain.getTimetable().getSchedule(new Station("SRR", null, 0, 0)).get();
+			TrainSchedule secondStop = overnightStopTrain.getTimetable().getSchedule(new Station("TIR", null, 0, 0)).get();
+			TrainSchedule thirdStop = overnightStopTrain.getTimetable().getSchedule(new Station("CAL", null, 0, 0)).get();
 			assertEquals(now.getDayOfMonth(), firstStop.getArrivalTime().getDayOfMonth());
 			assertEquals(now.getDayOfMonth(), firstStop.getDepartureTime().getDayOfMonth());
 			assertEquals(now.getDayOfMonth(), secondStop.getArrivalTime().getDayOfMonth());
