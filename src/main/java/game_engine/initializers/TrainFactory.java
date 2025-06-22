@@ -126,8 +126,8 @@ public class TrainFactory {
         if (stationsTravellingBetween[0].isPresent() && stationsTravellingBetween[1].isPresent()) {
             TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
                     determineInitialDistanceFromHome(
-                            timetable.getSchedule(stationsTravellingBetween[0].get()).get(),
-                            timetable.getSchedule(stationsTravellingBetween[1].get()).get(),
+                            timetable, stationsTravellingBetween[0].get(),
+                            stationsTravellingBetween[1].get(),
                             direction, systemClock));
             return trainPosition;
         }
@@ -141,20 +141,21 @@ public class TrainFactory {
      * calculates the speed the train should have in order to reach <code>upcomingStation</code> on-time. Based on this
      * speed, it returns the distance the train has covered until now.
      *
+     * @param timetable       the train's timetable
      * @param crossedStation  the station that was just crossed
      * @param upcomingStation the station that is upcoming
      * @param direction       the direction of the train
      * @param systemClock     the current time
      * @return                the current distance from Home station
      */
-    private float determineInitialDistanceFromHome(TrainSchedule crossedStation, TrainSchedule upcomingStation,
-            TrainDirection direction, Clock systemClock) {
+    private float determineInitialDistanceFromHome(Timetable timetable, Station crossedStation, Station upcomingStation,
+                                                   TrainDirection direction, Clock systemClock) {
         int distanceBetweenStations = Math.abs(crossedStation.getDistance() - upcomingStation.getDistance());
-        float timeAsPerScheduleInHours = crossedStation.getDepartureTime()
-                .until(upcomingStation.getArrivalTime(), ChronoUnit.MINUTES) / 60f;
+        float timeAsPerScheduleInHours = timetable.getSchedule(crossedStation).get().getDepartureTime()
+                .until(timetable.getSchedule(upcomingStation).get().getArrivalTime(), ChronoUnit.MINUTES) / 60f;
         float expectedSpeedOfTrain = distanceBetweenStations / timeAsPerScheduleInHours;
 
-        float timeSinceLastCrossedStation = crossedStation.getDepartureTime()
+        float timeSinceLastCrossedStation = timetable.getSchedule(crossedStation).get().getDepartureTime()
                 .until(LocalDateTime.now(systemClock), ChronoUnit.MINUTES) / 60f;
         if (direction == TrainDirection.AWAY_FROM_HOME)
             return expectedSpeedOfTrain * timeSinceLastCrossedStation;
