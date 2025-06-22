@@ -105,7 +105,7 @@ public class Timetable {
             arrivalTime = arrivalTime.plusDays(1);
             departureTime = departureTime.plusDays(1);
         }
-        TrainSchedule trainSchedule = new TrainSchedule(station.getCode(), arrivalTime, departureTime, station.getDistance());
+        TrainSchedule trainSchedule = new TrainSchedule(arrivalTime, departureTime);
         this.timetableEntries.set(
                 index,
                 new Entry(station, Optional.of(trainSchedule)));
