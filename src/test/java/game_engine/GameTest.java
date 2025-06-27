@@ -5,13 +5,18 @@ import common.models.TrainDirection;
 import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class GameTest {
     
@@ -61,5 +66,19 @@ public class GameTest {
                 .filter(station -> station.getName().equals("Calicut"))
                 .findFirst().get();
         assertArrayEquals(newSignalAspects, calicutStationDto.getAspects());
+    }
+
+    @Test
+    public void shouldRunTrainUsingExecutor() throws GameNotStartedException {
+        try (MockedStatic<Executors> executors = mockStatic(Executors.class)) {
+            ScheduledExecutorService mockExecutorService = mock(ScheduledExecutorService.class);
+            executors.when(Executors::newSingleThreadScheduledExecutor).thenReturn(mockExecutorService);
+            Clock mockTime = Clock.fixed(Instant.parse("2025-06-23T12:35:00Z"), ZoneId.of("+05:30"));
+            Game game = new Game(mockTime);
+
+            //Only 2 trains are available at this point in time - so only 2 calls are made to the executor.
+            verify(mockExecutorService, times(2)).scheduleWithFixedDelay(
+                    any(Train.class), eq(2L), eq(2L), eq(TimeUnit.SECONDS));
+        }
     }
 }

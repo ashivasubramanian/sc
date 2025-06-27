@@ -69,17 +69,6 @@ public class TrainTest {
 		}
 	}
 
-	@Test
-	public void initializingTheTrainShouldStartTheTrainThread() {
-		Train train = null;
-		try {
-			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stations);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-		assertEquals(Thread.State.RUNNABLE, train.getState());
-	}
-
 	public static List<Arguments> argumentSetForTrainsAtStations = Arrays.asList(
 		Arguments.argumentSet("AwayFromHomeTrain at final station", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT06:02:00Z", 86),
 		Arguments.argumentSet("AwayFromHomeTrain at intermediate station", "2653", "AwayFromHome", "%1$04d-%2$02d-%3$02dT05:50:00Z", 41),

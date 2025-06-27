@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.time.Clock;
 import java.util.*;
 import java.time.LocalDateTime;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -24,7 +27,6 @@ import org.xml.sax.SAXException;
  * state of the game.
  */
 public class Game {
-
 
     /**
      * A collection of stations in the game currently being played.
@@ -58,6 +60,7 @@ public class Game {
         this.trains = new ArrayList<>();
         populateStations();
         populateTrains();
+        startTrains();
     }
 
     /**
@@ -96,7 +99,7 @@ public class Game {
             //Let's get the daily trains first
             InputStream trainsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
             Vector<Element> temp1 = DataAccess.getInstance().extractData(trainsXMLStream, "train[@day-of-arrival=Daily]");
-            
+
             String day = "";
             //Let's now find out what day it is, and then get the corresponding trains.
             switch (LocalDateTime.now(this.systemClock).getDayOfWeek()) {
@@ -123,7 +126,7 @@ public class Game {
             }
             trainsXMLStream = getClass().getResourceAsStream("/data/CAL-SRR.xml");
             Vector<Element> temp2 = DataAccess.getInstance().extractData(trainsXMLStream, "train.contains(@day-of-arrival," + day + ")");
-            
+
             temp1.addAll(temp1.size(), temp2);
             //temp1 is for Renderer; whereas the processing below is for GameScreen
             for (Element train : temp1) {
@@ -146,7 +149,7 @@ public class Game {
                         last_station_time.plusDays(1);
                     }
                 }
-                
+
                 //We are ready to compare.
                 if (currentTime.isAfter(first_station_time) && currentTime.isBefore(last_station_time)) {
                     Train individual_train = new TrainFactory().create(train.getAttribute("number"), train.getAttribute("name"),
@@ -159,6 +162,15 @@ public class Game {
         } catch (IOException | SAXException | ParserConfigurationException ex) {
             throw new GameNotStartedException(ex);
         }
+    }
+
+    /**
+     * Adds the train to an <code>Executor</code> and triggers them.
+     */
+    private void startTrains() {
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        trains.stream().forEach(train -> scheduledExecutorService.scheduleWithFixedDelay(
+                train, 2, 2, TimeUnit.SECONDS));
     }
 
     /**

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * rendering of data on-screen, the data held by an instance of <code>Train</code> is
  * always accurate.
  */
-public class Train extends Thread implements PropertyChangeListener {
+public class Train implements PropertyChangeListener, Runnable {
 	/**
 	 * The unique number of the train.
 	 * This is of <code>String</code> datatype, rather than <code>int</code>,
@@ -67,15 +67,13 @@ public class Train extends Thread implements PropertyChangeListener {
 		this.direction = direction;
 		this.timetable = timetable;
 		this.trainPosition = initialTrainPosition;
-		start();
 	}
 
 	/**
 	 * The run method of the <code>Thread</code>.
-	 * The method constantly determines the distance of the train from Calicut station.
+	 * The method determines the distance of the train from the section entry station.
 	 */
-	public void run()
-	{
+	public void run() {
 		//Let's get the time first, then we can calculate where each train is supposed to
 		//be at the time the game is started.
 		/*Now let's get the arrival (or departure) time of the train in the station it
@@ -85,26 +83,11 @@ public class Train extends Thread implements PropertyChangeListener {
 		calculate the distance the train would have crossed as 60(the MPS) * seconds. We
 		then draw it on the screen.*/
 		LocalDateTime first_station_time = this.timetable.getSectionEntryTime();
-		int count = 0;
-		while(true)
-		{
-			LocalDateTime currentTime = LocalDateTime.now();
-			if(first_station_time.isBefore(currentTime)) {
-				//The train is already in the section.
-				float totalseconds = getTimeDifference(currentTime,first_station_time);
-				trainPosition.setDistanceFromHome(60 * (totalseconds/3600));
-				long sleepTime = 2000;
-				try
-				{
-					System.out.println("sleeping..." + count++);
-					sleep(sleepTime);
-				}
-				catch(InterruptedException objInterruptedException)
-				{
-					System.out.println("InterruptedException");
-					objInterruptedException.printStackTrace();
-				}
-			}
+		LocalDateTime currentTime = LocalDateTime.now();
+		if(first_station_time.isBefore(currentTime)) {
+			//The train is already in the section.
+			float totalseconds = getTimeDifference(currentTime,first_station_time);
+			trainPosition.setDistanceFromHome(60 * (totalseconds/3600));
 		}
 	}
 
