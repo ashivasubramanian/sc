@@ -106,8 +106,7 @@ public class Timetable {
             departureTime = departureTime.plusDays(1);
         }
         TrainSchedule trainSchedule = new TrainSchedule(arrivalTime, departureTime);
-        this.timetableEntries.set(
-                index,
+        this.timetableEntries.set(index,
                 new Entry(station, Optional.of(trainSchedule)));
     }
 
@@ -201,8 +200,7 @@ public class Timetable {
             return Optional.empty();
     }
 
-    //TODO: This is a temporary method used only for the refactoring to Timetable. Remove once done.
-    public List<Entry> getEntries() {
+    List<Entry> getEntries() {
         return this.timetableEntries;
     }
 }
