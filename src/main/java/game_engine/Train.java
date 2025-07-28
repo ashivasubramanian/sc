@@ -4,19 +4,16 @@ import common.models.TrainDirection;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.LocalDateTime;
 
 
 /**
  * The <code>Train</code> class represents a train running on the section. Some of the
  * properties that an instance of <code>Train</code> holds are the train number, the train
- * name, the distance of the train from the home station, etc. <p>The class extends
- * <code>Thread</code>, thus enabling it to keep train-related data up-to-date
- * by making its own calculations. This means that though there <i>may</i> be delays in
- * rendering of data on-screen, the data held by an instance of <code>Train</code> is
- * always accurate.
+ * name, the distance of the train from the home station, etc.
+ *
+ * @see game_engine.runners.TrainRunner
  */
-public class Train implements PropertyChangeListener, Runnable {
+public class Train implements PropertyChangeListener {
 	/**
 	 * The unique number of the train.
 	 * This is of <code>String</code> datatype, rather than <code>int</code>,
@@ -53,7 +50,6 @@ public class Train implements PropertyChangeListener, Runnable {
 
 	/**
 	 * Constructor that initializes the <code>Train</code>.
-	 * The constructor then starts the thread.
 	 *
 	 * @param trainNumber          The number of the train.
 	 * @param name                 The name of the train.
@@ -67,47 +63,6 @@ public class Train implements PropertyChangeListener, Runnable {
 		this.direction = direction;
 		this.timetable = timetable;
 		this.trainPosition = initialTrainPosition;
-	}
-
-	/**
-	 * The run method of the <code>Thread</code>.
-	 * The method determines the distance of the train from the section entry station.
-	 */
-	public void run() {
-		//Let's get the time first, then we can calculate where each train is supposed to
-		//be at the time the game is started.
-		/*Now let's get the arrival (or departure) time of the train in the station it
-		encounters first while entering the section. If initialTime is greater, then the
-		train has already entered the section. We then calculate the number of seconds
-		between initialTime and the time at first station. Depending upon this, we
-		calculate the distance the train would have crossed as 60(the MPS) * seconds. We
-		then draw it on the screen.*/
-		LocalDateTime first_station_time = this.timetable.getSectionEntryTime();
-		LocalDateTime currentTime = LocalDateTime.now();
-		if(first_station_time.isBefore(currentTime)) {
-			//The train is already in the section.
-			float totalseconds = getTimeDifference(currentTime,first_station_time);
-			trainPosition.setDistanceFromHome(60 * (totalseconds/3600));
-		}
-	}
-
-	/**
-	 * A utility method that returns the difference(in seconds) between
-	 * any two times.<p> This method can be used to calculate the lag time
-	 * of the train.<p>Of the two times, <code>time1</code> is the greater
-	 * time, while <code>time2</code> is the lesser time.
-	 *
-	 * @param time1 The greater time
-	 * @param time2 The lesser time
-	 * @return The difference between the two times in seconds.
-	 */
-	private float getTimeDifference(LocalDateTime time1, LocalDateTime time2)
-	{
-		float hours = time1.getHour() - time2.getHour();
-		float minutes = time1.getMinute() - time2.getMinute();
-		float seconds = time1.getSecond() - time2.getSecond();
-		float totalseconds = (hours * 3600) + (minutes * 60) + seconds;
-		return totalseconds;
 	}
 
 	/**

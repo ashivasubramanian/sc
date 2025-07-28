@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 
 import game_engine.initializers.TrainFactory;
+import game_engine.runners.TrainRunner;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -169,8 +170,10 @@ public class Game {
      */
     private void startTrains() {
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        trains.stream().forEach(train -> scheduledExecutorService.scheduleWithFixedDelay(
-                train, 2, 2, TimeUnit.SECONDS));
+        trains.stream()
+                .map(train -> new TrainRunner(train.getTimetable(), train.getTrainPosition()))
+                .forEach(runner -> scheduledExecutorService.scheduleWithFixedDelay(
+                    runner, 2, 2, TimeUnit.SECONDS));
     }
 
     /**

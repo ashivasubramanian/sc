@@ -43,10 +43,9 @@ public class TrainPosition {
 
     /**
      * Sets the distance from home of the train.
-     * <br><br>This method is package-scoped as it's expected to be called from within the <code>Train</code> only.
      *
      * @param distanceFromHome the distance from home.
      */
-    void setDistanceFromHome(float distanceFromHome) { this.distanceFromHome = distanceFromHome; }
+    public void setDistanceFromHome(float distanceFromHome) { this.distanceFromHome = distanceFromHome; }
 
 }

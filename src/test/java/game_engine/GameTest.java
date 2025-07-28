@@ -4,6 +4,7 @@ import common.models.SignalAspect;
 import common.models.TrainDirection;
 import game_engine.dto.StationDto;
 import game_engine.dto.TrainDto;
+import game_engine.runners.TrainRunner;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
@@ -78,7 +79,7 @@ public class GameTest {
 
             //Only 2 trains are available at this point in time - so only 2 calls are made to the executor.
             verify(mockExecutorService, times(2)).scheduleWithFixedDelay(
-                    any(Train.class), eq(2L), eq(2L), eq(TimeUnit.SECONDS));
+                    any(TrainRunner.class), eq(2L), eq(2L), eq(TimeUnit.SECONDS));
         }
     }
 }
