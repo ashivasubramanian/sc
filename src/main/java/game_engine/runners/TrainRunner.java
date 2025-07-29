@@ -4,6 +4,7 @@ import game_engine.Timetable;
 import game_engine.TrainPosition;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Class that implements the logic to move trains across the section.
@@ -53,26 +54,8 @@ public class TrainRunner implements Runnable {
         LocalDateTime currentTime = LocalDateTime.now();
         if(first_station_time.isBefore(currentTime)) {
             //The train is already in the section.
-            float totalseconds = getTimeDifference(currentTime,first_station_time);
+            float totalseconds = first_station_time.until(currentTime, ChronoUnit.SECONDS);
             trainPosition.setDistanceFromHome(60 * (totalseconds/3600));
         }
    }
-
-    /**
-     * A utility method that returns the difference(in seconds) between
-     * any two times.<p> This method can be used to calculate the lag time
-     * of the train.<p>Of the two times, <code>time1</code> is the greater
-     * time, while <code>time2</code> is the lesser time.
-     *
-     * @param time1 The greater time
-     * @param time2 The lesser time
-     * @return The difference between the two times in seconds.
-     */
-    private float getTimeDifference(LocalDateTime time1, LocalDateTime time2) {
-        float hours = time1.getHour() - time2.getHour();
-        float minutes = time1.getMinute() - time2.getMinute();
-        float seconds = time1.getSecond() - time2.getSecond();
-        float totalseconds = (hours * 3600) + (minutes * 60) + seconds;
-        return totalseconds;
-    }
 }

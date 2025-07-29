@@ -37,6 +37,7 @@ public class TrainRunnerTest {
                 11, 30);
         try (MockedStatic<LocalDateTime> mockLocalDateTime = mockStatic(LocalDateTime.class)) {
             mockLocalDateTime.when(LocalDateTime::now).thenReturn(mockTime);
+            mockLocalDateTime.when(() -> LocalDateTime.from(mockTime)).thenReturn(mockTime);
             TrainRunner runner = new TrainRunner(timetable, trainPosition);
             runner.run();
             assertEquals(TrainRunningStatus.RUNNING_BETWEEN, trainPosition.getTrainRunningStatus());
