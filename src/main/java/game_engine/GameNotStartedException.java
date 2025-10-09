@@ -10,4 +10,8 @@ public class GameNotStartedException extends Exception {
     public GameNotStartedException(Throwable ex) {
         super("Unable to start game", ex);
     }
+
+    public GameNotStartedException(String message) {
+        super(message);
+    }
 }

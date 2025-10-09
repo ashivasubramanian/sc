@@ -30,9 +30,10 @@ public class TrainFactory {
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML content
      * @throws SAXException                 if any exception occurs while parsing train XML content
+     * @throws GameNotStartedException      if any exception occurs while creating the timetable
      */
     public Train create(String trainNumber, String name, String direction, List<Station> stations)
-            throws IOException, ParserConfigurationException, SAXException {
+            throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
         return createWithMockTime(trainNumber, name, direction, stations, Clock.systemDefaultZone());
     }
 
@@ -51,9 +52,10 @@ public class TrainFactory {
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML I/O
      * @throws SAXException                 if any exception occurs while parsing train XML I/O
+     * @throws GameNotStartedException      if any exception occurs while creating the timetable
      */
     public Train createWithMockTime(String trainNumber, String name, String direction, List<Station> stations, Clock systemClock)
-            throws IOException, ParserConfigurationException, SAXException {
+            throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
         TrainDirection directionEnum = null;
         if(direction.equals("TowardsHome"))
             directionEnum = TrainDirection.TOWARDS_HOME;
@@ -80,9 +82,10 @@ public class TrainFactory {
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML I/O
      * @throws SAXException                 if any exception occurs while parsing train XML I/O
+     * @throws GameNotStartedException      if any exception occurs while creating the timetable
      */
     private Timetable populateTrainData(String trainNumber, TrainDirection direction, List<Station> stations)
-            throws IOException, SAXException, ParserConfigurationException {
+            throws IOException, SAXException, ParserConfigurationException, GameNotStartedException {
         System.out.printf( "Loading data for %1$s\n", trainNumber);
         Timetable timetable = new TrainScheduleInitializer(trainNumber, direction, stations).populateTrainData();
         return timetable;

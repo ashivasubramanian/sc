@@ -33,7 +33,7 @@ public class TrainTest {
 	}
 	
 	@Test
-	public void initializingTrainWithLegalValuesShouldPass() {
+	public void initializingTrainWithLegalValuesShouldPass() throws GameNotStartedException {
 		Train train = null;
 		try {
 			train = new TrainFactory().create("616", "Mangala Lakshadweep Express", "TowardsHome", this.stations);
@@ -44,7 +44,7 @@ public class TrainTest {
 	}
 	
 	@Test
-	public void verifyTrainDirectionIsSet() {
+	public void verifyTrainDirectionIsSet() throws GameNotStartedException {
 		Train homeTrain = null;
 		Train awayTrain = null;
 		try {
@@ -60,7 +60,7 @@ public class TrainTest {
 	}
 	
 	@Test
-	public void timetableMustBePopulatedOnInitialization() {
+	public void timetableMustBePopulatedOnInitialization() throws GameNotStartedException {
 		try {
 			Train someTrain = new TrainFactory().create("616","Calicut Shoranur Passenger", "AwayFromHome", this.stations);
 			assertNotNull(someTrain.getTimetable());
@@ -79,7 +79,7 @@ public class TrainTest {
 
 	@ParameterizedTest
 	@FieldSource("argumentSetForTrainsAtStations")
-	public void shouldDetermineTrainIsAtStationOnGameLoad(String trainNo, String direction, String mockTimeStringValue, int distance) throws IOException, ParserConfigurationException, SAXException {
+	public void shouldDetermineTrainIsAtStationOnGameLoad(String trainNo, String direction, String mockTimeStringValue, int distance) throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
 		LocalDateTime now = LocalDateTime.now();
 		String mockTimeString = String.format(mockTimeStringValue,
 				now.getYear(), now.getMonthValue(), now.getDayOfMonth());
@@ -116,7 +116,7 @@ public class TrainTest {
 	@Nested
 	public class OvernightTrains {
 		@Test
-		public void overnightTrainsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException {
+		public void overnightTrainsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
 			Train overnightTrain = new TrainFactory().create("22637", "Dummy name", "TowardsHome", stations);
@@ -133,7 +133,7 @@ public class TrainTest {
 		}
 
 		@Test
-		public void overnightStopsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException {
+		public void overnightStopsShouldHaveCorrectDates() throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
 			Train overnightStopTrain = new TrainFactory().create("16356", "DummyTrain", "AwayFromHome", stations);
@@ -150,7 +150,7 @@ public class TrainTest {
 		}
 
 		@Test
-		public void normalTrainsHaveNoDateChanges() throws IOException, ParserConfigurationException, SAXException {
+		public void normalTrainsHaveNoDateChanges() throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
 			LocalDateTime now = LocalDateTime.now();
 			Train overnightStopTrain = new TrainFactory().create("616", "DummyTrain", "TowardsHome", stations);
 

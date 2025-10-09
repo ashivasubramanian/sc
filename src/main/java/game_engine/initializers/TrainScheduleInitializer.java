@@ -1,9 +1,9 @@
 package game_engine.initializers;
 
 import common.models.TrainDirection;
+import game_engine.GameNotStartedException;
 import game_engine.Station;
 import game_engine.Timetable;
-import game_engine.TrainSchedule;
 import game_engine.data_access.DataAccess;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -47,9 +47,10 @@ class TrainScheduleInitializer {
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML content
      * @throws SAXException                 if any exception occurs while parsing train XML content
+     * @throws GameNotStartedException      if any exception occurs while constructing the timetable
      */
     public Timetable populateTrainData()
-            throws IOException, ParserConfigurationException, SAXException {
+            throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
         String filePath = String.format("/data/%1$s.xml", trainNumber);
         InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
         Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
@@ -72,7 +73,7 @@ class TrainScheduleInitializer {
                     LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
 
             Station station = this.stations.stream().filter(s -> s.getCode().equalsIgnoreCase(stationCode)).findFirst().get();
-            timetable.update(station, arrivalTime, departureTime);
+            timetable.update(station, arrivalTime, departureTime, false, false);
         }
         return timetable;
     }

@@ -72,25 +72,35 @@ public class Timetable {
     /**
      * Updates the station in the timetable with the arrival & departure time.
      * <br><br>
-     * This method performs certain modifications to the passed in times:
+     * This method performs certain operations before updating the timetable:
      * <ol>
+     * <li>If both <code>isOriginatingStation</code> and <code>isTerminatingStation</code> are <code>true</code>,
+     * then the method throws a <code>GameNotStartedException</code> as a train cannot have its origin and destination
+     * at the same station.</li>
      * <li> If <code>departureTime</code> is before <code>arrivalTime</code>, then the method increments <code>departureTime</code>'s
-     * date by 1 day.</li>
+     * date by 1 day. This is done as we assume this is an overnight train and its schedule has crossed into the next day.</li>
      * <li> If <code>arrivalTime</code> is before the departure time of the previous station that had a <code>TrainSchedule</code>,
-     * then the method increments the date of both <code>arrivalTime</code> and <code>departureTime</code> by 1 day.</li>
-     * </ol>
-     * <br>The method does these as it assumes that these scenarios are due to an overnight train's schedules
-     * crossing into the next day.
-     * <br>
-     * NOTE: The implication of the 2nd modification is that calls to this method must only be made in the order of the
-     * stations that the train will encounter. Otherwise, the 2nd modification will not be performed and the timetable
+     * then the method increments the date of both <code>arrivalTime</code> and <code>departureTime</code> by 1 day.
+     * This is done as we assume this is an overnight train and its schedule has crossed into the next day.</li>
+     * NOTE: The implication of the 3rd point above is that calls to this method must only be made in the order of the
+     * stations that the train will encounter. Otherwise, the 3rd point will not be performed and the timetable
      * will have invalid times.
+     * </ol>
      *
-     * @param station       the station where the train has a stop.
-     * @param arrivalTime   the arrival time of the train at the station
-     * @param departureTime the departure time of the train from the station
+     * @param station              the station where the train has a stop.
+     * @param arrivalTime          the arrival time of the train at the station
+     * @param departureTime        the departure time of the train from the station
+     * @param isOriginatingStation determines if the stop is the origin for the train
+     * @param isTerminatingStation determines if the stop is the train's destination.
+     * @throws GameNotStartedException if <code>station</code> is deemed both originating &amp; terminating
      */
-    public void update(Station station, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+    public void update(Station station, LocalDateTime arrivalTime, LocalDateTime departureTime,
+                   boolean isOriginatingStation, boolean isTerminatingStation)
+            throws GameNotStartedException {
+        if (isOriginatingStation && isTerminatingStation) {
+            String errorMessage = String.format("%1$s cannot be both originating and terminating station for a train", station.getName());
+            throw new GameNotStartedException(errorMessage);
+        }
         if (departureTime.isBefore(arrivalTime))
             departureTime = departureTime.plusDays(1);
         Entry entry = this.timetableEntries.stream()
