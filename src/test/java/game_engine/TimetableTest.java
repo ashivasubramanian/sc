@@ -21,13 +21,21 @@ public class TimetableTest {
 
     private Station shoranur;
 
+    private Station kallayi;
+
+    private Station ferok;
+
     @BeforeEach
     public void initializeSection() {
         stationsOnSection = new ArrayList<>();
         calicut = new Station("CAL", "Calicut", 3, 0);
+        kallayi = new Station("KAL", "", 0, 1);
+        ferok = new Station("FER", "", 0, 9);
         tirur = new Station("TIR", "Tirur", 2, 41);
         shoranur = new Station("SRR", "Shoranur Junction", 3, 86);
         stationsOnSection.add(calicut);
+        stationsOnSection.add(kallayi);
+        stationsOnSection.add(ferok);
         stationsOnSection.add(tirur);
         stationsOnSection.add(shoranur);
     }
@@ -35,10 +43,12 @@ public class TimetableTest {
     @Test
     public void shouldContainAllStationsOnSectionOnInitializationWithEmptySchedule() {
         Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
-        assertEquals(3, timetable.getEntries().size());
+        assertEquals(5, timetable.getEntries().size());
         assertEquals(Optional.empty(), timetable.getEntries().get(0).getSchedule());
         assertEquals(Optional.empty(), timetable.getEntries().get(1).getSchedule());
         assertEquals(Optional.empty(), timetable.getEntries().get(2).getSchedule());
+        assertEquals(Optional.empty(), timetable.getEntries().get(3).getSchedule());
+        assertEquals(Optional.empty(), timetable.getEntries().get(4).getSchedule());
     }
 
     @Test
@@ -243,5 +253,60 @@ public class TimetableTest {
         assertThrows(GameNotStartedException.class,
                 () -> timetable.update(shoranur, arrivalTime, departureTime, true, true),
                 "Shoranur cannot be both originating and terminating station for a train.");
+    }
+
+    @Test
+    public void shouldReturnFullTimetableForAFullSectionTrainThatHasNotYetEnteredTheSection() throws GameNotStartedException {
+        LocalDateTime now = LocalDateTime.now();
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        timetableForFullSectionTrain.update(calicut, now, now.plusMinutes(2), false, false);
+        timetableForFullSectionTrain.update(shoranur, now.plusHours(1), now.plusHours(1).plusMinutes(2), false, false);
+
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now.minusMinutes(1));
+        assertEquals(2, upcomingStations.size());
+        assertEquals(calicut, upcomingStations.get(0));
+        assertEquals(shoranur, upcomingStations.get(1));
+    }
+
+    @Test
+    public void shouldReturnCurrentlyHaltedStationInUpcomingStations() throws GameNotStartedException {
+        LocalDateTime now = LocalDateTime.now();
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        timetableForFullSectionTrain.update(calicut, now.minusMinutes(1), now.plusMinutes(2), false, false);
+        timetableForFullSectionTrain.update(shoranur, now.plusHours(1), now.plusHours(1).plusMinutes(2), false, false);
+
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
+        assertEquals(2, upcomingStations.size());
+        assertEquals(calicut, upcomingStations.get(0));
+        assertEquals(shoranur, upcomingStations.get(1));
+    }
+
+    @Test
+    public void shouldReturnCorrectUpcomingStationsWhenTravellingBetweenStations() throws GameNotStartedException {
+        LocalDateTime now = LocalDateTime.now();
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        timetableForFullSectionTrain.update(calicut, now.minusMinutes(10), now.minusMinutes(5), false, false);
+        timetableForFullSectionTrain.update(tirur, now.plusMinutes(30), now.plusMinutes(32), false, false);
+        timetableForFullSectionTrain.update(shoranur, now.plusHours(1), now.plusHours(1).plusMinutes(2), false, false);
+
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
+        assertEquals(2, upcomingStations.size());
+        assertEquals(tirur, upcomingStations.get(0));
+        assertEquals(shoranur, upcomingStations.get(1));
+    }
+
+    @Test
+    public void shouldReturnCorrectUpcomingStationsForTrainsOriginatingAndTerminatingWithinSection() throws GameNotStartedException {
+        LocalDateTime now = LocalDateTime.now();
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        timetableForFullSectionTrain.update(kallayi, now.plusMinutes(1), now.plusMinutes(5), true, false);
+        timetableForFullSectionTrain.update(ferok, now.plusMinutes(10), now.plusMinutes(12), false, false);
+        timetableForFullSectionTrain.update(tirur, now.plusHours(30), now.plusMinutes(32), false, true);
+
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
+        assertEquals(3, upcomingStations.size());
+        assertEquals(kallayi, upcomingStations.get(0));
+        assertEquals(ferok, upcomingStations.get(1));
+        assertEquals(tirur, upcomingStations.get(2));
     }
 }

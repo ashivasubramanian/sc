@@ -210,6 +210,24 @@ public class Timetable {
             return Optional.empty();
     }
 
+    /**
+     * Returns a <code>List</code> of the stops that are scheduled to come up as per the timetable, inclusive of the
+     * current stop if the train is stopped at one.
+     *
+     * @param mockTime used for testing purposes, to mock the current time.
+     * @return a collection of stops in the timetable that are yet to be reached.
+     */
+    public List<Station> getUpcomingStops(LocalDateTime mockTime) {
+        return this.timetableEntries.stream()
+                .filter(entry -> {
+                    if (entry.getSchedule().isPresent())
+                        return entry.getSchedule().get().getDepartureTime().isAfter(mockTime);
+                    return false;
+                })
+                .map(Timetable.Entry::getStation)
+                .collect(Collectors.toList());
+    }
+
     List<Entry> getEntries() {
         return this.timetableEntries;
     }
