@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This train is used to test happy path scenarios for overnight trains, without a stop at the midnight point. -->
 <train number="22637" name="West Coast Express">
     <stops>
         <stop code="CAL" name="Calicut" arrival-time="01:12" departure-time="01:15"/>
