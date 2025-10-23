@@ -22,17 +22,18 @@ public class ListItemPairer<T> implements Iterable<Pair<T>> {
     private final List<Pair<T>> pairList = new ArrayList<>();
 
     /**
-     * Creates an instance of <code>ListItemPairer</code>. This constructor also creates the necessary pairs from
-     * <code>sourceList</code>. You can then get the pairs by iterating over the <code>ListItemPairer</code> instance.
+     * Creates the necessary pairs from <code>sourceList</code>.
+     * You can then get the pairs by iterating over the <code>ListItemPairer</code> instance.
      * <br><br>
      * By default, the constructor creates the pairs in this form: <code>(null, item1), (item1, item2), (item2, item3)</code>
      * and so on, until <code>(item(n-1), item(n)), (item(n), null)</code>. The pairs with <code>null</code> values are
-     * referred to as <i>null pairs</i>. The null pairs are created as it is assumed that the
+     * referred to as <i>null pairs</i>. The null pairs are created as it is assumed that the business need for pairing
+     * might also require pairs for entering the list and exiting the list.
      * <br><br>
      * If you do not want the pairs to be for all items of the list, then you must pass in <code>java.util.function.Predicate</code>s
      * for the <code>startPositionIdentifier</code> & <code>endPositionIdentifier</code> arguments. These predicates must
      * be conditions that can point to the elements from which pairing should start and end. Passing these predicates
-     * will also not create the null pairs.
+     * will not create the null pairs, but will start &amp; end the pairs at the specified items.
      * <br><br>
      * Note that if you pass only one of the <code>Predicate</code>s, then null pairs will be created for the other end.
      *
