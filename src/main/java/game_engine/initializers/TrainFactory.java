@@ -108,14 +108,16 @@ public class TrainFactory {
         // Has the train not yet entered the section?
         LocalDateTime currentTime = LocalDateTime.now(systemClock);
         if (currentTime.isBefore(timetable.getSectionEntryTime())) {
-            TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
-                    60 * (currentTime.until(timetable.getSectionEntryTime(), ChronoUnit.MINUTES) / 60f));
+            TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.ENTERING_SECTION,
+                    determineInitialDistanceFromHome(timetable, null, null, direction,
+                            TrainRunningStatus.ENTERING_SECTION, systemClock));
             return trainPosition;
         }
         // Has the train exited the section?
         if (currentTime.isAfter(timetable.getSectionExitTime())) {
-            TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.RUNNING_BETWEEN,
-                    60 * (timetable.getSectionExitTime().until(currentTime, ChronoUnit.MINUTES) / 60f));
+            TrainPosition trainPosition = new TrainPosition(TrainRunningStatus.EXITING_SECTION,
+                    determineInitialDistanceFromHome(timetable, null, null, direction,
+                            TrainRunningStatus.EXITING_SECTION, systemClock));
             return trainPosition;
         }
 
@@ -131,7 +133,7 @@ public class TrainFactory {
                     determineInitialDistanceFromHome(
                             timetable, stationsTravellingBetween[0].get(),
                             stationsTravellingBetween[1].get(),
-                            direction, systemClock));
+                            direction, TrainRunningStatus.RUNNING_BETWEEN, systemClock));
             return trainPosition;
         }
         return null;
@@ -139,30 +141,46 @@ public class TrainFactory {
 
     /**
      * Determines, on game load, the distance of the train from the Home station.
-     * The method assumes the train is on the section and is currently between two stations,
+     * <br><br>
+     * If the train is on the section, the method assumes the train is currently between two stations,
      * <code>crossedStation</code> and <code>upcomingStation</code>. Based on the schedules at those stations, the method
      * calculates the speed the train should have in order to reach <code>upcomingStation</code> on-time. Based on this
      * speed, it returns the distance the train has covered until now.
+     * <br><br>
+     * If the train is beyond the section, either entering or exiting the section, then the method calculates the distance
+     * beyond the section based on the value of <code>trainRunningStatus</code>, and the time since section entry/exit.
      *
-     * @param timetable       the train's timetable
-     * @param crossedStation  the station that was just crossed
-     * @param upcomingStation the station that is upcoming
-     * @param direction       the direction of the train
-     * @param systemClock     the current time
-     * @return                the current distance from Home station
+     * @param timetable          the train's timetable
+     * @param crossedStation     the station that was just crossed
+     * @param upcomingStation    the station that is upcoming
+     * @param direction          the direction of the train
+     * @param trainRunningStatus the current status of the train
+     * @param systemClock        the current time
+     * @return the current distance from Home station
      */
     private float determineInitialDistanceFromHome(Timetable timetable, Station crossedStation, Station upcomingStation,
-                                                   TrainDirection direction, Clock systemClock) {
-        int distanceBetweenStations = Math.abs(crossedStation.getDistance() - upcomingStation.getDistance());
-        float timeAsPerScheduleInHours = timetable.getSchedule(crossedStation).get().getDepartureTime()
-                .until(timetable.getSchedule(upcomingStation).get().getArrivalTime(), ChronoUnit.MINUTES) / 60f;
-        float expectedSpeedOfTrain = distanceBetweenStations / timeAsPerScheduleInHours;
+                                                   TrainDirection direction, TrainRunningStatus trainRunningStatus, Clock systemClock) {
+        LocalDateTime currentTime = LocalDateTime.now(systemClock);
+        if (trainRunningStatus == TrainRunningStatus.ENTERING_SECTION) {
+            float distance = 60 * (currentTime.until(timetable.getSectionEntryTime(), ChronoUnit.MINUTES) / 60f);
+            if (direction == TrainDirection.AWAY_FROM_HOME) return -distance;
+            else return 86 + distance;
+        } else if (trainRunningStatus == TrainRunningStatus.EXITING_SECTION) {
+            float distance = 60 * (timetable.getSectionExitTime().until(currentTime, ChronoUnit.MINUTES) / 60f);
+            if (direction == TrainDirection.AWAY_FROM_HOME) return 86 + distance;
+            else return -distance;
+        } else {
+            int distanceBetweenStations = Math.abs(crossedStation.getDistance() - upcomingStation.getDistance());
+            float timeAsPerScheduleInHours = timetable.getSchedule(crossedStation).get().getDepartureTime()
+                    .until(timetable.getSchedule(upcomingStation).get().getArrivalTime(), ChronoUnit.MINUTES) / 60f;
+            float expectedSpeedOfTrain = distanceBetweenStations / timeAsPerScheduleInHours;
 
-        float timeSinceLastCrossedStation = timetable.getSchedule(crossedStation).get().getDepartureTime()
-                .until(LocalDateTime.now(systemClock), ChronoUnit.MINUTES) / 60f;
-        if (direction == TrainDirection.AWAY_FROM_HOME)
-            return expectedSpeedOfTrain * timeSinceLastCrossedStation;
-        else
-            return 86 - (expectedSpeedOfTrain * timeSinceLastCrossedStation);
+            float timeSinceLastCrossedStation = timetable.getSchedule(crossedStation).get().getDepartureTime()
+                    .until(LocalDateTime.now(systemClock), ChronoUnit.MINUTES) / 60f;
+            if (direction == TrainDirection.AWAY_FROM_HOME)
+                return expectedSpeedOfTrain * timeSinceLastCrossedStation;
+            else
+                return 86 - (expectedSpeedOfTrain * timeSinceLastCrossedStation);
+        }
     }
 }
