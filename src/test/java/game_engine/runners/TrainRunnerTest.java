@@ -25,7 +25,7 @@ public class TrainRunnerTest {
         Station tirur = new Station("TIR", "Tirur", 3, 10);
         Station calicut = new Station("CAL", "Calicut", 3, 0);
         List<Station> stations = new ArrayList<>() {{add(shoranur); add(tirur); add(calicut);}};
-        Timetable timetable = new Timetable(stations, TrainDirection.TOWARDS_HOME);
+        Timetable timetable = new Timetable(stations, List.of(), TrainDirection.TOWARDS_HOME);
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime arrivalTime = LocalDateTime.of(currentTime.getYear(), currentTime.getMonthValue(), currentTime.getDayOfMonth(), 11, 5);
         LocalDateTime departureTime = LocalDateTime.of(currentTime.getYear(), currentTime.getMonthValue(), currentTime.getDayOfMonth(), 11, 10);

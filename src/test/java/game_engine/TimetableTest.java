@@ -5,9 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,7 +40,7 @@ public class TimetableTest {
 
     @Test
     public void shouldContainAllStationsOnSectionOnInitializationWithEmptySchedule() {
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        Timetable timetable = new Timetable(stationsOnSection, List.of(), TrainDirection.TOWARDS_HOME);
         assertEquals(5, timetable.getEntries().size());
         assertEquals(Optional.empty(), timetable.getEntries().get(0).getSchedule());
         assertEquals(Optional.empty(), timetable.getEntries().get(1).getSchedule());
@@ -58,28 +56,23 @@ public class TimetableTest {
         stationsOnSection.add(shoranur);
         stationsOnSection.add(calicut);
 
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        Timetable timetable = new Timetable(stationsOnSection, List.of(), TrainDirection.AWAY_FROM_HOME);
         assertEquals(calicut, timetable.getEntries().get(0).getStation());
         assertEquals(tirur, timetable.getEntries().get(1).getStation());
         assertEquals(shoranur, timetable.getEntries().get(2).getStation());
-        Timetable timetableTowardsHome = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        Timetable timetableTowardsHome = new Timetable(stationsOnSection, List.of(), TrainDirection.TOWARDS_HOME);
         assertEquals(shoranur, timetableTowardsHome.getEntries().get(0).getStation());
         assertEquals(tirur, timetableTowardsHome.getEntries().get(1).getStation());
         assertEquals(calicut, timetableTowardsHome.getEntries().get(2).getStation());
     }
 
     @Test
-    public void shouldUpdateTimetableWithSchedule() throws GameNotStartedException {
+    public void shouldUpdateTimetableWithSchedule() {
         LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 23, 5);
         LocalDateTime departureTime = LocalDateTime.of(2020, 5, 23, 23, 35);
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
-        Timetable.Entry tirurEntry = timetable.getEntries().stream()
-                .filter(e -> e.getStation().getCode().equalsIgnoreCase("TIR"))
-                .findFirst().get();
-        assertFalse(tirurEntry.getSchedule().isPresent());
-        assertFalse(tirurEntry.getSchedule().isPresent());
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(tirurEntry), TrainDirection.AWAY_FROM_HOME);
 
-        timetable.update(tirur, arrivalTime, departureTime, false, false);
         tirurEntry = timetable.getEntries().stream()
                 .filter(e -> e.getStation().getCode().equalsIgnoreCase("TIR"))
                 .findFirst().get();
@@ -88,13 +81,13 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldIncrementDepartureDateIfOvernightStop() throws GameNotStartedException {
+    public void shouldIncrementDepartureDateIfOvernightStop() {
         LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 23, 55);
         LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 0, 5);
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(tirurEntry), TrainDirection.AWAY_FROM_HOME);
 
-        timetable.update(tirur, arrivalTime, departureTime, false, false);
-        Timetable.Entry tirurEntry = timetable.getEntries().stream()
+        tirurEntry = timetable.getEntries().stream()
                 .filter(e -> e.getStation().getCode().equalsIgnoreCase("TIR"))
                 .findFirst().get();
         assertEquals(22, tirurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
@@ -102,16 +95,16 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldIncrementArrivalAndDepartureDateIfTimeHasCrossedMidnight() throws GameNotStartedException {
+    public void shouldIncrementArrivalAndDepartureDateIfTimeHasCrossedMidnight() {
         LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 23, 45);
         LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 23, 55);
         LocalDateTime arrivalTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 5);
         LocalDateTime departureTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 15);
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(arrivalTimeAfterMidnight, departureTimeAfterMidnight)));
 
-        timetable.update(tirur, arrivalTime, departureTime, false, false);
-        timetable.update(shoranur, arrivalTimeAfterMidnight, departureTimeAfterMidnight, false, false);
-        Timetable.Entry shoranurEntry = timetable.getEntries().stream()
+        Timetable timetable = new Timetable(stationsOnSection, List.of(tirurEntry, shoranurEntry), TrainDirection.AWAY_FROM_HOME);
+        shoranurEntry = timetable.getEntries().stream()
                 .filter(e -> e.getStation().getCode().equalsIgnoreCase("SRR"))
                 .findFirst().get();
         assertEquals(23, shoranurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
@@ -119,13 +112,13 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldNotIncrementArrivalAndDepartureDateIfThereAreNoPreviousStopsToCompareAgainst() throws GameNotStartedException {
+    public void shouldNotIncrementArrivalAndDepartureDateIfThereAreNoPreviousStopsToCompareAgainst() {
         LocalDateTime arrivalTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 5);
         LocalDateTime departureTimeAfterMidnight = LocalDateTime.of(2020, 5, 22, 0, 15);
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(arrivalTimeAfterMidnight, departureTimeAfterMidnight)));
 
-        timetable.update(shoranur, arrivalTimeAfterMidnight, departureTimeAfterMidnight, false, false);
-        Timetable.Entry shoranurEntry = timetable.getEntries().stream()
+        Timetable timetable = new Timetable(stationsOnSection, List.of(shoranurEntry), TrainDirection.AWAY_FROM_HOME);
+        shoranurEntry = timetable.getEntries().stream()
                 .filter(e -> e.getStation().getCode().equalsIgnoreCase("SRR"))
                 .findFirst().get();
         assertEquals(22, shoranurEntry.getSchedule().get().getArrivalTime().getDayOfMonth());
@@ -133,33 +126,33 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldReturnFirstStationArrivalTime() throws GameNotStartedException {
+    public void shouldReturnFirstStationArrivalTime() {
         LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 0, 5);
         LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 0, 15);
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
-        timetable.update(calicut, arrivalTime, departureTime, false, false);
+        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(calicutEntry), TrainDirection.AWAY_FROM_HOME);
         assertEquals(arrivalTime, timetable.getSectionEntryTime());
 
-        Timetable timetableTowardsHome = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
-        timetableTowardsHome.update(shoranur, arrivalTime, departureTime, false, false);
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetableTowardsHome = new Timetable(stationsOnSection, List.of(shoranurEntry), TrainDirection.TOWARDS_HOME);
         assertEquals(arrivalTime, timetableTowardsHome.getSectionEntryTime());
     }
 
     @Test
-    public void shouldReturnLastStationDepartureTime() throws GameNotStartedException {
+    public void shouldReturnLastStationDepartureTime() {
         LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 0, 5);
         LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 0, 15);
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.AWAY_FROM_HOME);
-        timetable.update(shoranur, arrivalTime, departureTime, false, false);
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(shoranurEntry), TrainDirection.AWAY_FROM_HOME);
         assertEquals(departureTime, timetable.getSectionExitTime());
 
-        Timetable timetableTowardsHome = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
-        timetableTowardsHome.update(calicut, arrivalTime, departureTime, false, false);
+        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetableTowardsHome = new Timetable(stationsOnSection, List.of(calicutEntry), TrainDirection.TOWARDS_HOME);
         assertEquals(departureTime, timetableTowardsHome.getSectionExitTime());
     }
 
     @Test
-    public void shouldReturnTheStationIfTrainIsAtStation() throws GameNotStartedException {
+    public void shouldReturnTheStationIfTrainIsAtStation() {
         LocalDateTime currentDate = LocalDateTime.now();
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
@@ -168,14 +161,13 @@ public class TimetableTest {
         LocalDateTime arrivalTime = LocalDateTime.of(year, month, day, 15, 30);
         LocalDateTime departureTime = LocalDateTime.of(year, month, day, 15, 35);
 
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
-        timetable.update(tirur, arrivalTime, departureTime, false, false);
-
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(tirurEntry), TrainDirection.TOWARDS_HOME);
         assertEquals(tirur, timetable.getStationHaltedAt(mockTime).get());
     }
 
     @Test
-    public void shouldReturnEmptyIfTrainIsNotAtAnyStation() throws GameNotStartedException {
+    public void shouldReturnEmptyIfTrainIsNotAtAnyStation() {
         LocalDateTime currentDate = LocalDateTime.now();
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
@@ -184,24 +176,27 @@ public class TimetableTest {
         LocalDateTime arrivalTime = LocalDateTime.of(year, month, day, 15, 30);
         LocalDateTime departureTime = LocalDateTime.of(year, month, day, 15, 35);
 
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
-        timetable.update(tirur, arrivalTime, departureTime, false, false);
-
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(tirurEntry), TrainDirection.TOWARDS_HOME);
         assertEquals(Optional.empty(), timetable.getStationHaltedAt(mockTime));
     }
 
     @Test
-    public void shouldReturnTheStationsTheTrainIsRunningBetween() throws GameNotStartedException {
+    public void shouldReturnTheStationsTheTrainIsRunningBetween() {
         LocalDateTime currentDate = LocalDateTime.now();
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth();
 
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
-        timetable.update(shoranur, LocalDateTime.of(year, month, day, 20, 5), LocalDateTime.of(year, month, day, 20, 10), false, false);
-        timetable.update(tirur, LocalDateTime.of(year, month, day, 20, 25), LocalDateTime.of(year, month, day, 20, 26), false, false);
-        timetable.update(calicut, LocalDateTime.of(year, month, day, 20, 55), LocalDateTime.of(year, month, day, 21, 0), false, false);
+        Entry shoranurEntry = new Entry(shoranur, Optional.of( new TrainSchedule(
+                LocalDateTime.of(year, month, day, 20, 5), LocalDateTime.of(year, month, day, 20, 10))));
+        Entry tirurEntry = new Entry(tirur, Optional.of( new TrainSchedule(
+                LocalDateTime.of(year, month, day, 20, 25), LocalDateTime.of(year, month, day, 20, 26))));
+        Entry calicutEntry = new Entry(calicut, Optional.of( new TrainSchedule(
+                LocalDateTime.of(year, month, day, 20, 55), LocalDateTime.of(year, month, day, 21, 0))));
 
+        Timetable timetable = new Timetable(stationsOnSection, List.of(shoranurEntry, tirurEntry, calicutEntry),
+                TrainDirection.TOWARDS_HOME);
         LocalDateTime mockTime = LocalDateTime.of(year, month, day, 20, 15);
         Optional<Station>[] stations = timetable.getStationsTravellingBetween(mockTime);
         assertEquals(2, stations.length);
@@ -210,16 +205,19 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldReturnAnEmptyArrayIfTheTrainIsNotRunningBetweenAnyStationsOnTheSection() throws GameNotStartedException {
+    public void shouldReturnAnEmptyArrayIfTheTrainIsNotRunningBetweenAnyStationsOnTheSection() {
         LocalDateTime currentDate = LocalDateTime.now();
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth();
 
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
-        timetable.update(shoranur, LocalDateTime.of(year, month, day, 20, 5), LocalDateTime.of(year, month, day, 20, 10), false, false);
-        timetable.update(tirur, LocalDateTime.of(year, month, day, 20, 25), LocalDateTime.of(year, month, day, 20, 26), false, false);
-        timetable.update(calicut, LocalDateTime.of(year, month, day, 20, 55), LocalDateTime.of(year, month, day, 21, 0), false, false);
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(
+                LocalDateTime.of(year, month, day, 20, 5), LocalDateTime.of(year, month, day, 20, 10))));
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(
+                LocalDateTime.of(year, month, day, 20, 25), LocalDateTime.of(year, month, day, 20, 26))));
+        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(
+                LocalDateTime.of(year, month, day, 20, 55), LocalDateTime.of(year, month, day, 21, 0))));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(shoranurEntry, tirurEntry, calicutEntry), TrainDirection.TOWARDS_HOME);
 
         LocalDateTime mockTime = LocalDateTime.of(year, month, day, 21, 15);
         Optional<Station>[] stations = timetable.getStationsTravellingBetween(mockTime);
@@ -229,15 +227,15 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldReturnScheduleForStation() throws GameNotStartedException {
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+    public void shouldReturnScheduleForStation() {
         LocalDateTime currentDate = LocalDateTime.now();
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth();
         LocalDateTime arrivalTime = LocalDateTime.of(year, month, day, 20, 5);
         LocalDateTime departureTime = LocalDateTime.of(year, month, day, 20, 10);
-        timetable.update(shoranur, arrivalTime, departureTime, false, false);
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(arrivalTime, departureTime)));
+        Timetable timetable = new Timetable(stationsOnSection, List.of(shoranurEntry), TrainDirection.TOWARDS_HOME);
 
         assertEquals(Optional.empty(), timetable.getSchedule(tirur));
         assertEquals(arrivalTime, timetable.getSchedule(shoranur).get().getArrivalTime());
@@ -246,7 +244,7 @@ public class TimetableTest {
 
     @Test
     public void shouldThrowAnErrorIfAStationIsBothOriginatingAndTerminatingStation() {
-        Timetable timetable = new Timetable(stationsOnSection, TrainDirection.TOWARDS_HOME);
+        Timetable timetable = new Timetable(stationsOnSection, List.of(), TrainDirection.TOWARDS_HOME);
         LocalDateTime arrivalTime = LocalDateTime.now();
         LocalDateTime departureTime = arrivalTime.plusMinutes(1);
 
@@ -256,11 +254,12 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldReturnFullTimetableForAFullSectionTrainThatHasNotYetEnteredTheSection() throws GameNotStartedException {
+    public void shouldReturnFullTimetableForAFullSectionTrainThatHasNotYetEnteredTheSection() {
         LocalDateTime now = LocalDateTime.now();
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
-        timetableForFullSectionTrain.update(calicut, now, now.plusMinutes(2), false, false);
-        timetableForFullSectionTrain.update(shoranur, now.plusHours(1), now.plusHours(1).plusMinutes(2), false, false);
+        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(now, now.plusMinutes(2))));
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))));
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, List.of(calicutEntry, shoranurEntry),
+                TrainDirection.AWAY_FROM_HOME);
 
         List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now.minusMinutes(1));
         assertEquals(2, upcomingStations.size());
@@ -269,11 +268,12 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldReturnCurrentlyHaltedStationInUpcomingStations() throws GameNotStartedException {
+    public void shouldReturnCurrentlyHaltedStationInUpcomingStations() {
         LocalDateTime now = LocalDateTime.now();
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
-        timetableForFullSectionTrain.update(calicut, now.minusMinutes(1), now.plusMinutes(2), false, false);
-        timetableForFullSectionTrain.update(shoranur, now.plusHours(1), now.plusHours(1).plusMinutes(2), false, false);
+        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(now.minusMinutes(1), now.plusMinutes(2))));
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))));
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, List.of(calicutEntry, shoranurEntry),
+                TrainDirection.AWAY_FROM_HOME);
 
         List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
         assertEquals(2, upcomingStations.size());
@@ -282,12 +282,13 @@ public class TimetableTest {
     }
 
     @Test
-    public void shouldReturnCorrectUpcomingStationsWhenTravellingBetweenStations() throws GameNotStartedException {
+    public void shouldReturnCorrectUpcomingStationsWhenTravellingBetweenStations() {
         LocalDateTime now = LocalDateTime.now();
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
-        timetableForFullSectionTrain.update(calicut, now.minusMinutes(10), now.minusMinutes(5), false, false);
-        timetableForFullSectionTrain.update(tirur, now.plusMinutes(30), now.plusMinutes(32), false, false);
-        timetableForFullSectionTrain.update(shoranur, now.plusHours(1), now.plusHours(1).plusMinutes(2), false, false);
+        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(now.minusMinutes(10), now.minusMinutes(5))));
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(now.plusMinutes(30), now.plusMinutes(32))));
+        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))));
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection,
+                List.of(calicutEntry, tirurEntry, shoranurEntry), TrainDirection.AWAY_FROM_HOME);
 
         List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
         assertEquals(2, upcomingStations.size());
@@ -295,13 +296,18 @@ public class TimetableTest {
         assertEquals(shoranur, upcomingStations.get(1));
     }
 
+    //TODO: Relook at this test case once terminating & originating stations in Entry class are implemented.
     @Test
-    public void shouldReturnCorrectUpcomingStationsForTrainsOriginatingAndTerminatingWithinSection() throws GameNotStartedException {
+    public void shouldReturnCorrectUpcomingStationsForTrainsOriginatingAndTerminatingWithinSection() {
         LocalDateTime now = LocalDateTime.now();
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, TrainDirection.AWAY_FROM_HOME);
-        timetableForFullSectionTrain.update(kallayi, now.plusMinutes(1), now.plusMinutes(5), true, false);
-        timetableForFullSectionTrain.update(ferok, now.plusMinutes(10), now.plusMinutes(12), false, false);
-        timetableForFullSectionTrain.update(tirur, now.plusHours(30), now.plusMinutes(32), false, true);
+        Entry kallayiEntry = new Entry(kallayi, Optional.of(new TrainSchedule(now.plusMinutes(1), now.plusMinutes(5))));
+        Entry ferokEntry = new Entry(ferok, Optional.of(new TrainSchedule(now.plusMinutes(10), now.plusMinutes(12))));
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(now.plusHours(30), now.plusMinutes(32))));
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection,
+                List.of(kallayiEntry, ferokEntry, tirurEntry), TrainDirection.AWAY_FROM_HOME);
+//        timetableForFullSectionTrain.update(kallayi, now.plusMinutes(1), now.plusMinutes(5), true, false);
+//        timetableForFullSectionTrain.update(ferok, now.plusMinutes(10), now.plusMinutes(12), false, false);
+//        timetableForFullSectionTrain.update(tirur, now.plusHours(30), now.plusMinutes(32), false, true);
 
         List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
         assertEquals(3, upcomingStations.size());

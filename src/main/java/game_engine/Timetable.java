@@ -16,57 +16,25 @@ import java.util.stream.Collectors;
 public class Timetable {
 
     /**
-     * The <code>Entry</code> class represents one timetable entry.
-     * It has a <code>Station</code> and an optional <code>TrainSchedule</code>.
-     */
-    public class Entry implements Comparable<Entry> {
-
-        /**
-         * The station where the train passes through (or) stops.
-         */
-        private Station station;
-
-        /**
-         * If the train stops at a station, then this will have a <code>TrainSchedule</code> set.
-         * Otherwise, it will be <code>Optional.empty()</code>.
-         */
-        private Optional<TrainSchedule> schedule;
-
-        /**
-         * Creates an <code>Entry</code> instance.
-         *
-         * @param station  the station where the train stops or passes through.
-         * @param schedule the schedule of the train.
-         */
-        public Entry(Station station, Optional<TrainSchedule> schedule) {
-            this.station = station;
-            this.schedule = schedule;
-        }
-
-        @Override
-        public int compareTo(Entry other) {
-            return this.station.getDistance().compareTo(other.station.getDistance());
-        }
-
-        //TODO: This is a temporary method used only for the refactoring to Timetable. Remove once done.
-        public Optional<TrainSchedule> getSchedule() {
-            return this.schedule;
-        }
-
-        Station getStation() { return this.station; }
-    }
-
-    /**
      * A collection of <code>Entry</code> instances that represent the train's timetable.
      */
     private List<Entry> timetableEntries = new ArrayList<>();
 
-    public Timetable(List<Station> stationsOnSection, TrainDirection direction) {
+    public Timetable(List<Station> stationsOnSection, List<Entry> stops, TrainDirection direction) {
         if (direction == TrainDirection.TOWARDS_HOME)
             stationsOnSection.sort(Comparator.reverseOrder());
         else
             stationsOnSection.sort(Comparator.naturalOrder());
         stationsOnSection.stream().forEach(s -> timetableEntries.add(new Entry(s, Optional.empty())));
+        stops.stream().forEach(s -> {
+            try {
+                TrainSchedule trainSchedule = s.getSchedule().get();
+                update(s.getStation(), trainSchedule.getArrivalTime(), trainSchedule.getDepartureTime(),
+                        false, false);
+            } catch (GameNotStartedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
@@ -224,11 +192,52 @@ public class Timetable {
                         return entry.getSchedule().get().getDepartureTime().isAfter(mockTime);
                     return false;
                 })
-                .map(Timetable.Entry::getStation)
+                .map(Entry::getStation)
                 .collect(Collectors.toList());
     }
 
     List<Entry> getEntries() {
         return this.timetableEntries;
     }
+}
+
+/**
+ * The <code>Entry</code> class represents one timetable entry.
+ * It has a <code>Station</code> and an optional <code>TrainSchedule</code>.
+ */
+class Entry implements Comparable<Entry> {
+
+    /**
+     * The station where the train passes through (or) stops.
+     */
+    private Station station;
+
+    /**
+     * If the train stops at a station, then this will have a <code>TrainSchedule</code> set.
+     * Otherwise, it will be <code>Optional.empty()</code>.
+     */
+    private Optional<TrainSchedule> schedule;
+
+    /**
+     * Creates an <code>Entry</code> instance.
+     *
+     * @param station  the station where the train stops or passes through.
+     * @param schedule the schedule of the train.
+     */
+    public Entry(Station station, Optional<TrainSchedule> schedule) {
+        this.station = station;
+        this.schedule = schedule;
+    }
+
+    @Override
+    public int compareTo(Entry other) {
+        return this.station.getDistance().compareTo(other.station.getDistance());
+    }
+
+    //TODO: This is a temporary method used only for the refactoring to Timetable. Remove once done.
+    public Optional<TrainSchedule> getSchedule() {
+        return this.schedule;
+    }
+
+    Station getStation() { return this.station; }
 }

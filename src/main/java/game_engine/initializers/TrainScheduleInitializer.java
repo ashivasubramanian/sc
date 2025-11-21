@@ -54,7 +54,7 @@ class TrainScheduleInitializer {
         String filePath = String.format("/data/%1$s.xml", trainNumber);
         InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
         Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
-        Timetable timetable = new Timetable(this.stations, this.direction);
+        Timetable timetable = new Timetable(this.stations, List.of(), this.direction);
         if (this.direction == TrainDirection.TOWARDS_HOME)
             Collections.reverse(stops);
         for (Element stop : stops) {
