@@ -25,7 +25,7 @@ public class Timetable {
             stationsOnSection.sort(Comparator.reverseOrder());
         else
             stationsOnSection.sort(Comparator.naturalOrder());
-        stationsOnSection.stream().forEach(s -> timetableEntries.add(new Entry(s, Optional.empty())));
+        stationsOnSection.stream().forEach(s -> timetableEntries.add(new Entry(s, Optional.empty(), StopType.NORMAL_STATION)));
         stops.stream().forEach(s -> {
             try {
                 TrainSchedule trainSchedule = s.getSchedule().get();
@@ -78,14 +78,15 @@ public class Timetable {
         Entry previousStop = this.timetableEntries.subList(0, index).stream()
                 .filter(e -> e.getSchedule().isPresent())
                 .sorted(Comparator.reverseOrder())
-                .findFirst().orElseGet(() -> new Entry(station, Optional.empty()));
+                .findFirst()
+                .orElseGet(() -> new Entry(station, Optional.empty(), StopType.NORMAL_STATION));
         if (previousStop.getSchedule().isPresent() && previousStop.getSchedule().get().getDepartureTime().isAfter(arrivalTime)) {
             arrivalTime = arrivalTime.plusDays(1);
             departureTime = departureTime.plusDays(1);
         }
         TrainSchedule trainSchedule = new TrainSchedule(arrivalTime, departureTime);
         this.timetableEntries.set(index,
-                new Entry(station, Optional.of(trainSchedule)));
+                new Entry(station, Optional.of(trainSchedule), StopType.valueOf(isOriginatingStation, isTerminatingStation)));
     }
 
     /**
@@ -218,15 +219,18 @@ class Entry implements Comparable<Entry> {
      */
     private Optional<TrainSchedule> schedule;
 
+    private final StopType stopType;
+
     /**
      * Creates an <code>Entry</code> instance.
      *
      * @param station  the station where the train stops or passes through.
      * @param schedule the schedule of the train.
      */
-    public Entry(Station station, Optional<TrainSchedule> schedule) {
+    public Entry(Station station, Optional<TrainSchedule> schedule, StopType stopType) {
         this.station = station;
         this.schedule = schedule;
+        this.stopType = stopType;
     }
 
     @Override
@@ -240,4 +244,19 @@ class Entry implements Comparable<Entry> {
     }
 
     Station getStation() { return this.station; }
+}
+
+enum StopType {
+    ORIGINATING_STATION,
+    TERMINATING_STATION,
+    NORMAL_STATION;
+
+    public static StopType valueOf(boolean isOriginatingStation, boolean isTerminatingStation) throws GameNotStartedException {
+        if (isOriginatingStation && isTerminatingStation)
+            throw new GameNotStartedException("A station cannot be both originating & terminating for a train");
+        if (!(isOriginatingStation && isTerminatingStation)) return NORMAL_STATION;
+        else if (isOriginatingStation) return ORIGINATING_STATION;
+        else return TERMINATING_STATION;
+    }
+
 }
