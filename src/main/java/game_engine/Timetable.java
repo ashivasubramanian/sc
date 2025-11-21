@@ -4,6 +4,7 @@ import common.models.TrainDirection;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -25,12 +26,16 @@ public class Timetable {
             stationsOnSection.sort(Comparator.reverseOrder());
         else
             stationsOnSection.sort(Comparator.naturalOrder());
-        stationsOnSection.stream().forEach(s -> timetableEntries.add(new Entry(s, Optional.empty(), StopType.NORMAL_STATION)));
+        AtomicInteger startIndex = new AtomicInteger(0), endIndex = new AtomicInteger(stationsOnSection.size() - 1);
+        stops.stream().filter(Entry::isOriginatingStation).forEach(entry -> startIndex.set(stationsOnSection.indexOf(entry.getStation())));
+        stops.stream().filter(Entry::isTerminatingStation).forEach(entry -> endIndex.set(stationsOnSection.indexOf(entry.getStation())));
+        stationsOnSection.subList(startIndex.get(), endIndex.get() + 1)
+                .stream().forEach(s -> timetableEntries.add(new Entry(s, Optional.empty(), StopType.NORMAL_STATION)));
         stops.stream().forEach(s -> {
             try {
                 TrainSchedule trainSchedule = s.getSchedule().get();
                 update(s.getStation(), trainSchedule.getArrivalTime(), trainSchedule.getDepartureTime(),
-                        false, false);
+                        s.isOriginatingStation(), s.isTerminatingStation());
             } catch (GameNotStartedException e) {
                 throw new RuntimeException(e);
             }
@@ -244,6 +249,14 @@ class Entry implements Comparable<Entry> {
     }
 
     Station getStation() { return this.station; }
+
+    public boolean isOriginatingStation() {
+        return stopType == StopType.ORIGINATING_STATION;
+    }
+
+    public boolean isTerminatingStation() {
+        return stopType == StopType.TERMINATING_STATION;
+    }
 }
 
 enum StopType {
@@ -254,7 +267,7 @@ enum StopType {
     public static StopType valueOf(boolean isOriginatingStation, boolean isTerminatingStation) throws GameNotStartedException {
         if (isOriginatingStation && isTerminatingStation)
             throw new GameNotStartedException("A station cannot be both originating & terminating for a train");
-        if (!(isOriginatingStation && isTerminatingStation)) return NORMAL_STATION;
+        if (!isOriginatingStation && !isTerminatingStation) return NORMAL_STATION;
         else if (isOriginatingStation) return ORIGINATING_STATION;
         else return TERMINATING_STATION;
     }

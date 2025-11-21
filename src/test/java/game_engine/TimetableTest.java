@@ -128,6 +128,26 @@ public class TimetableTest {
     }
 
     @Test
+    public void shouldOnlyHaveRelevantStationsInTimetableForTrainsOriginatingAndTerminatingWithinSection() {
+        LocalDateTime now = LocalDateTime.now();
+        Entry kallayiEntry = new Entry(kallayi, Optional.of(new TrainSchedule(now.plusMinutes(1), now.plusMinutes(5))),
+                StopType.ORIGINATING_STATION);
+        Entry ferokEntry = new Entry(ferok, Optional.of(new TrainSchedule(now.plusMinutes(10), now.plusMinutes(12))),
+                StopType.NORMAL_STATION);
+        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(now.plusHours(30), now.plusMinutes(32))),
+                StopType.TERMINATING_STATION);
+        Timetable timetable = new Timetable(this.stationsOnSection,
+                List.of(kallayiEntry, ferokEntry, tirurEntry), TrainDirection.AWAY_FROM_HOME);
+
+        assertEquals(3, timetable.getEntries().size());
+        assertEquals(kallayi, timetable.getEntries().get(0).getStation());
+        assertTrue(timetable.getEntries().get(0).isOriginatingStation());
+        assertEquals(ferok, timetable.getEntries().get(1).getStation());
+        assertEquals(tirur, timetable.getEntries().get(2).getStation());
+        assertTrue(timetable.getEntries().get(2).isTerminatingStation());
+    }
+
+    @Test
     public void shouldReturnFirstStationArrivalTime() {
         LocalDateTime arrivalTime = LocalDateTime.of(2020, 5, 22, 0, 5);
         LocalDateTime departureTime = LocalDateTime.of(2020, 5, 22, 0, 15);
@@ -308,25 +328,5 @@ public class TimetableTest {
         assertEquals(2, upcomingStations.size());
         assertEquals(tirur, upcomingStations.get(0));
         assertEquals(shoranur, upcomingStations.get(1));
-    }
-
-    //TODO: Convert this into a test for limiting timetable entries. Ignore for upcomingstops.
-    @Test
-    public void shouldReturnCorrectUpcomingStationsForTrainsOriginatingAndTerminatingWithinSection() throws GameNotStartedException {
-        LocalDateTime now = LocalDateTime.now();
-        Entry kallayiEntry = new Entry(kallayi, Optional.of(new TrainSchedule(now.plusMinutes(1), now.plusMinutes(5))),
-                StopType.NORMAL_STATION);
-        Entry ferokEntry = new Entry(ferok, Optional.of(new TrainSchedule(now.plusMinutes(10), now.plusMinutes(12))),
-                StopType.NORMAL_STATION);
-        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(now.plusHours(30), now.plusMinutes(32))),
-                StopType.NORMAL_STATION);
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection,
-                List.of(kallayiEntry, ferokEntry, tirurEntry), TrainDirection.AWAY_FROM_HOME);
-
-        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
-        assertEquals(3, upcomingStations.size());
-        assertEquals(kallayi, upcomingStations.get(0));
-        assertEquals(ferok, upcomingStations.get(1));
-        assertEquals(tirur, upcomingStations.get(2));
     }
 }
