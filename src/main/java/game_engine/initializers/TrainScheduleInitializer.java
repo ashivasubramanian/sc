@@ -1,9 +1,7 @@
 package game_engine.initializers;
 
 import common.models.TrainDirection;
-import game_engine.GameNotStartedException;
-import game_engine.Station;
-import game_engine.Timetable;
+import game_engine.*;
 import game_engine.data_access.DataAccess;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -15,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Loads the train's schedules from the train's XML file.<br>
@@ -47,34 +46,42 @@ class TrainScheduleInitializer {
      * @throws IOException                  if any exception occurs during train XML I/O
      * @throws ParserConfigurationException if any exception occurs while parsing train XML content
      * @throws SAXException                 if any exception occurs while parsing train XML content
-     * @throws GameNotStartedException      if any exception occurs while constructing the timetable
      */
     public Timetable populateTrainData()
-            throws IOException, ParserConfigurationException, SAXException, GameNotStartedException {
+            throws IOException, ParserConfigurationException, SAXException {
         String filePath = String.format("/data/%1$s.xml", trainNumber);
         InputStream trainXMLStream = getClass().getResourceAsStream(filePath);
         Vector<Element> stops = DataAccess.getInstance().extractData(trainXMLStream,"stop");
-        Timetable timetable = new Timetable(this.stations, List.of(), this.direction);
-        if (this.direction == TrainDirection.TOWARDS_HOME)
-            Collections.reverse(stops);
-        for (Element stop : stops) {
-            String stationCode = stop.getAttribute("code");
+        List<Entry> timetableEntries = stops.stream()
+                .map(stop -> {
+                    String stationCode = stop.getAttribute("code");
 
-            String arrivalTimeString = stop.getAttribute("arrival-time");
-            int[] arrivalTimeIntArray = Arrays.stream(arrivalTimeString.split(":"))
-                    .mapToInt(Integer::valueOf).toArray();
-            LocalDateTime arrivalTime = LocalDateTime.of(LocalDate.now(),
-                    LocalTime.of(arrivalTimeIntArray[0], arrivalTimeIntArray[1]));
+                    String arrivalTimeString = stop.getAttribute("arrival-time");
+                    int[] arrivalTimeIntArray = Arrays.stream(arrivalTimeString.split(":"))
+                            .mapToInt(Integer::valueOf).toArray();
+                    LocalDateTime arrivalTime = LocalDateTime.of(LocalDate.now(),
+                            LocalTime.of(arrivalTimeIntArray[0], arrivalTimeIntArray[1]));
 
-            String departureTimeString = stop.getAttribute("departure-time");
-            int[] departureTimeIntArray = Arrays.stream(departureTimeString.split(":"))
-                    .mapToInt(Integer::valueOf).toArray();
-            LocalDateTime departureTime = LocalDateTime.of(LocalDate.now(),
-                    LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
+                    String departureTimeString = stop.getAttribute("departure-time");
+                    int[] departureTimeIntArray = Arrays.stream(departureTimeString.split(":"))
+                            .mapToInt(Integer::valueOf).toArray();
+                    LocalDateTime departureTime = LocalDateTime.of(LocalDate.now(),
+                            LocalTime.of(departureTimeIntArray[0], departureTimeIntArray[1]));
 
-            Station station = this.stations.stream().filter(s -> s.getCode().equalsIgnoreCase(stationCode)).findFirst().get();
-            timetable.update(station, arrivalTime, departureTime, false, false);
-        }
+                    boolean isOriginatingStation = Boolean.parseBoolean(stop.getAttribute("originating-station"));
+                    boolean isTerminatingStation = Boolean.parseBoolean(stop.getAttribute("terminating-station"));
+
+                    Station station = this.stations.stream()
+                            .filter(s -> s.getCode().equalsIgnoreCase(stationCode)).findFirst().get();
+                    try {
+                        return new Entry(station,
+                                Optional.of(new TrainSchedule(arrivalTime, departureTime)),
+                                StopType.valueOf(isOriginatingStation, isTerminatingStation));
+                    } catch (GameNotStartedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
+        Timetable timetable = new Timetable(this.stations, timetableEntries, this.direction);
         return timetable;
     }
 }

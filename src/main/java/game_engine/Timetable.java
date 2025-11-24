@@ -22,10 +22,14 @@ public class Timetable {
     private List<Entry> timetableEntries = new ArrayList<>();
 
     public Timetable(List<Station> stationsOnSection, List<Entry> stops, TrainDirection direction) {
-        if (direction == TrainDirection.TOWARDS_HOME)
+        if (direction == TrainDirection.TOWARDS_HOME) {
             stationsOnSection.sort(Comparator.reverseOrder());
-        else
+            stops.sort(Comparator.reverseOrder());
+        }
+        else {
             stationsOnSection.sort(Comparator.naturalOrder());
+            stops.sort(Comparator.naturalOrder());
+        }
         AtomicInteger startIndex = new AtomicInteger(0), endIndex = new AtomicInteger(stationsOnSection.size() - 1);
         stops.stream().filter(Entry::isOriginatingStation).forEach(entry -> startIndex.set(stationsOnSection.indexOf(entry.getStation())));
         stops.stream().filter(Entry::isTerminatingStation).forEach(entry -> endIndex.set(stationsOnSection.indexOf(entry.getStation())));
@@ -207,69 +211,3 @@ public class Timetable {
     }
 }
 
-/**
- * The <code>Entry</code> class represents one timetable entry.
- * It has a <code>Station</code> and an optional <code>TrainSchedule</code>.
- */
-class Entry implements Comparable<Entry> {
-
-    /**
-     * The station where the train passes through (or) stops.
-     */
-    private Station station;
-
-    /**
-     * If the train stops at a station, then this will have a <code>TrainSchedule</code> set.
-     * Otherwise, it will be <code>Optional.empty()</code>.
-     */
-    private Optional<TrainSchedule> schedule;
-
-    private final StopType stopType;
-
-    /**
-     * Creates an <code>Entry</code> instance.
-     *
-     * @param station  the station where the train stops or passes through.
-     * @param schedule the schedule of the train.
-     */
-    public Entry(Station station, Optional<TrainSchedule> schedule, StopType stopType) {
-        this.station = station;
-        this.schedule = schedule;
-        this.stopType = stopType;
-    }
-
-    @Override
-    public int compareTo(Entry other) {
-        return this.station.getDistance().compareTo(other.station.getDistance());
-    }
-
-    //TODO: This is a temporary method used only for the refactoring to Timetable. Remove once done.
-    public Optional<TrainSchedule> getSchedule() {
-        return this.schedule;
-    }
-
-    Station getStation() { return this.station; }
-
-    public boolean isOriginatingStation() {
-        return stopType == StopType.ORIGINATING_STATION;
-    }
-
-    public boolean isTerminatingStation() {
-        return stopType == StopType.TERMINATING_STATION;
-    }
-}
-
-enum StopType {
-    ORIGINATING_STATION,
-    TERMINATING_STATION,
-    NORMAL_STATION;
-
-    public static StopType valueOf(boolean isOriginatingStation, boolean isTerminatingStation) throws GameNotStartedException {
-        if (isOriginatingStation && isTerminatingStation)
-            throw new GameNotStartedException("A station cannot be both originating & terminating for a train");
-        if (!isOriginatingStation && !isTerminatingStation) return NORMAL_STATION;
-        else if (isOriginatingStation) return ORIGINATING_STATION;
-        else return TERMINATING_STATION;
-    }
-
-}

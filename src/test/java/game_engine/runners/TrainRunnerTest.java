@@ -2,16 +2,14 @@ package game_engine.runners;
 
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
-import game_engine.GameNotStartedException;
-import game_engine.Station;
-import game_engine.Timetable;
-import game_engine.TrainPosition;
+import game_engine.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
@@ -25,13 +23,14 @@ public class TrainRunnerTest {
         Station tirur = new Station("TIR", "Tirur", 3, 10);
         Station calicut = new Station("CAL", "Calicut", 3, 0);
         List<Station> stations = new ArrayList<>() {{add(shoranur); add(tirur); add(calicut);}};
-        Timetable timetable = new Timetable(stations, List.of(), TrainDirection.TOWARDS_HOME);
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime arrivalTime = LocalDateTime.of(currentTime.getYear(), currentTime.getMonthValue(), currentTime.getDayOfMonth(), 11, 5);
         LocalDateTime departureTime = LocalDateTime.of(currentTime.getYear(), currentTime.getMonthValue(), currentTime.getDayOfMonth(), 11, 10);
-        timetable.update(shoranur, arrivalTime, departureTime, false, false);
-        timetable.update(tirur, arrivalTime.plusHours(1), departureTime.plusHours(1), false, false);
-        timetable.update(calicut, arrivalTime.plusHours(2), departureTime.plusHours(2), false, false);
+        List<Entry> stops = new ArrayList<>();
+        stops.add(new Entry(shoranur, Optional.of(new TrainSchedule(arrivalTime, departureTime)), StopType.NORMAL_STATION));
+        stops.add(new Entry(tirur, Optional.of(new TrainSchedule(arrivalTime.plusHours(1), departureTime.plusHours(1))), StopType.NORMAL_STATION));
+        stops.add(new Entry(calicut, Optional.of(new TrainSchedule(arrivalTime.plusHours(2), departureTime.plusHours(2))), StopType.NORMAL_STATION));
+        Timetable timetable = new Timetable(stations, stops, TrainDirection.TOWARDS_HOME);
 
         LocalDateTime mockTime = LocalDateTime.of(
                 currentTime.getYear(), currentTime.getMonthValue(), currentTime.getDayOfMonth(),

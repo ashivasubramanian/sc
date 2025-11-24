@@ -3,6 +3,7 @@ package game_engine;
 import common.models.TrainDirection;
 import common.models.TrainRunningStatus;
 import game_engine.initializers.TrainFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,8 @@ import java.io.IOException;
 import java.time.*;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class TrainTest {
 
@@ -27,6 +28,8 @@ public class TrainTest {
 	public void setup() {
 		this.stations = new ArrayList<>();
 		this.stations.add(new Station("CAL", "", 0, 0));
+		this.stations.add(new Station("KAL", "", 0, 1));
+		this.stations.add(new Station("FER", "", 0, 9));
 		this.stations.add(new Station("TIR", "", 0, 41));
 		this.stations.add(new Station("SRR", "", 0, 86));
 
@@ -163,6 +166,21 @@ public class TrainTest {
 			assertEquals(now.getDayOfMonth(), secondStop.getDepartureTime().getDayOfMonth());
 			assertEquals(now.getDayOfMonth(), thirdStop.getArrivalTime().getDayOfMonth());
 			assertEquals(now.getDayOfMonth(), thirdStop.getDepartureTime().getDayOfMonth());
+		}
+	}
+
+	@Nested
+	public class TrainNotTravellingEntireSection {
+		@Test
+		public void shouldLimitTimetableEntriesToActualStationsCrossed()
+				throws GameNotStartedException, IOException, ParserConfigurationException, SAXException {
+			Train trainWithinSection = new TrainFactory().create("500", "DummyTrain", "TowardsHome", stations);
+
+			assertEquals(3, trainWithinSection.getTimetable().getEntries().size());
+			assertTrue(trainWithinSection.getTimetable().getEntries().get(0).isOriginatingStation());
+			assertFalse(trainWithinSection.getTimetable().getEntries().get(1).isOriginatingStation());
+			assertFalse(trainWithinSection.getTimetable().getEntries().get(1).isTerminatingStation());
+			assertTrue(trainWithinSection.getTimetable().getEntries().get(2).isTerminatingStation());
 		}
 	}
 }

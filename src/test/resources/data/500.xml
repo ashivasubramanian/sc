@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This train is used to test the scenario of a train starting and terminating within the section. -->
+<train number="500" name="Kallayi Tirur Passenger">
+    <stops>
+        <stop code="KAL" name="Kallayi" arrival-time="9:00" departure-time="9:05" terminating-station="true"/>
+        <stop code="FER" name="Ferok" arrival-time="8:30" departure-time="8:35"/>
+        <stop code="TIR" name="Tirur" arrival-time="8:00" departure-time="8:05" originating-station="true"/>
+   </stops>
+</train>
