@@ -370,4 +370,21 @@ public class TimetableTest {
         assertEquals(tirur, upcomingStations.get(0));
         assertEquals(shoranur, upcomingStations.get(1));
     }
+
+    @Test
+    public void shouldReturnEmptyForATrainThatHasExitedTheSection() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Entry> stops = new ArrayList<>();
+        stops.add(new Entry(shoranur,
+                Optional.of(new TrainSchedule(now.minusHours(2).minusMinutes(1), now.minusHours(2))),
+                StopType.NORMAL_STATION));
+        stops.add(new Entry(calicut,
+                Optional.of(new TrainSchedule(now.minusHours(1).minusMinutes(1), now.minusHours(1))),
+                StopType.NORMAL_STATION));
+        Timetable timetable = new Timetable(this.stationsOnSection, stops, TrainDirection.TOWARDS_HOME);
+
+        List<Station> upcomingStops = timetable.getUpcomingStops(now);
+        assertEquals(0, upcomingStops.size());
+    }
+
 }
