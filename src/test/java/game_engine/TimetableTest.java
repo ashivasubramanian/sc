@@ -326,10 +326,13 @@ public class TimetableTest {
         stops.add(shoranurEntry);
         Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, TrainDirection.AWAY_FROM_HOME);
 
-        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now.minusMinutes(1));
-        assertEquals(2, upcomingStations.size());
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(-2);
+        assertEquals(5, upcomingStations.size());
         assertEquals(calicut, upcomingStations.get(0));
-        assertEquals(shoranur, upcomingStations.get(1));
+        assertEquals(kallayi, upcomingStations.get(1));
+        assertEquals(ferok, upcomingStations.get(2));
+        assertEquals(tirur, upcomingStations.get(3));
+        assertEquals(shoranur, upcomingStations.get(4));
     }
 
     @Test
@@ -344,10 +347,9 @@ public class TimetableTest {
         stops.add(shoranurEntry);
         Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, TrainDirection.AWAY_FROM_HOME);
 
-        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
-        assertEquals(2, upcomingStations.size());
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(0);
+        assertEquals(5, upcomingStations.size());
         assertEquals(calicut, upcomingStations.get(0));
-        assertEquals(shoranur, upcomingStations.get(1));
     }
 
     @Test
@@ -365,12 +367,13 @@ public class TimetableTest {
         stops.add(shoranurEntry);
         Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, TrainDirection.AWAY_FROM_HOME);
 
-        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(now);
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(10);
         assertEquals(2, upcomingStations.size());
         assertEquals(tirur, upcomingStations.get(0));
         assertEquals(shoranur, upcomingStations.get(1));
     }
 
+    //TODO: Make this parameterized
     @Test
     public void shouldReturnEmptyForATrainThatHasExitedTheSection() {
         LocalDateTime now = LocalDateTime.now();
@@ -383,8 +386,28 @@ public class TimetableTest {
                 StopType.NORMAL_STATION));
         Timetable timetable = new Timetable(this.stationsOnSection, stops, TrainDirection.TOWARDS_HOME);
 
-        List<Station> upcomingStops = timetable.getUpcomingStops(now);
+        List<Station> upcomingStops = timetable.getUpcomingStops(-2);
         assertEquals(0, upcomingStops.size());
     }
 
+    //TODO: Handle both directions
+    @Test
+    public void shouldReturnNonStoppingStationInUpcomingStations() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Entry> stops = new ArrayList<>();
+        stops.add(new Entry(shoranur,
+                Optional.of(new TrainSchedule(now.minusHours(2), now.minusHours(2).minusMinutes(1))),
+                StopType.NORMAL_STATION));
+        stops.add(new Entry(calicut,
+                Optional.of(new TrainSchedule(now.plusHours(2), now.plusHours(2).plusMinutes(1))),
+                StopType.NORMAL_STATION));
+        Timetable timetable = new Timetable(this.stationsOnSection, stops, TrainDirection.TOWARDS_HOME);
+
+        List<Station> upcomingStops = timetable.getUpcomingStops(85);
+        assertEquals(4, upcomingStops.size());
+        assertEquals(tirur, upcomingStops.get(0));
+        assertEquals(ferok, upcomingStops.get(1));
+        assertEquals(kallayi, upcomingStops.get(2));
+        assertEquals(calicut, upcomingStops.get(3));
+    }
 }

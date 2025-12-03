@@ -21,12 +21,17 @@ public class Timetable {
      */
     private List<Entry> timetableEntries = new ArrayList<>();
 
+    /**
+     * The direction of travel of the train.
+     */
+    private TrainDirection direction;
+
     public Timetable(List<Station> stationsOnSection, List<Entry> stops, TrainDirection direction) {
+        this.direction = direction;
         if (direction == TrainDirection.TOWARDS_HOME) {
             stationsOnSection.sort(Comparator.reverseOrder());
             stops.sort(Comparator.reverseOrder());
-        }
-        else {
+        } else {
             stationsOnSection.sort(Comparator.naturalOrder());
             stops.sort(Comparator.naturalOrder());
         }
@@ -192,17 +197,18 @@ public class Timetable {
      * Returns a <code>List</code> of the stops that are scheduled to come up as per the timetable, inclusive of the
      * current stop if the train is stopped at one.
      *
-     * @param mockTime used for testing purposes, to mock the current time.
-     * @return a collection of stops in the timetable that are yet to be reached.
+     * @param distanceFromHome the train's current position.
+     * @return a collection of stations that are yet to be reached.
      */
-    public List<Station> getUpcomingStops(LocalDateTime mockTime) {
+    public List<Station> getUpcomingStops(final float distanceFromHome) {
         return this.timetableEntries.stream()
-                .filter(entry -> {
-                    if (entry.getSchedule().isPresent())
-                        return entry.getSchedule().get().getDepartureTime().isAfter(mockTime);
-                    return false;
-                })
                 .map(Entry::getStation)
+                .filter(station -> {
+                    if (direction == TrainDirection.TOWARDS_HOME)
+                        return station.getDistance() <= distanceFromHome;
+                    else
+                        return station.getDistance() >= distanceFromHome;
+                })
                 .collect(Collectors.toList());
     }
 
