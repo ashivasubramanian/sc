@@ -3,6 +3,9 @@ package game_engine;
 import common.models.TrainDirection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.FieldSource;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -13,24 +16,19 @@ public class TimetableTest {
 
     private List<Station> stationsOnSection;
 
-    private Station calicut;
+    private static Station calicut = new Station("CAL", "Calicut", 3, 0);
 
-    private Station tirur;
+    private static Station tirur = new Station("TIR", "Tirur", 2, 41);
 
-    private Station shoranur;
+    private static Station shoranur = new Station("SRR", "Shoranur Junction", 3, 86);
 
-    private Station kallayi;
+    private static Station kallayi = new Station("KAL", "", 0, 1);
 
-    private Station ferok;
+    private static Station ferok = new Station("FER", "", 0, 9);
 
     @BeforeEach
     public void initializeSection() {
         stationsOnSection = new ArrayList<>();
-        calicut = new Station("CAL", "Calicut", 3, 0);
-        kallayi = new Station("KAL", "", 0, 1);
-        ferok = new Station("FER", "", 0, 9);
-        tirur = new Station("TIR", "Tirur", 2, 41);
-        shoranur = new Station("SRR", "Shoranur Junction", 3, 86);
         stationsOnSection.add(calicut);
         stationsOnSection.add(kallayi);
         stationsOnSection.add(ferok);
@@ -315,99 +313,109 @@ public class TimetableTest {
                 "Shoranur cannot be both originating and terminating station for a train.");
     }
 
-    @Test
-    public void shouldReturnFullTimetableForAFullSectionTrainThatHasNotYetEnteredTheSection() {
+    public static List<Arguments> getUpcomingStopsForTrainOutsideSection = List.of(
+            Arguments.argumentSet("TowardsHome", shoranur, calicut, TrainDirection.TOWARDS_HOME, 90, tirur, ferok, kallayi),
+            Arguments.argumentSet("AwayFromHome", calicut, shoranur, TrainDirection.AWAY_FROM_HOME, -2, kallayi, ferok, tirur)
+    );
+
+    @ParameterizedTest
+    @FieldSource("getUpcomingStopsForTrainOutsideSection")
+    public void shouldReturnFullTimetableForAFullSectionTrainThatHasNotYetEnteredTheSection(
+            Station start, Station end, TrainDirection direction, float currentDistanceFromHome,
+            Station intermediateStation1, Station intermediateStation2, Station intermediateStation3) {
         LocalDateTime now = LocalDateTime.now();
-        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(now, now.plusMinutes(2))), StopType.NORMAL_STATION);
-        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))),
+        Entry startStationEntry = new Entry(start, Optional.of(new TrainSchedule(now, now.plusMinutes(2))), StopType.NORMAL_STATION);
+        Entry endStationEntry = new Entry(end, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))),
                 StopType.NORMAL_STATION);
         List<Entry> stops = new ArrayList<>();
-        stops.add(calicutEntry);
-        stops.add(shoranurEntry);
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, TrainDirection.AWAY_FROM_HOME);
+        stops.add(startStationEntry);
+        stops.add(endStationEntry);
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, direction);
 
-        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(-2);
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(currentDistanceFromHome);
         assertEquals(5, upcomingStations.size());
-        assertEquals(calicut, upcomingStations.get(0));
-        assertEquals(kallayi, upcomingStations.get(1));
-        assertEquals(ferok, upcomingStations.get(2));
-        assertEquals(tirur, upcomingStations.get(3));
-        assertEquals(shoranur, upcomingStations.get(4));
+        assertEquals(start, upcomingStations.get(0));
+        assertEquals(intermediateStation1, upcomingStations.get(1));
+        assertEquals(intermediateStation2, upcomingStations.get(2));
+        assertEquals(intermediateStation3, upcomingStations.get(3));
+        assertEquals(end, upcomingStations.get(4));
     }
 
-    @Test
-    public void shouldReturnCurrentlyHaltedStationInUpcomingStations() {
+    public static List<Arguments> getUpcomingStopsForTrainHaltedAtStation = List.of(
+            Arguments.argumentSet("TowardsHome", shoranur, calicut, TrainDirection.TOWARDS_HOME, 86),
+            Arguments.argumentSet("AwayFromHome", calicut, shoranur, TrainDirection.AWAY_FROM_HOME, 0)
+    );
+
+    @ParameterizedTest
+    @FieldSource("getUpcomingStopsForTrainHaltedAtStation")
+    public void shouldReturnCurrentlyHaltedStationInUpcomingStations(Station start, Station end, TrainDirection direction,
+                float currentDistanceFromHome) {
         LocalDateTime now = LocalDateTime.now();
-        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(now.minusMinutes(1), now.plusMinutes(2))),
+        Entry startStationEntry = new Entry(start, Optional.of(new TrainSchedule(now.minusMinutes(1), now.plusMinutes(2))),
                 StopType.NORMAL_STATION);
-        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))),
+        Entry endStationEntry = new Entry(end, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))),
                 StopType.NORMAL_STATION);
         List<Entry> stops = new ArrayList<>();
-        stops.add(calicutEntry);
-        stops.add(shoranurEntry);
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, TrainDirection.AWAY_FROM_HOME);
+        stops.add(startStationEntry);
+        stops.add(endStationEntry);
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, direction);
 
-        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(0);
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(currentDistanceFromHome);
         assertEquals(5, upcomingStations.size());
-        assertEquals(calicut, upcomingStations.get(0));
+        assertEquals(start, upcomingStations.get(0));
     }
 
-    @Test
-    public void shouldReturnCorrectUpcomingStationsWhenTravellingBetweenStations() {
+    public static List<Arguments> getUpcomingStopsForTrainBetweenStations = List.of(
+            Arguments.argumentSet("TowardsHome", shoranur, calicut, TrainDirection.TOWARDS_HOME, 10, ferok, kallayi),
+            Arguments.argumentSet("AwayFromHome", calicut, shoranur, TrainDirection.AWAY_FROM_HOME, 8, ferok, tirur)
+    );
+
+    @ParameterizedTest
+    @FieldSource("getUpcomingStopsForTrainBetweenStations")
+    public void shouldReturnCorrectUpcomingStationsWhenTravellingBetweenStations(Station start, Station end,
+            TrainDirection direction, float currentDistanceFromHome,
+            Station intermediateStation1, Station intermediateStation2) {
         LocalDateTime now = LocalDateTime.now();
         List<Entry> stops = new ArrayList<>();
-        Entry calicutEntry = new Entry(calicut, Optional.of(new TrainSchedule(now.minusMinutes(10), now.minusMinutes(5))),
+        Entry startStationEntry = new Entry(start, Optional.of(new TrainSchedule(now.minusMinutes(10), now.minusMinutes(5))),
                 StopType.NORMAL_STATION);
-        stops.add(calicutEntry);
-        Entry tirurEntry = new Entry(tirur, Optional.of(new TrainSchedule(now.plusMinutes(30), now.plusMinutes(32))),
+        stops.add(startStationEntry);
+        Entry intermediateStationEntry = new Entry(intermediateStation1, Optional.of(new TrainSchedule(now.plusMinutes(30), now.plusMinutes(32))),
                 StopType.NORMAL_STATION);
-        stops.add(tirurEntry);
-        Entry shoranurEntry = new Entry(shoranur, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))),
+        stops.add(intermediateStationEntry);
+        Entry endStationEntry = new Entry(end, Optional.of(new TrainSchedule(now.plusHours(1), now.plusHours(1).plusMinutes(2))),
                 StopType.NORMAL_STATION);
-        stops.add(shoranurEntry);
-        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, TrainDirection.AWAY_FROM_HOME);
+        stops.add(endStationEntry);
+        Timetable timetableForFullSectionTrain = new Timetable(this.stationsOnSection, stops, direction);
 
-        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(10);
-        assertEquals(2, upcomingStations.size());
-        assertEquals(tirur, upcomingStations.get(0));
-        assertEquals(shoranur, upcomingStations.get(1));
+        List<Station> upcomingStations = timetableForFullSectionTrain.getUpcomingStops(currentDistanceFromHome);
+        assertEquals(3, upcomingStations.size());
+        assertEquals(intermediateStation1, upcomingStations.get(0));
+        assertEquals(intermediateStation2, upcomingStations.get(1));
+        assertEquals(end, upcomingStations.get(2));
     }
 
-    //TODO: Make this parameterized
-    @Test
-    public void shouldReturnEmptyForATrainThatHasExitedTheSection() {
+
+    public static List<Arguments> getUpcomingStopsForTrainBeyondSection = List.of(
+            Arguments.argumentSet("TowardsHome", shoranur, calicut, TrainDirection.TOWARDS_HOME, -2),
+            Arguments.argumentSet("AwayFromHome", calicut, shoranur, TrainDirection.AWAY_FROM_HOME, 90)
+    );
+
+    @ParameterizedTest
+    @FieldSource("getUpcomingStopsForTrainBeyondSection")
+    public void shouldReturnEmptyForATrainThatHasExitedTheSection(Station start, Station end,
+              TrainDirection direction, float currentDistanceFromHome) {
         LocalDateTime now = LocalDateTime.now();
         List<Entry> stops = new ArrayList<>();
-        stops.add(new Entry(shoranur,
+        stops.add(new Entry(start,
                 Optional.of(new TrainSchedule(now.minusHours(2).minusMinutes(1), now.minusHours(2))),
                 StopType.NORMAL_STATION));
-        stops.add(new Entry(calicut,
+        stops.add(new Entry(end,
                 Optional.of(new TrainSchedule(now.minusHours(1).minusMinutes(1), now.minusHours(1))),
                 StopType.NORMAL_STATION));
-        Timetable timetable = new Timetable(this.stationsOnSection, stops, TrainDirection.TOWARDS_HOME);
+        Timetable timetable = new Timetable(this.stationsOnSection, stops, direction);
 
-        List<Station> upcomingStops = timetable.getUpcomingStops(-2);
+        List<Station> upcomingStops = timetable.getUpcomingStops(currentDistanceFromHome);
         assertEquals(0, upcomingStops.size());
-    }
-
-    //TODO: Handle both directions
-    @Test
-    public void shouldReturnNonStoppingStationInUpcomingStations() {
-        LocalDateTime now = LocalDateTime.now();
-        List<Entry> stops = new ArrayList<>();
-        stops.add(new Entry(shoranur,
-                Optional.of(new TrainSchedule(now.minusHours(2), now.minusHours(2).minusMinutes(1))),
-                StopType.NORMAL_STATION));
-        stops.add(new Entry(calicut,
-                Optional.of(new TrainSchedule(now.plusHours(2), now.plusHours(2).plusMinutes(1))),
-                StopType.NORMAL_STATION));
-        Timetable timetable = new Timetable(this.stationsOnSection, stops, TrainDirection.TOWARDS_HOME);
-
-        List<Station> upcomingStops = timetable.getUpcomingStops(85);
-        assertEquals(4, upcomingStops.size());
-        assertEquals(tirur, upcomingStops.get(0));
-        assertEquals(ferok, upcomingStops.get(1));
-        assertEquals(kallayi, upcomingStops.get(2));
-        assertEquals(calicut, upcomingStops.get(3));
     }
 }
