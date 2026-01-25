@@ -100,7 +100,7 @@ public class Train implements PropertyChangeListener {
 	 *
 	 * @return the timetable.
 	 */
-	Timetable getTimetable() {
+    public Timetable getTimetable() {
 		return this.timetable;
 	}
 

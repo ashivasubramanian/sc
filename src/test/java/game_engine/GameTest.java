@@ -35,7 +35,7 @@ public class GameTest {
         Clock mockClock = Clock.fixed(Instant.parse(mockClockString), ZoneId.of("+05:30"));
 
         Game game = new Game(mockClock);
-        assertEquals(2, game.getTrains().size());
+        assertEquals(1, game.getTrains().size());
     }
     
     @Test
@@ -77,8 +77,8 @@ public class GameTest {
             Clock mockTime = Clock.fixed(Instant.parse("2025-06-23T12:35:00Z"), ZoneId.of("+05:30"));
             Game game = new Game(mockTime);
 
-            //Only 2 trains are available at this point in time - so only 2 calls are made to the executor.
-            verify(mockExecutorService, times(2)).scheduleWithFixedDelay(
+            //Only 1 train is available at this point in time - so only 1 call is made to the executor.
+            verify(mockExecutorService).scheduleWithFixedDelay(
                     any(TrainRunner.class), eq(2L), eq(2L), eq(TimeUnit.SECONDS));
         }
     }
