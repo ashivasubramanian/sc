@@ -418,4 +418,33 @@ public class TimetableTest {
         List<Station> upcomingStops = timetable.getUpcomingStops(currentDistanceFromHome);
         assertEquals(0, upcomingStops.size());
     }
+
+    public static List<Arguments> getUpcomingStopsForDestinationOnSection = List.of(
+            Arguments.argumentSet("TowardsHome", shoranur, ferok, TrainDirection.TOWARDS_HOME, tirur, 43),
+            Arguments.argumentSet("AwayFromHome", calicut, tirur, TrainDirection.AWAY_FROM_HOME, ferok, 3)
+
+    );
+
+    @ParameterizedTest
+    @FieldSource("getUpcomingStopsForDestinationOnSection")
+    public void shouldLimitUpcomingStopsToDestination(Station start, Station destination, TrainDirection direction,
+                  Station intermediateStation, float currentDistanceFromHome) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Entry> stops = new ArrayList<>();
+        stops.add(new Entry(start,
+                Optional.of(new TrainSchedule(now.minusHours(2).minusMinutes(1), now.minusHours(2))),
+                StopType.NORMAL_STATION));
+        stops.add(new Entry(intermediateStation,
+                Optional.of(new TrainSchedule(now.minusHours(1).minusMinutes(1), now.minusHours(1))),
+                StopType.NORMAL_STATION));
+        LocalDateTime arrivalTime = now.plusHours(1).plusMinutes(1);
+        stops.add(new Entry(destination,
+                Optional.of(new TrainSchedule(arrivalTime, arrivalTime)),
+                StopType.TERMINATING_STATION));
+        Timetable timetable = new Timetable(this.stationsOnSection, stops, direction);
+
+        List<Station> upcomingStops = timetable.getUpcomingStops(currentDistanceFromHome);
+        assertEquals(intermediateStation, upcomingStops.get(0));
+        assertEquals(destination, upcomingStops.get(1));
+    }
 }
